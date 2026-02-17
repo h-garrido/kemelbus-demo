@@ -29,8 +29,8 @@ const Navbar = () => {
             Personal y Turismo
           </span>
         </div>
-        <div className="font-semibold tracking-wide uppercase">
-          Servicio Profesional de Transporte de Pasajeros
+        <div className="font-semibold tracking-wide">
+          Servicio Interregional de Transporte de Pasajeros
         </div>
       </div>
 
@@ -43,7 +43,7 @@ const Navbar = () => {
                 <div className="bg-emerald-700 p-2 rounded-full">
                   <Bus className="h-6 w-6 text-white" />
                 </div>
-                <span className="text-xl font-extrabold text-emerald-950 tracking-tighter uppercase">
+                <span className="text-xl font-extrabold text-emerald-950 tracking-tighter">
                   Kemel<span className="text-emerald-600">Bus</span>
                 </span>
               </Link>

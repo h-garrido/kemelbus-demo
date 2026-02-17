@@ -47,7 +47,7 @@ export default function ContactoPage() {
                       Correo Electrónico
                     </p>
                     <p className="text-gray-600 text-sm">
-                      contacto@translinea.cl
+                      contacto@kemelbus.cl
                     </p>
                   </div>
                 </div>
@@ -169,14 +169,6 @@ export default function ContactoPage() {
           <div className="lg:col-span-3">
             <Map />
           </div>
-
-          {/* Sección de cierre opcional */}
-          <section className="pb-20 text-center">
-            <p className="text-gray-400 text-sm italic">
-              * Para objetos perdidos en el bus, por favor adjunta tu número de
-              pasaje en el formulario.
-            </p>
-          </section>
         </div>
       </section>
     </div>
