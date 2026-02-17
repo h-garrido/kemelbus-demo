@@ -54,24 +54,25 @@ const Navbar = () => {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className="text-emerald-950 hover:text-emerald-600 font-bold transition-colors text-sm uppercase"
+                  className="text-emerald-950 hover:text-emerald-600 font-bold transition-colors text-sm uppercase relative group"
                 >
                   {link.name}
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-600 transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               ))}
               <Link
                 href="#reserva"
-                className="bg-emerald-600 text-white px-6 py-2.5 rounded-full hover:bg-emerald-700 transition-all font-bold shadow-md"
+                className="bg-emerald-600 text-white px-6 py-2.5 rounded-full hover:bg-emerald-700 hover:shadow-lg hover:scale-105 transition-all duration-300 font-bold shadow-md active:scale-95"
               >
                 RESERVAR VIAJE
               </Link>
               <Link
                 href="/checkout"
-                className="relative p-2 text-emerald-950 hover:text-emerald-600"
+                className="relative p-2 text-emerald-950 hover:text-emerald-600 transition-colors group"
               >
-                <ShoppingCart size={24} />
+                <ShoppingCart size={24} className="group-hover:scale-110 transition-transform" />
                 {cart.length > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center animate-bounce">
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center animate-[bounce_1s_ease-in-out_3] shadow-lg">
                     {cart.length}
                   </span>
                 )}

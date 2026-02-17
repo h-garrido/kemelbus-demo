@@ -1,4 +1,7 @@
+'use client';
+
 import { MapPin, ArrowRight, Mountain, Palmtree, Waves } from 'lucide-react';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 const destinations = [
   {
@@ -22,11 +25,18 @@ const destinations = [
 ];
 
 const Routes = () => {
+  const { ref: titleRef, isVisible: titleVisible } = useScrollReveal();
+  
   return (
     <section id="rutas" className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-6">
         
-        <div className="flex flex-col md:flex-row justify-between items-center mb-16 gap-4">
+        <div
+          ref={titleRef}
+          className={`flex flex-col md:flex-row justify-between items-center mb-16 gap-4 transition-all duration-700 ${
+            titleVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+        >
           <div className="text-center md:text-left">
             <h2 className="text-emerald-600 font-bold uppercase tracking-[0.3em] text-xs mb-2">Cobertura Nacional</h2>
             <p className="text-4xl font-black text-emerald-950">Nuestros Destinos Principales</p>
@@ -37,11 +47,18 @@ const Routes = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {destinations.map((dest, index) => (
-            <div 
-              key={index} 
-              className={`p-8 rounded-3xl border-2 ${dest.color} transition-all hover:shadow-lg`}
-            >
+          {destinations.map((dest, index) => {
+            const { ref, isVisible } = useScrollReveal();
+            
+            return (
+              <div 
+                key={index}
+                ref={ref}
+                className={`p-8 rounded-3xl border-2 ${dest.color} hover:shadow-xl hover:-translate-y-2 hover:border-emerald-400 transition-all duration-500 cursor-pointer ${
+                  isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
+                }`}
+                style={{ transitionDelay: `${index * 150}ms` }}
+              >
               <div className="flex items-center gap-4 mb-6">
                 <div className="bg-white p-3 rounded-2xl shadow-sm">
                   {dest.icon}
@@ -65,7 +82,8 @@ const Routes = () => {
                 <p className="text-xs text-emerald-800/60 font-bold uppercase">Salidas diarias desde Terminal Sur</p>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Banner de conectividad rápida */}

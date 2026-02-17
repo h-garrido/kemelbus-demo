@@ -1,5 +1,5 @@
 "use client";
-import { Search, MapPin, Calendar, Ticket, ChevronRight } from 'lucide-react';
+import { Search, MapPin, Calendar } from 'lucide-react';
 
 const Hero = () => {
   return (
@@ -15,18 +15,18 @@ const Hero = () => {
       
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="text-center md:text-left mb-12">
-          <h1 className="text-4xl md:text-7xl font-black text-white leading-tight mb-6">
+          <h1 className="text-4xl md:text-7xl font-black text-white leading-tight mb-6 animate-[fadeInUp_0.6s_ease-out]">
             Viaja por Chile con <br />
             <span className="text-emerald-500 underline decoration-emerald-800">Seguridad y Confort</span>
           </h1>
-          <p className="text-emerald-100/70 text-lg md:text-xl max-w-2xl">
+          <p className="text-emerald-100/70 text-lg md:text-xl max-w-2xl animate-[fadeInUp_0.8s_ease-out]">
             Reserva tus pasajes en línea para las principales rutas del país. 
             Buses de última generación con servicio Salón Cama.
           </p>
         </div>
 
         {/* Buscador de Pasajes */}
-        <div className="bg-white p-4 md:p-8 rounded-3xl shadow-2xl border-b-8 border-emerald-600">
+        <div className="bg-white p-4 md:p-8 rounded-3xl shadow-2xl border-b-8 border-emerald-600 animate-[fadeInUp_1s_ease-out]">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
             
             {/* Origen */}
@@ -69,7 +69,7 @@ const Hero = () => {
 
             {/* Botón Buscar */}
             <div>
-              <button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4 rounded-xl flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02] shadow-lg">
+              <button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-emerald-500/50 active:scale-95">
                 <Search size={20} /> BUSCAR PASAJES
               </button>
             </div>

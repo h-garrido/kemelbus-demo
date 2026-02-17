@@ -1,6 +1,7 @@
 "use client";
 import { useState } from 'react';
 import { ChevronDown, HelpCircle } from 'lucide-react';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 const faqs = [
   {
@@ -27,6 +28,7 @@ const faqs = [
 
 const FAQ = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const { ref: titleRef, isVisible: titleVisible } = useScrollReveal();
 
   const toggleFAQ = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -36,7 +38,12 @@ const FAQ = () => {
     <section id="faq" className="py-24 bg-gray-200">
       <div className="max-w-3xl mx-auto px-6">
         
-        <div className="text-center mb-16">
+        <div
+          ref={titleRef}
+          className={`text-center mb-16 transition-all duration-700 ${
+            titleVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+          }`}
+        >
           <div className="bg-emerald-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-600">
             <HelpCircle size={24} />
           </div>
@@ -45,15 +52,22 @@ const FAQ = () => {
         </div>
 
         <div className="space-y-4">
-          {faqs.map((faq, index) => (
-            <div 
-              key={index} 
-              className="bg-white border border-emerald-100 rounded-2xl overflow-hidden shadow-sm transition-all"
-            >
-              <button 
-                onClick={() => toggleFAQ(index)}
-                className="w-full flex items-center justify-between p-6 text-left hover:bg-emerald-50/30 transition-colors"
+          {faqs.map((faq, index) => {
+            const { ref, isVisible } = useScrollReveal();
+            
+            return (
+              <div 
+                key={index}
+                ref={ref}
+                className={`bg-white border border-emerald-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:border-emerald-300 hover:-translate-y-1 transition-all duration-300 ${
+                  isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
+                }`}
+                style={{ transitionDelay: `${index * 100}ms` }}
               >
+                <button 
+                  onClick={() => toggleFAQ(index)}
+                  className="w-full flex items-center justify-between p-6 text-left hover:bg-emerald-50/30 transition-colors"
+                >
                 <span className="font-bold text-emerald-950 pr-8">{faq.question}</span>
                 <ChevronDown 
                   size={20} 
@@ -71,7 +85,8 @@ const FAQ = () => {
                 </div>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
 
         <div className="mt-12 p-6 bg-emerald-950 rounded-2xl text-center text-white">
