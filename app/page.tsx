@@ -1,7 +1,6 @@
 import Hero from '@/components/Hero';
 import SeatPicker from '@/components/SeatPicker';
 import Services from '@/components/Services';
-import Fleet from '@/components/Fleet';
 import Routes from '@/components/Routes';
 import Testimonials from '@/components/Testimonials';
 import FAQ from '@/components/FAQ';
@@ -14,7 +13,6 @@ export default function Home() {
         <SeatPicker />
       </div>
       <Services />
-      <Fleet />
       <Routes />
       <Testimonials />
       <FAQ />

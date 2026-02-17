@@ -74,14 +74,7 @@ const Hero = () => {
               </button>
             </div>
 
-          </div>
-
-          {/* Opciones rápidas debajo del buscador */}
-          <div className="mt-6 flex flex-wrap gap-4 text-xs text-gray-500 font-medium">
-            <span className="flex items-center gap-1"><Ticket size={14} className="text-emerald-600" /> Revisa tu pasaje</span>
-            <span className="flex items-center gap-1"><ChevronRight size={14} className="text-emerald-600" /> Horarios de Salida</span>
-            <span className="flex items-center gap-1"><ChevronRight size={14} className="text-emerald-600" /> Centros de Ayuda</span>
-          </div>
+          </div>        
         </div>
       </div>
     </section>
