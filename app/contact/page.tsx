@@ -166,7 +166,9 @@ export default function ContactoPage() {
             </div>
           </div>
           {/* Añadimos el mapa al final */}
-          <Map />
+          <div className="lg:col-span-3">
+            <Map />
+          </div>
 
           {/* Sección de cierre opcional */}
           <section className="pb-20 text-center">
