@@ -1,15 +1,65 @@
 "use client";
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Search, MapPin, Calendar } from 'lucide-react';
+import { getOriginCities, getDestinationCities } from '@/app/db/services';
+import type { City } from '@/app/db/types';
+import { useRouter } from 'next/navigation';
 
 const Hero = () => {
+  const router = useRouter();
+  const [originCities, setOriginCities] = useState<City[]>([]);
+  const [destinationCities, setDestinationCities] = useState<City[]>([]);
+  const [selectedOrigin, setSelectedOrigin] = useState<string>('');
+  const [selectedDestination, setSelectedDestination] = useState<string>('');
+  const [selectedDate, setSelectedDate] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Cargar ciudades de origen al montar el componente
+  useEffect(() => {
+    const loadOriginCities = async () => {
+      const cities = await getOriginCities();
+      setOriginCities(cities);
+      setIsLoading(false);
+    };
+    loadOriginCities();
+  }, []);
+
+  // Cargar ciudades de destino cuando cambia el origen
+  useEffect(() => {
+    if (selectedOrigin) {
+      const loadDestinationCities = async () => {
+        const cities = await getDestinationCities(selectedOrigin);
+        setDestinationCities(cities);
+        setSelectedDestination(''); // Reset destination
+      };
+      loadDestinationCities();
+    }
+  }, [selectedOrigin]);
+
+  // Establecer fecha mínima como hoy
+  const today = new Date().toISOString().split('T')[0];
+
+  const handleSearch = () => {
+    if (!selectedOrigin || !selectedDestination || !selectedDate) {
+      alert('Por favor completa todos los campos');
+      return;
+    }
+
+    // Navegar a la página de búsqueda con parámetros
+    router.push(`/buscar?origen=${selectedOrigin}&destino=${selectedDestination}&fecha=${selectedDate}`);
+  };
+
   return (
     <section className="relative bg-emerald-950 pt-32 pb-20 lg:pt-44 lg:pb-32 overflow-hidden">
       {/* Fondo con textura */}
       <div className="absolute inset-0 z-0 opacity-10">
-        <img 
+        <Image 
           src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=2000" 
           alt="Rutas de Chile" 
-          className="w-full h-full object-cover"
+          fill
+          className="object-cover"
+          priority={false}
         />
       </div>
       
@@ -34,11 +84,18 @@ const Hero = () => {
               <label className="text-xs font-bold text-emerald-900 uppercase flex items-center gap-2">
                 <MapPin size={14} /> Origen
               </label>
-              <select className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-700 focus:ring-2 focus:ring-emerald-500 outline-none transition-all">
-                <option>Santiago (Terminal Sur)</option>
-                <option>Concepción</option>
-                <option>Puerto Montt</option>
-                <option>Temuco</option>
+              <select 
+                value={selectedOrigin}
+                onChange={(e) => setSelectedOrigin(e.target.value)}
+                disabled={isLoading}
+                className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-700 focus:ring-2 focus:ring-emerald-500 outline-none transition-all disabled:opacity-50"
+              >
+                <option value="">Seleccione origen</option>
+                {originCities.map((city) => (
+                  <option key={city.id} value={city.id}>
+                    {city.name}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -47,12 +104,18 @@ const Hero = () => {
               <label className="text-xs font-bold text-emerald-900 uppercase flex items-center gap-2">
                 <MapPin size={14} /> Destino
               </label>
-              <select className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-700 focus:ring-2 focus:ring-emerald-500 outline-none transition-all">
-                <option>Seleccione destino</option>
-                <option>Pucón</option>
-                <option>Valdivia</option>
-                <option>Castro</option>
-                <option>Osorno</option>
+              <select 
+                value={selectedDestination}
+                onChange={(e) => setSelectedDestination(e.target.value)}
+                disabled={!selectedOrigin || destinationCities.length === 0}
+                className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-700 focus:ring-2 focus:ring-emerald-500 outline-none transition-all disabled:opacity-50"
+              >
+                <option value="">Seleccione destino</option>
+                {destinationCities.map((city) => (
+                  <option key={city.id} value={city.id}>
+                    {city.name}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -63,13 +126,20 @@ const Hero = () => {
               </label>
               <input 
                 type="date" 
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+                min={today}
                 className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-700 focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
               />
             </div>
 
             {/* Botón Buscar */}
             <div>
-              <button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-emerald-500/50 active:scale-95">
+              <button 
+                onClick={handleSearch}
+                disabled={!selectedOrigin || !selectedDestination || !selectedDate}
+                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-emerald-500/50 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+              >
                 <Search size={20} /> BUSCAR PASAJES
               </button>
             </div>

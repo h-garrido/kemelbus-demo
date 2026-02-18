@@ -5,6 +5,7 @@ import { Loader2, CheckCircle2, ShieldCheck, Lock } from 'lucide-react';
 
 interface PaymentSimulatorProps {
   onClose: () => void;
+  onSuccess?: (transactionId: string) => void;
 }
 
 type PaymentStep = 'redirecting' | 'processing' | 'success';
@@ -15,23 +16,27 @@ interface StepConfig {
   description: string;
 }
 
-const PaymentSimulator = ({ onClose }: PaymentSimulatorProps) => {
-  const { clearCart, total } = useCart();
+const PaymentSimulator = ({ onClose, onSuccess }: PaymentSimulatorProps) => {
+  const { total } = useCart();
   const [step, setStep] = useState<PaymentStep>('redirecting');
   const [orderNumber] = useState(() => Math.floor(Math.random() * 100000));
+  const [transactionId] = useState(() => `TBK-${Date.now()}-${Math.floor(Math.random() * 10000)}`);
 
   useEffect(() => {
     const timer1 = setTimeout(() => setStep('processing'), 2000);
     const timer2 = setTimeout(() => {
       setStep('success');
-      clearCart();
+      // Llamar al callback de éxito si existe
+      if (onSuccess) {
+        onSuccess(transactionId);
+      }
     }, 5000);
 
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
     };
-  }, [clearCart]);
+  }, [onSuccess, transactionId]);
 
   const stepConfigs: Record<PaymentStep, StepConfig> = {
     redirecting: {
@@ -57,7 +62,7 @@ const PaymentSimulator = ({ onClose }: PaymentSimulatorProps) => {
         </div>
       ),
       title: '¡Pago Exitoso!',
-      description: 'Tus pasajes han sido enviados a tu correo electrónico. Recuerda presentarlos en tu celular al momento de abordar.'
+      description: 'Procesando tu reserva...'
     }
   };
 
@@ -93,15 +98,6 @@ const PaymentSimulator = ({ onClose }: PaymentSimulatorProps) => {
             <p className="text-sm text-gray-500 leading-relaxed">
               {currentStep.description}
             </p>
-
-            {step === 'success' && (
-              <button 
-                onClick={onClose}
-                className="w-full bg-emerald-600 text-white py-4 rounded-xl font-bold hover:bg-emerald-700 transition-all"
-              >
-                VOLVER AL INICIO
-              </button>
-            )}
           </div>
         </div>
 

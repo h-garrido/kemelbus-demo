@@ -9,9 +9,6 @@ export default function Home() {
   return (
     <main>
       <Hero />
-      <div id='seleccion' className="scroll-mt-20">
-        <SeatPicker />
-      </div>
       <Services />
       <Routes />
       <Testimonials />

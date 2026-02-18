@@ -10,7 +10,7 @@ const Footer = () => {
           <div className="space-y-6">
             <div className="flex items-center justify-center md:justify-start gap-2">
               <Bus className="h-8 w-8 text-emerald-400" />
-              <span className="text-2xl font-black text-white uppercase italic">KemelBus</span>
+              <span className="text-2xl font-black text-white">KemelBus</span>
             </div>
             <p className="text-sm text-emerald-200/60 leading-relaxed">
               Nos especializamos en mover personas, no solo vehículos. Tu seguridad y bienestar en cada trayecto son nuestra prioridad número uno.
@@ -46,14 +46,14 @@ const Footer = () => {
                 <Phone size={18} className="text-emerald-500" /> +56 9 1234 5678
               </p>
               <p className="flex items-center justify-center md:justify-start gap-3">
-                <Mail size={18} className="text-emerald-500" /> reservas@translinea.cl
+                <Mail size={18} className="text-emerald-500" /> reservas@kemelbus.cl
               </p>
             </div>
           </div>
         </div>
 
         <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] text-emerald-500 font-bold uppercase tracking-widest">
-          <p>© {new Date().getFullYear()} KemelBus Pasajeros Chile SpA.</p>
+          <p>© {new Date().getFullYear()} KemelBus Chile SpA.</p>
           <div className="flex gap-8">
             <Facebook size={20} className="hover:text-white hover:scale-125 transition-all duration-300 cursor-pointer" />
             <Instagram size={20} className="hover:text-white hover:scale-125 transition-all duration-300 cursor-pointer" />
