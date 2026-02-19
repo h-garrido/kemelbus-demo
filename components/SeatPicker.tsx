@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { useCart } from "@/context/CartContext";
 import { useToast } from "@/hooks/useToast";
 import Toast from "@/components/Toast";
@@ -27,13 +27,12 @@ const SeatPicker = () => {
   const { addToCart } = useCart();
   const { toast, showToast, hideToast } = useToast();
   const [selectedSeat, setSelectedSeat] = useState<Seat | null>(null);
-  const [seats, setSeats] = useState<Seat[]>([]);
-  const [hasMounted, setHasMounted] = useState(false);
-
-  useEffect(() => {
-    setSeats(generateSeats(10));
-    setHasMounted(true);
-  }, []);
+  const [seats] = useState<Seat[]>(() => generateSeats(10));
+  const hasMounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
 
   const seatsToShow = seats;
 
@@ -45,10 +44,14 @@ const SeatPicker = () => {
     if (selectedSeat) {
       addToCart({
         id: crypto.randomUUID(),
+        service_id: "",
+        seat_id: selectedSeat.id,
         origin: "Santiago",
         destination: "Puerto Montt",
         date: "2026-02-20",
+        time: "",
         seat: `${selectedSeat.type} - N°${selectedSeat.number}`,
+        seatNumber: selectedSeat.number,
         price: selectedSeat.price,
       });
       
