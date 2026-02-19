@@ -152,7 +152,9 @@ export interface SearchFilters {
 
 export interface PassengerInfo {
   name: string;
-  rut: string;
+  document_type: 'rut' | 'passport';
+  document_number: string;
+  birth_date: string;
   email?: string;
   phone?: string;
 }

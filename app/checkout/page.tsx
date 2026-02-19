@@ -3,73 +3,120 @@ import { useState } from 'react';
 import { useCart } from '@/context/CartContext';
 import { createBooking, confirmPayment } from '@/app/db/services';
 import type { BookingRequest, PassengerInfo } from '@/app/db/types';
-import { Trash2, CreditCard, ShieldCheck, ArrowLeft, User } from 'lucide-react';
+import { Trash2, ShieldCheck, ArrowLeft, User, Bus, Calendar, Clock, Armchair, ChevronDown, ChevronUp, Mail, Phone } from 'lucide-react';
 import Link from 'next/link';
 import PaymentSimulator from '@/components/PaymentSimulator';
+
+const emptyPassenger = (): PassengerInfo => ({
+  name: '',
+  document_type: 'rut',
+  document_number: '',
+  birth_date: '',
+  email: '',
+  phone: '',
+});
 
 export default function CheckoutPage() {
   const { cart, removeFromCart, clearCart, total } = useCart();
   const [isPaying, setIsPaying] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [passengersData, setPassengersData] = useState<Map<string, PassengerInfo>>(new Map());
+  const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set(cart.map(i => i.id)));
   const [userEmail, setUserEmail] = useState('');
   const [userPhone, setUserPhone] = useState('');
+  const [errors, setErrors] = useState<Record<string, Record<string, string>>>({});
 
   const updatePassengerData = (ticketId: string, field: keyof PassengerInfo, value: string) => {
     const newData = new Map(passengersData);
-    const existing = newData.get(ticketId) || { name: '', rut: '' };
+    const existing = newData.get(ticketId) ?? emptyPassenger();
     newData.set(ticketId, { ...existing, [field]: value });
     setPassengersData(newData);
+
+    // Limpiar error del campo al escribir
+    if (errors[ticketId]?.[field]) {
+      setErrors(prev => {
+        const next = { ...prev };
+        const fieldErrors = { ...next[ticketId] };
+        delete fieldErrors[field];
+        next[ticketId] = fieldErrors;
+        return next;
+      });
+    }
   };
 
-  const handleProceedToPayment = () => {
-    // Validar que todos los pasajeros tengan nombre y RUT
+  const toggleCard = (id: string) => {
+    setExpandedCards(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  };
+
+  const validate = () => {
+    const newErrors: Record<string, Record<string, string>> = {};
+    let valid = true;
+
     for (const item of cart) {
-      const passenger = passengersData.get(item.id);
-      if (!passenger?.name || !passenger?.rut) {
-        alert('Por favor completa los datos de todos los pasajeros');
-        return;
+      const p = passengersData.get(item.id) ?? emptyPassenger();
+      const fieldErrors: Record<string, string> = {};
+
+      if (!p.name.trim()) {
+        fieldErrors.name = 'El nombre es obligatorio';
+        valid = false;
+      }
+      if (!p.document_number.trim()) {
+        fieldErrors.document_number = 'El número de documento es obligatorio';
+        valid = false;
+      }
+      if (!p.birth_date) {
+        fieldErrors.birth_date = 'La fecha de nacimiento es obligatoria';
+        valid = false;
+      }
+
+      if (Object.keys(fieldErrors).length > 0) {
+        newErrors[item.id] = fieldErrors;
+        // Expandir tarjeta con errores
+        setExpandedCards(prev => new Set([...prev, item.id]));
       }
     }
 
-    if (!userEmail) {
-      alert('Por favor ingresa tu email');
-      return;
+    if (!userEmail.trim()) {
+      newErrors['contact'] = { email: 'El email es obligatorio para enviar los tickets' };
+      valid = false;
     }
 
-    setIsPaying(true);
+    setErrors(newErrors);
+    return valid;
+  };
+
+  const handleProceedToPayment = () => {
+    if (validate()) setIsPaying(true);
   };
 
   const handlePaymentSuccess = async (transactionId: string) => {
     setIsProcessing(true);
-
     try {
-      // Preparar request de booking
       const bookingRequest: BookingRequest = {
         seats: cart.map(item => ({
           seat_id: item.seat_id,
-          passenger: passengersData.get(item.id) || { name: '', rut: '' }
+          passenger: passengersData.get(item.id) ?? emptyPassenger(),
         })),
         user_email: userEmail,
         user_phone: userPhone,
-        payment_method: 'Webpay'
+        payment_method: 'Webpay',
       };
 
-      // Crear booking
       const result = await createBooking(bookingRequest);
 
       if (result.success && result.booking_id) {
-        // Confirmar pago en la BD con el ID de transacción real
         await confirmPayment(result.booking_id, transactionId);
-
-        // Limpiar carrito
         clearCart();
-        
-        // Mostrar confirmación
-        alert(`¡Reserva confirmada! Código: ${result.booking_code}\nRecibirás un email con los detalles.`);
-        
-        // Redirigir al inicio
-        window.location.href = "/";
+        alert(`¡Reserva confirmada!\nCódigo: ${result.booking_code}\nRecibirás un email con los detalles.`);
+        window.location.href = '/';
       } else {
         alert('Error al procesar la reserva: ' + result.error);
         setIsPaying(false);
@@ -83,20 +130,19 @@ export default function CheckoutPage() {
     }
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString + 'T00:00:00');
-    return date.toLocaleDateString('es-CL', { 
-      year: 'numeric', 
-      month: 'short', 
-      day: 'numeric' 
-    });
-  };
+  const today = new Date().toISOString().split('T')[0];
+
+  // ─── UI helpers ──────────────────────────────────────────────────────────
+  const inputBase =
+    'input-base text-sm';
+  const inputError = (id: string, field: string) =>
+    errors[id]?.[field] ? 'error' : '';
 
   return (
-    <div className="bg-white">
+    <div className="section-gray-bg min-h-screen">
       {/* Simulador de Pago */}
       {isPaying && !isProcessing && (
-        <PaymentSimulator 
+        <PaymentSimulator
           onClose={() => setIsPaying(false)}
           onSuccess={handlePaymentSuccess}
         />
@@ -104,159 +150,325 @@ export default function CheckoutPage() {
 
       {/* Procesando */}
       {isProcessing && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
-          <div className="bg-white rounded-3xl p-8 text-center">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mb-4"></div>
-            <p className="text-gray-600 font-bold">Procesando tu reserva...</p>
+        <div className="payment-overlay flex items-center justify-center">
+          <div className="payment-modal p-8 text-center">
+            <div className="loading-spinner animate-spin h-12 w-12 mb-4" />
+            <p className="text-gray-700 font-bold">Procesando tu reserva...</p>
+            <p className="text-gray-400 text-sm mt-1">No cierres esta ventana</p>
           </div>
         </div>
       )}
 
       {/* Header */}
-      <section className="bg-emerald-950 pt-32 pb-20 text-center px-6">
+      <section className="section-hero pt-32 pb-20 text-center px-6">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-4xl md:text-6xl font-black text-white italic mb-4">
-            Confirmación de <span className="text-emerald-500">Viaje</span>
+            Confirmación de <span className="hero-accent">Viaje</span>
           </h1>
-          <p className="text-emerald-100/70 text-lg">Revisa tu reserva y completa el pago de forma segura.</p>
+          <p className="hero-subtitle text-lg">
+            Completa los datos de cada pasajero y revisa tu reserva antes de pagar.
+          </p>
         </div>
       </section>
 
-      <section className="py-16 max-w-6xl mx-auto px-6">
-        <Link href="/" className="inline-flex items-center gap-2 text-emerald-600 font-bold mb-8 hover:gap-3 transition-all">
-          <ArrowLeft size={18} /> Continuar buscando pasajes
+      <section className="py-12 max-w-6xl mx-auto px-6">
+        <Link
+          href="/seleccionar-asiento"
+          className="back-link-light mb-10"
+        >
+          <ArrowLeft size={18} /> Agregar otro pasaje
         </Link>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          {/* Lado Izquierdo: Pasajes y Datos */}
-          <div className="lg:col-span-2 space-y-8">
-          
-          {cart.length === 0 ? (
-            <div className="p-12 border-2 border-dashed border-gray-200 rounded-[2rem] text-center">
-              <p className="text-gray-400">Tu carrito está vacío</p>
-            </div>
-          ) : (
-            <div className="space-y-6">
-              {/* Pasajes */}
-              <div className="space-y-4">
-                <h2 className="text-xl font-bold text-emerald-950">Tus Pasajes</h2>
-                {cart.map((item) => (
-                  <div key={item.id} className="bg-white border-2 border-emerald-50 rounded-3xl p-6 shadow-sm">
-                    <div className="flex flex-col md:flex-row justify-between items-start gap-6">
-                      <div className="flex items-start gap-4 flex-1">
-                        <div className="bg-emerald-600 text-white p-4 rounded-2xl">
-                          <CreditCard size={24} />
+        {cart.length === 0 ? (
+          <div className="no-results-box p-16 text-center bg-white">
+            <Bus size={48} className="no-results-icon mx-auto mb-4" />
+            <p className="text-gray-400 font-medium mb-6">Tu carrito está vacío</p>
+            <Link
+              href="/"
+              className="btn-primary inline-block px-8 py-3"
+            >
+              Buscar pasajes
+            </Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            {/* ─── Izquierda ───────────────────────────────────────── */}
+            <div className="lg:col-span-2 space-y-6">
+
+              {/* Pasajeros */}
+              {cart.map((item, index) => {
+                const p = passengersData.get(item.id) ?? emptyPassenger();
+                const isExpanded = expandedCards.has(item.id);
+                const hasErrors = !!errors[item.id];
+
+                return (
+                  <div
+                    key={item.id}
+                    className={`passenger-card${hasErrors ? ' passenger-card-error' : ''}`}
+                  >
+                    {/* Cabecera del pasajero */}
+                    <button
+                      onClick={() => toggleCard(item.id)}
+                      className="w-full flex items-center justify-between p-6 text-left"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="badge-bus w-10 h-10 flex items-center justify-center font-black text-lg shrink-0">
+                          {index + 1}
                         </div>
-                        <div className="flex-1">
-                          <h3 className="font-black text-xl text-emerald-950">
-                            {item.origin} → {item.destination}
-                          </h3>
-                          <p className="text-sm text-emerald-600 font-bold">
-                            {formatDate(item.date)} • {item.time} • {item.seat}
+                        <div>
+                          <p className="font-black text-brand-dark text-lg leading-tight">
+                            {p.name.trim() || `Pasajero ${index + 1}`}
                           </p>
-                          
-                          {/* Formulario de Datos del Pasajero */}
-                          <div className="mt-4 space-y-3 bg-gray-50 p-4 rounded-xl">
-                            <div className="flex items-center gap-2 text-xs font-bold text-gray-600 uppercase mb-2">
-                              <User size={14} />
-                              Datos del Pasajero
-                            </div>
+                          <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1 text-xs text-brand-mid font-semibold">
+                            <span className="flex items-center gap-1">
+                              <Bus size={11} /> {item.origin} → {item.destination}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Calendar size={11} /> {item.date}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Clock size={11} /> {item.time}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Armchair size={11} /> {item.seat}
+                            </span>
+                          </div>
+                          {hasErrors && (
+                            <p className="text-xs text-red-500 font-bold mt-1">
+                              ⚠ Completa los campos requeridos
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-4 shrink-0 ml-4">
+                        <span className="text-brand-dark text-xl font-black">
+                          ${item.price.toLocaleString('es-CL')}
+                        </span>
+                        <button
+                          onClick={(e) => { e.stopPropagation(); removeFromCart(item.id); }}
+                          className="text-red-400 hover:bg-red-50 p-2 rounded-lg transition-colors"
+                          title="Eliminar pasaje"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                        {isExpanded ? (
+                          <ChevronUp size={20} className="icon-accent" />
+                        ) : (
+                          <ChevronDown size={20} className="icon-accent" />
+                        )}
+                      </div>
+                    </button>
+
+                    {/* Formulario expandible */}
+                    {isExpanded && (
+                      <div className="px-6 pb-6 space-y-5 passenger-form-divider pt-5">
+                        <div className="flex items-center gap-2 text-xs font-bold text-brand-mid uppercase tracking-widest">
+                          <User size={14} />
+                          Datos del Pasajero {index + 1}
+                        </div>
+
+                        {/* Nombre */}
+                        <div>
+                          <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5">
+                            Nombre completo <span className="text-red-400">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="Ej: Juan Andrés Pérez González"
+                            value={p.name}
+                            onChange={(e) => updatePassengerData(item.id, 'name', e.target.value)}
+                            className={`${inputBase} ${inputError(item.id, 'name')}`}
+                          />
+                          {errors[item.id]?.name && (
+                            <p className="text-xs text-red-500 mt-1">{errors[item.id].name}</p>
+                          )}
+                        </div>
+
+                        {/* Documento */}
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                          <div>
+                            <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5">
+                              Tipo de documento <span className="text-red-400">*</span>
+                            </label>
+                            <select
+                              value={p.document_type}
+                              onChange={(e) => updatePassengerData(item.id, 'document_type', e.target.value)}
+                              className={`${inputBase} ${inputError(item.id, 'document_type')}`}
+                            >
+                              <option value="rut">RUT</option>
+                              <option value="passport">Pasaporte</option>
+                            </select>
+                          </div>
+                          <div className="sm:col-span-2">
+                            <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5">
+                              {p.document_type === 'rut' ? 'RUT' : 'N° Pasaporte'} <span className="text-red-400">*</span>
+                            </label>
                             <input
                               type="text"
-                              placeholder="Nombre completo"
-                              value={passengersData.get(item.id)?.name || ''}
-                              onChange={(e) => updatePassengerData(item.id, 'name', e.target.value)}
-                              className="w-full p-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none"
+                              placeholder={p.document_type === 'rut' ? 'Ej: 12.345.678-9' : 'Ej: A01234567'}
+                              value={p.document_number}
+                              onChange={(e) => updatePassengerData(item.id, 'document_number', e.target.value)}
+                              className={`${inputBase} ${inputError(item.id, 'document_number')}`}
                             />
+                            {errors[item.id]?.document_number && (
+                              <p className="text-xs text-red-500 mt-1">{errors[item.id].document_number}</p>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Fecha de nacimiento */}
+                        <div>
+                          <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5">
+                            Fecha de nacimiento <span className="text-red-400">*</span>
+                          </label>
+                          <input
+                            type="date"
+                            max={today}
+                            value={p.birth_date}
+                            onChange={(e) => updatePassengerData(item.id, 'birth_date', e.target.value)}
+                            className={`${inputBase} ${inputError(item.id, 'birth_date')}`}
+                          />
+                          {errors[item.id]?.birth_date && (
+                            <p className="text-xs text-red-500 mt-1">{errors[item.id].birth_date}</p>
+                          )}
+                        </div>
+
+                        {/* Email y Teléfono opcionales del pasajero */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5">
+                              Email del pasajero <span className="text-gray-300">(opcional)</span>
+                            </label>
                             <input
-                              type="text"
-                              placeholder="RUT (ej: 12.345.678-9)"
-                              value={passengersData.get(item.id)?.rut || ''}
-                              onChange={(e) => updatePassengerData(item.id, 'rut', e.target.value)}
-                              className="w-full p-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none"
+                              type="email"
+                              placeholder="pasajero@email.com"
+                              value={p.email ?? ''}
+                              onChange={(e) => updatePassengerData(item.id, 'email', e.target.value)}
+                              className={`${inputBase}`}
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5">
+                              Teléfono del pasajero <span className="text-gray-300">(opcional)</span>
+                            </label>
+                            <input
+                              type="tel"
+                              placeholder="+56 9 1234 5678"
+                              value={p.phone ?? ''}
+                              onChange={(e) => updatePassengerData(item.id, 'phone', e.target.value)}
+                              className={`${inputBase}`}
                             />
                           </div>
                         </div>
                       </div>
-                      
-                      <div className="flex items-center gap-6 w-full md:w-auto justify-between border-t md:border-t-0 pt-4 md:pt-0">
-                        <span className="text-2xl font-black text-emerald-950">
-                          ${item.price.toLocaleString('es-CL')}
-                        </span>
-                        <button 
-                          onClick={() => removeFromCart(item.id)} 
-                          className="text-red-400 hover:bg-red-50 p-2 rounded-lg transition-colors"
-                        >
-                          <Trash2 size={20} />
-                        </button>
-                      </div>
+                    )}
+                  </div>
+                );
+              })}
+
+              {/* Datos de Contacto de la Reserva */}
+              <div className="contact-form-card p-6 shadow-sm rounded-3xl">
+                <div className="flex items-center gap-2 text-xs font-bold text-brand-mid uppercase tracking-widest mb-5">
+                  <Mail size={14} />
+                  Datos para la confirmación de la reserva
+                </div>
+                <p className="text-sm text-gray-500 mb-5">
+                  Te enviaremos el código de reserva y los tickets a este correo.
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5">
+                      Email de contacto <span className="text-red-400">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      placeholder="tucorreo@email.com"
+                      value={userEmail}
+                      onChange={(e) => {
+                        setUserEmail(e.target.value);
+                        if (errors['contact']?.email) {
+                          setErrors(prev => { const n = { ...prev }; delete n['contact']; return n; });
+                        }
+                      }}
+                      className={`${inputBase} ${errors['contact']?.email ? 'error' : ''}`}
+                    />
+                    {errors['contact']?.email && (
+                      <p className="text-xs text-red-500 mt-1">{errors['contact'].email}</p>
+                    )}
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5">
+                      Teléfono <span className="text-gray-300">(opcional)</span>
+                    </label>
+                    <div className="relative">
+                      <Phone size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                      <input
+                        type="tel"
+                        placeholder="+56 9 1234 5678"
+                        value={userPhone}
+                        onChange={(e) => setUserPhone(e.target.value)}
+                        className={`${inputBase} pl-9`}
+                      />
                     </div>
                   </div>
-                ))}
-              </div>
-
-              {/* Datos de Contacto */}
-              <div className="bg-emerald-50 border-2 border-emerald-200 rounded-3xl p-6">
-                <h2 className="text-xl font-bold text-emerald-950 mb-4">Datos de Contacto</h2>
-                <div className="space-y-3">
-                  <input
-                    type="email"
-                    placeholder="Email para envío de tickets"
-                    value={userEmail}
-                    onChange={(e) => setUserEmail(e.target.value)}
-                    required
-                    className="w-full p-3 border border-emerald-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none"
-                  />
-                  <input
-                    type="tel"
-                    placeholder="Teléfono (opcional)"
-                    value={userPhone}
-                    onChange={(e) => setUserPhone(e.target.value)}
-                    className="w-full p-3 border border-emerald-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none"
-                  />
                 </div>
               </div>
             </div>
-          )}
-        </div>
 
-        {/* Lado Derecho: Totales */}
-        <div className="relative">
-          <div className="bg-emerald-950 text-white rounded-[2.5rem] p-8 md:p-10 sticky top-32 shadow-2xl">
-            <h2 className="text-2xl font-bold mb-8 border-b border-white/10 pb-4">Resumen</h2>
-            
-            <div className="space-y-4 mb-10 text-emerald-100/60 font-medium">
-              <div className="flex justify-between">
-                <span>Pasajes ({cart.length})</span>
-                <span>${total.toLocaleString('es-CL')}</span>
+            {/* ─── Derecha: Resumen ─────────────────────────────────── */}
+            <div className="relative">
+              <div className="section-dark-bg text-white rounded-[2.5rem] p-8 md:p-10 sticky top-32 shadow-2xl">
+                <h2 className="text-2xl font-bold mb-6 border-b border-white/10 pb-4">Resumen</h2>
+
+                <div className="space-y-3 mb-6">
+                  {cart.map((item, i) => (
+                    <div key={item.id} className="flex justify-between items-start text-sm hero-subtitle">
+                      <span className="leading-snug">
+                        Pasajero {i + 1} — Asiento {item.seatNumber}
+                      </span>
+                      <span className="font-bold text-white shrink-0 ml-3">
+                        ${item.price.toLocaleString('es-CL')}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                  <div className="space-y-3 mb-8 pt-4 border-t border-white/10 hero-subtitle font-medium text-sm">
+                  <div className="flex justify-between">
+                    <span>Subtotal ({cart.length} {cart.length === 1 ? 'pasaje' : 'pasajes'})</span>
+                    <span>${total.toLocaleString('es-CL')}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Cargos por servicio</span>
+                    <span className="icon-accent font-bold">$0</span>
+                  </div>
+                </div>
+
+                <div className="flex justify-between text-3xl font-black mb-8">
+                  <span>Total</span>
+                  <span>${total.toLocaleString('es-CL')}</span>
+                </div>
+
+                <button
+                  onClick={handleProceedToPayment}
+                  disabled={cart.length === 0 || isProcessing}
+                  className="btn-cta-green w-full py-5 text-lg uppercase tracking-widest disabled:bg-gray-700 disabled:text-gray-500 disabled:hover:scale-100"
+                >
+                  Pagar con Webpay
+                </button>
+
+                <div className="mt-8 flex flex-col items-center gap-2 ssl-text">
+                  <ShieldCheck size={20} />
+                  <span>Conexión Encriptada SSL</span>
+                </div>
               </div>
-              <div className="flex justify-between">
-                <span>Cargos por Servicio</span>
-                <span className="text-emerald-400 font-bold">$0</span>
-              </div>
-            </div>
-
-            <div className="flex justify-between text-3xl font-black mb-10">
-              <span>Total</span>
-              <span>${total.toLocaleString('es-CL')}</span>
-            </div>
-
-            <button 
-              onClick={handleProceedToPayment}
-              disabled={cart.length === 0 || isProcessing}
-              className="w-full bg-emerald-500 text-emerald-950 py-5 rounded-2xl font-black text-lg uppercase tracking-widest hover:bg-emerald-400 disabled:bg-gray-700 disabled:text-gray-500 transition-all transform hover:scale-[1.02] disabled:hover:scale-100"
-            >
-              Pagar con Webpay
-            </button>
-
-            <div className="mt-8 flex flex-col items-center gap-2 text-[10px] text-emerald-400/50 uppercase tracking-[0.2em]">
-              <ShieldCheck size={20} />
-              <span>Conexión Encriptada SSL</span>
             </div>
           </div>
-        </div>
-      </div>
+        )}
       </section>
     </div>
   );
 }
+
+

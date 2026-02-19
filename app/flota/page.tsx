@@ -10,27 +10,27 @@ export default function FlotaPage() {
   ];
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="page-white min-h-screen">
       {/* Hero Flota */}
-      <section className="bg-emerald-950 pt-32 pb-20 px-6">
+      <section className="section-hero pt-32 pb-20 px-6">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
           <div className="md:w-1/2 space-y-6">
             <h1 className="text-4xl md:text-6xl font-black text-white italic uppercase tracking-tighter">
-              Potencia y <span className="text-emerald-500">Seguridad</span>
+              Potencia y <span className="hero-accent">Seguridad</span>
             </h1>
-            <p className="text-emerald-100/70 text-lg leading-relaxed">
+            <p className="hero-subtitle text-lg leading-relaxed">
               En KemelBus operamos con una flota de última generación. Nuestros buses de dos pisos cuentan con los más altos estándares de seguridad internacional para garantizar un viaje tranquilo por las rutas del sur de Chile.
             </p>
           </div>
           <div className="md:w-1/2">
              {/* Imagen de un bus moderno */}
-             <div className="relative rounded-[2rem] overflow-hidden shadow-2xl border-4 border-emerald-900/50">
+             <div className="bus-hero-image relative">
                <img 
                  src="https://images.unsplash.com/photo-1570125909232-eb263c188f7e?q=80&w=1000" 
                  alt="Bus KemelBus" 
                  className="w-full h-full object-cover"
                />
-               <div className="absolute bottom-4 right-4 bg-emerald-600 text-white px-4 py-2 rounded-full text-xs font-black uppercase">
+               <div className="badge-bus absolute bottom-4 right-4 px-4 py-2 text-xs font-black uppercase">
                  Modelo 2024
                </div>
              </div>
@@ -41,16 +41,16 @@ export default function FlotaPage() {
       {/* Especificaciones Técnicas */}
       <section className="py-24 max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-emerald-600 font-bold uppercase tracking-widest text-sm mb-2">Ficha Técnica</h2>
-          <p className="text-4xl font-black text-emerald-950 italic uppercase">Equipamiento de Clase Mundial</p>
+          <h2 className="section-label mb-2">Ficha Técnica</h2>
+          <p className="section-title italic uppercase">Equipamiento de Clase Mundial</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {specs.map((spec, i) => (
-            <div key={i} className="bg-gray-50 p-8 rounded-3xl border border-gray-100 hover:border-emerald-200 transition-colors">
-              <div className="text-emerald-600 mb-4">{spec.icon}</div>
-              <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">{spec.label}</p>
-              <p className="text-xl font-black text-emerald-950">{spec.value}</p>
+            <div key={i} className="specs-card p-8">
+              <div className="specs-icon mb-4">{spec.icon}</div>
+              <p className="specs-label mb-1">{spec.label}</p>
+              <p className="specs-value">{spec.value}</p>
             </div>
           ))}
         </div>
@@ -62,10 +62,10 @@ export default function FlotaPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             
             <div className="lg:col-span-2 space-y-8">
-              <h3 className="text-3xl font-black text-emerald-950 italic uppercase">Tecnología Preventiva</h3>
+              <h3 className="text-brand-dark text-3xl font-black italic uppercase">Tecnología Preventiva</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-4">
-                  <div className="flex items-center gap-3 text-emerald-600 font-black">
+                  <div className="flex items-center gap-3 icon-accent font-black">
                     <Eye size={24} /> <span>Sensores de Carril</span>
                   </div>
                   <p className="text-sm text-gray-600 leading-relaxed">
@@ -73,7 +73,7 @@ export default function FlotaPage() {
                   </p>
                 </div>
                 <div className="space-y-4">
-                  <div className="flex items-center gap-3 text-emerald-600 font-black">
+                  <div className="flex items-center gap-3 icon-accent font-black">
                     <Wind size={24} /> <span>Purificación de Aire</span>
                   </div>
                   <p className="text-sm text-gray-600 leading-relaxed">
@@ -83,14 +83,14 @@ export default function FlotaPage() {
               </div>
             </div>
 
-            <div className="bg-emerald-950 p-10 rounded-[3rem] text-white space-y-6">
-              <h4 className="text-2xl font-black italic uppercase text-emerald-500">Compromiso Kemel</h4>
-              <p className="text-sm text-emerald-100/60 leading-relaxed">
+            <div className="commitment-box p-10 space-y-6">
+              <h4 className="commitment-title">Compromiso Kemel</h4>
+              <p className="hero-subtitle text-sm leading-relaxed">
                 Cada bus es sometido a un riguroso proceso de mantenimiento preventivo cada 10,000 kilómetros en nuestros propios talleres especializados.
               </p>
               <div className="pt-6 border-t border-white/10">
                 <p className="text-4xl font-black italic">100%</p>
-                <p className="text-[10px] uppercase font-bold tracking-widest text-emerald-400">Disponibilidad de GPS en Línea</p>
+                <p className="commitment-stat-label">Disponibilidad de GPS en Línea</p>
               </div>
             </div>
 
@@ -100,8 +100,8 @@ export default function FlotaPage() {
 
       {/* CTA Final */}
       <section className="py-24 text-center px-6">
-        <h2 className="text-3xl font-black text-emerald-950 mb-8 uppercase italic">Súbete a la flota más moderna del sur</h2>
-        <Link href="/" className="bg-emerald-600 text-white px-12 py-5 rounded-2xl font-black text-lg hover:bg-emerald-700 transition-all shadow-xl shadow-emerald-900/20">
+        <h2 className="text-brand-dark text-3xl font-black mb-8 uppercase italic">Súbete a la flota más moderna del sur</h2>
+        <Link href="/" className="btn-cta-green px-12 py-5 text-lg shadow-xl">
           VER HORARIOS Y SALIDAS
         </Link>
       </section>

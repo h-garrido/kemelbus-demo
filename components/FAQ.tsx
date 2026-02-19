@@ -35,7 +35,7 @@ const FAQ = () => {
   };
 
   return (
-    <section id="faq" className="py-24 bg-gray-200">
+    <section id="faq" className="section-faq-bg py-24">
       <div className="max-w-3xl mx-auto px-6">
         
         <div
@@ -44,11 +44,11 @@ const FAQ = () => {
             titleVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
           }`}
         >
-          <div className="bg-emerald-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-600">
+          <div className="faq-icon-wrapper">
             <HelpCircle size={24} />
           </div>
-          <h2 className="text-4xl font-black text-emerald-950 mb-4">Preguntas Frecuentes</h2>
-          <p className="text-emerald-900/60 font-medium">Todo lo que necesitas saber antes de subir al bus.</p>
+          <h2 className="section-title mb-4">Preguntas Frecuentes</h2>
+          <p className="text-muted-primary">Todo lo que necesitas saber antes de subir al bus.</p>
         </div>
 
         <div className="space-y-4">
@@ -59,19 +59,19 @@ const FAQ = () => {
               <div 
                 key={index}
                 ref={ref}
-                className={`bg-white border border-emerald-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:border-emerald-300 hover:-translate-y-1 transition-all duration-300 ${
+                className={`card-faq ${
                   isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
                 }`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
                 <button 
                   onClick={() => toggleFAQ(index)}
-                  className="w-full flex items-center justify-between p-6 text-left hover:bg-emerald-50/30 transition-colors"
+                  className="faq-btn"
                 >
-                <span className="font-bold text-emerald-950 pr-8">{faq.question}</span>
+                <span className="faq-question">{faq.question}</span>
                 <ChevronDown 
                   size={20} 
-                  className={`text-emerald-500 transition-transform duration-300 ${openIndex === index ? 'rotate-180' : ''}`} 
+                  className={`icon-accent transition-transform duration-300 ${openIndex === index ? 'rotate-180' : ''}`} 
                 />
               </button>
               
@@ -80,7 +80,7 @@ const FAQ = () => {
                   openIndex === index ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0'
                 }`}
               >
-                <div className="p-6 pt-0 text-gray-600 text-sm leading-relaxed border-t border-emerald-50">
+                <div className="faq-answer">
                   {faq.answer}
                 </div>
               </div>
@@ -89,9 +89,9 @@ const FAQ = () => {
           })}
         </div>
 
-        <div className="mt-12 p-6 bg-emerald-950 rounded-2xl text-center text-white">
+        <div className="cta-contact-box mt-12">
           <p className="text-sm">¿No encuentras lo que buscas?</p>
-          <button className="mt-2 text-emerald-400 font-bold hover:text-emerald-300 transition-colors underline underline-offset-4">
+          <button className="cta-link">
             Habla con un ejecutivo por WhatsApp
           </button>
         </div>

@@ -1,0 +1,1416 @@
+/*
+ * ============================================================
+ *  KemelBus — Design Tokens
+ *  Centraliza todos los colores y estilos hardcodeados del proyecto.
+ *  Importar después de Tailwind en globals.css:
+ *    @import "./design-tokens.css";
+ * ============================================================
+ */
+
+/* ─────────────────────────────────────────────
+   1. PALETA DE COLORES (CSS Variables)
+   ───────────────────────────────────────────── */
+:root {
+
+  /* ── Primario: Emerald ── */
+  --color-primary-50:  #ecfdf5;   /* bg-emerald-50  — fondos clarísimos, cards */
+  --color-primary-100: #d1fae5;   /* bg-emerald-100 — iconos de contacto, spinner */
+  --color-primary-200: #a7f3d0;   /* bg-emerald-200 — avatares, leyenda de asientos */
+  --color-primary-300: #6ee7b7;   /* border-emerald-300 — hover de cards */
+  --color-primary-400: #34d399;   /* text-emerald-400 — iconos top bar, footer, stats */
+  --color-primary-500: #10b981;   /* text/bg-emerald-500 — acento principal, botones secundarios, íconos */
+  --color-primary-600: #059669;   /* bg-emerald-600 — botón primario, badge de bus, CTA */
+  --color-primary-700: #047857;   /* hover:bg-emerald-700 — hover de botón primario */
+  --color-primary-800: #065f46;   /* bg-emerald-800 — decoración abstracta */
+  --color-primary-900: #064e3b;   /* text/border-emerald-900 — footer border, textos oscuros */
+  --color-primary-950: #022c22;   /* bg-emerald-950 — hero, navbar top bar, footer fondo */
+
+  /* ── Neutro: Gray ── */
+  --color-neutral-50:  #f9fafb;   /* bg-gray-50 — sección FAQ, inputs, specs cards */
+  --color-neutral-100: #f3f4f6;   /* border-gray-100 — navbar border, bg cards */
+  --color-neutral-200: #e5e7eb;   /* border-gray-200 — inputs de formulario */
+  --color-neutral-300: #d1d5db;   /* bg-gray-300 — asiento ocupado (SeatPicker) */
+  --color-neutral-400: #9ca3af;   /* text/border-gray-400 — textos de label, border semi-cama */
+  --color-neutral-500: #6b7280;   /* text-gray-500 — textos secundarios */
+  --color-neutral-600: #4b5563;   /* text-gray-600 — párrafos, descripción de contacto */
+  --color-neutral-700: #374151;   /* text-gray-700 — select/input text */
+  --color-neutral-900: #111827;   /* bg-gray-900 — overlay de PaymentSimulator */
+
+  /* ── Alerta: Red ── */
+  --color-danger-50:   #fef2f2;   /* bg-red-50 — input con error en checkout */
+  --color-danger-400:  #f87171;   /* border-red-400 — borde de input con error */
+  --color-danger-500:  #ef4444;   /* bg-red-500 — badge del carrito */
+  --color-danger-600:  #dc2626;   /* bg-red-600 — indicadores Webpay, Toast error */
+
+  /* ── Información: Blue ── */
+  --color-info-50:     #eff6ff;   /* bg-blue-50 — card Zona Central (Routes) */
+  --color-info-200:    #bfdbfe;   /* border-blue-200 — card Zona Central (Routes) */
+  --color-info-500:    #3b82f6;   /* text-blue-500 — icono Zona Central / duración */
+  --color-info-600:    #2563eb;   /* bg-blue-600 — Toast info */
+
+  /* ── Acento: Orange ── */
+  --color-accent-50:   #fff7ed;   /* bg-orange-50 — card Zona Norte (Routes) */
+  --color-accent-200:  #fed7aa;   /* border-orange-200 — card Zona Norte (Routes) */
+  --color-accent-500:  #f97316;   /* text-orange-500 — icono Zona Norte (Routes) */
+
+  /* ── Base ── */
+  --color-white:  #ffffff;
+  --color-black:  #000000;
+
+  /* ─────────────────────────────────────────────
+     2. TIPOGRAFÍA
+     ───────────────────────────────────────────── */
+  --font-sans:  var(--font-geist-sans, Arial, Helvetica, sans-serif);
+  --font-mono:  var(--font-geist-mono, monospace);
+
+  --text-xs:    0.75rem;    /* text-xs */
+  --text-sm:    0.875rem;   /* text-sm */
+  --text-base:  1rem;       /* text-base */
+  --text-lg:    1.125rem;   /* text-lg */
+  --text-xl:    1.25rem;    /* text-xl */
+  --text-2xl:   1.5rem;     /* text-2xl */
+  --text-3xl:   1.875rem;   /* text-3xl */
+  --text-4xl:   2.25rem;    /* text-4xl */
+  --text-6xl:   3.75rem;    /* text-6xl */
+  --text-7xl:   4.5rem;     /* text-7xl */
+
+  /* ─────────────────────────────────────────────
+     3. RADIOS DE BORDE
+     ───────────────────────────────────────────── */
+  --radius-sm:    0.5rem;    /* rounded-lg */
+  --radius-base:  0.75rem;   /* rounded-xl  — inputs, badges pequeños */
+  --radius-lg:    1rem;      /* rounded-2xl — botones, CTA */
+  --radius-xl:    1.5rem;    /* rounded-3xl — cards principales */
+  --radius-2xl:   2rem;      /* rounded-[2rem] — cards de servicio */
+  --radius-2_5xl: 2.5rem;    /* rounded-[2.5rem] — Testimonials, CTA granel */
+  --radius-3xl:   3rem;      /* rounded-[3rem] — Kemel Cargo section */
+  --radius-full:  9999px;    /* rounded-full — badges, avatares */
+
+  /* ─────────────────────────────────────────────
+     4. ESPACIADO / SECCIONES
+     ───────────────────────────────────────────── */
+  --section-py:       6rem;    /* py-24 — padding vertical de secciones */
+  --section-py-sm:    5rem;    /* py-20 — secciones secundarias */
+  --hero-pt:          8rem;    /* pt-32 — padding top del hero (bajo la navbar sticky) */
+  --hero-pb:          5rem;    /* pb-20 — padding bottom del hero */
+  --container-max:    80rem;   /* max-w-7xl */
+  --container-px:     1.5rem;  /* px-6 */
+
+  /* ─────────────────────────────────────────────
+     5. SOMBRAS
+     ───────────────────────────────────────────── */
+  --shadow-card:    0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl:      0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-2xl:     0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --shadow-primary: 0 20px 25px -5px rgb(5 150 105 / 0.5);   /* shadow-emerald-500/50 */
+  --shadow-cta:     0 25px 50px -12px rgb(2 44 34 / 0.2);    /* shadow-emerald-900/20 */
+
+  /* ─────────────────────────────────────────────
+     6. TRANSICIONES
+     ───────────────────────────────────────────── */
+  --transition-fast:    150ms ease;
+  --transition-base:    300ms ease;
+  --transition-slow:    500ms ease;
+  --transition-reveal:  700ms ease;  /* animaciones de scroll reveal */
+}
+
+
+/* ─────────────────────────────────────────────
+   7. CLASES DE COMPONENTES REUTILIZABLES
+      Patrones extraídos del proyecto como clases CSS
+   ───────────────────────────────────────────── */
+@layer components {
+
+  /* ── Sección Hero (dark) ── */
+  .section-hero {
+    background-color: var(--color-primary-950);
+    padding-top: var(--hero-pt);
+    padding-bottom: var(--hero-pb);
+    color: var(--color-white);
+  }
+
+  /* ── Contenedor principal ── */
+  .container-main {
+    max-width: var(--container-max);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--container-px);
+    padding-right: var(--container-px);
+  }
+
+  /* ── Botón Primario ── */
+  .btn-primary {
+    background-color: var(--color-primary-600);
+    color: var(--color-white);
+    font-weight: 900;
+    border-radius: var(--radius-full);
+    padding: 0.625rem 1.5rem;     /* py-2.5 px-6 */
+    transition: background-color var(--transition-base),
+                transform var(--transition-base),
+                box-shadow var(--transition-base);
+  }
+  .btn-primary:hover {
+    background-color: var(--color-primary-700);
+    box-shadow: var(--shadow-xl);
+    transform: scale(1.05);
+  }
+  .btn-primary:active  { transform: scale(0.95); }
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* ── Botón Buscar (Hero) ── */
+  .btn-search {
+    background-color: var(--color-primary-600);
+    color: var(--color-white);
+    font-weight: 900;
+    border-radius: var(--radius-base);    /* rounded-xl */
+    padding: 1rem;                         /* py-4 */
+    width: 100%;
+    transition: background-color var(--transition-base),
+                transform var(--transition-base),
+                box-shadow var(--transition-base);
+  }
+  .btn-search:hover {
+    background-color: var(--color-primary-700);
+    transform: scale(1.05);
+    box-shadow: var(--shadow-primary);
+  }
+  .btn-search:active   { transform: scale(0.95); }
+  .btn-search:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  /* ── Card de Servicio (oscura) ── */
+  .card-service-dark {
+    background-color: rgb(255 255 255 / 0.05);  /* bg-white/5 */
+    border: 1px solid rgb(255 255 255 / 0.10);  /* border-white/10 */
+    border-radius: var(--radius-xl);             /* rounded-3xl */
+    padding: 2rem;                               /* p-8 */
+    transition: background-color var(--transition-slow),
+                border-color var(--transition-slow),
+                transform var(--transition-slow),
+                box-shadow var(--transition-slow);
+    cursor: pointer;
+  }
+  .card-service-dark:hover {
+    background-color: rgb(255 255 255 / 0.10);
+    border-color: rgb(16 185 129 / 0.30);        /* emerald-500/30 */
+    transform: translateY(-0.5rem);
+    box-shadow: 0 25px 50px -12px rgb(16 185 129 / 0.10);
+  }
+
+  /* ── Card Testimonial ── */
+  .card-testimonial {
+    background-color: rgb(236 253 245 / 0.50);  /* bg-emerald-50/50 */
+    border: 1px solid var(--color-primary-100);
+    border-radius: var(--radius-2_5xl);
+    padding: 2rem;
+    transition: background-color var(--transition-slow),
+                border-color var(--transition-slow),
+                transform var(--transition-slow),
+                box-shadow var(--transition-slow);
+    cursor: pointer;
+  }
+  .card-testimonial:hover {
+    background-color: var(--color-white);
+    box-shadow: 0 25px 50px -12px rgb(2 44 34 / 0.10);
+    transform: translateY(-0.5rem);
+    border-color: var(--color-primary-300);
+  }
+
+  /* ── Card de Ruta ── */
+  .card-route {
+    border-width: 2px;
+    border-radius: var(--radius-xl);
+    padding: 2rem;
+    transition: box-shadow var(--transition-slow),
+                transform var(--transition-slow),
+                border-color var(--transition-slow);
+    cursor: pointer;
+  }
+  .card-route:hover {
+    box-shadow: var(--shadow-xl);
+    transform: translateY(-0.5rem);
+    border-color: var(--color-primary-400);
+  }
+
+  /* ── Card FAQ ── */
+  .card-faq {
+    background-color: var(--color-white);
+    border: 1px solid var(--color-primary-100);
+    border-radius: 1rem;             /* rounded-2xl */
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    transition: box-shadow var(--transition-base),
+                border-color var(--transition-base),
+                transform var(--transition-base);
+  }
+  .card-faq:hover {
+    box-shadow: var(--shadow-xl);
+    border-color: var(--color-primary-300);
+    transform: translateY(-0.25rem);
+  }
+
+  /* ── Card de Bus (Buscar) ── */
+  .card-bus-result {
+    background-color: var(--color-white);
+    border: 2px solid var(--color-primary-100);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem;
+    transition: border-color var(--transition-base),
+                box-shadow var(--transition-base);
+    cursor: pointer;
+  }
+  .card-bus-result:hover {
+    border-color: var(--color-primary-400);
+    box-shadow: var(--shadow-xl);
+  }
+
+  /* ── Input base ── */
+  .input-base {
+    width: 100%;
+    padding: 0.75rem;                /* p-3 */
+    background-color: var(--color-neutral-50);
+    border: 1px solid var(--color-neutral-200);
+    border-radius: var(--radius-base);
+    color: var(--color-neutral-700);
+    outline: none;
+    transition: border-color var(--transition-base),
+                box-shadow var(--transition-base);
+  }
+  .input-base:focus {
+    border-color: var(--color-primary-500);
+    box-shadow: 0 0 0 2px rgb(16 185 129 / 0.25);
+  }
+  .input-base:disabled { opacity: 0.5; }
+  .input-base.error {
+    border-color: var(--color-danger-400);
+    background-color: var(--color-danger-50);
+  }
+
+  /* ── Input de formulario de contacto/checkout ── */
+  .input-form {
+    width: 100%;
+    padding: 1rem;                   /* p-4 */
+    background-color: var(--color-neutral-50);
+    border: 2px solid var(--color-neutral-200);
+    border-radius: var(--radius-base);
+    outline: none;
+    transition: border-color var(--transition-base),
+                background-color var(--transition-base),
+                box-shadow var(--transition-base);
+  }
+  .input-form:hover  { border-color: var(--color-primary-300); }
+  .input-form:focus  {
+    border-color: var(--color-primary-500);
+    background-color: var(--color-white);
+    box-shadow: 0 0 0 2px rgb(16 185 129 / 0.20);
+  }
+  .input-form.error {
+    border-color: var(--color-danger-400);
+    background-color: var(--color-danger-50);
+  }
+
+  /* ── Badge de tipo de bus ── */
+  .badge-bus {
+    background-color: var(--color-primary-600);
+    color: var(--color-white);
+    padding: 0.75rem;                /* p-3 */
+    border-radius: 1rem;             /* rounded-2xl */
+  }
+
+  /* ── Badge de carrito (contador) ── */
+  .badge-cart {
+    background-color: var(--color-danger-500);
+    color: var(--color-white);
+    font-size: 0.625rem;             /* text-[10px] */
+    font-weight: 700;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: var(--radius-full);
+    box-shadow: var(--shadow-card);
+  }
+
+  /* ── Etiqueta de sección (eyebrow) ── */
+  .section-label {
+    color: var(--color-primary-600);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: var(--text-xs);
+  }
+
+  /* ── Título de sección ── */
+  .section-title {
+    font-size: var(--text-4xl);
+    font-weight: 900;
+    color: var(--color-primary-950);
+  }
+
+  /* ── Banner de conectividad (Routes) ── */
+  .banner-connectivity {
+    background-color: var(--color-primary-950);
+    border-radius: var(--radius-2_5xl);
+    padding: 2rem 3rem;              /* p-8 md:p-12 */
+    color: var(--color-white);
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ── Stat display (Routes) ── */
+  .stat-number {
+    font-size: var(--text-3xl);
+    font-weight: 900;
+    color: var(--color-primary-400);
+  }
+  .stat-label {
+    font-size: 0.625rem;             /* text-[10px] */
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: rgb(167 243 208 / 1);     /* text-emerald-200 */
+  }
+
+  /* ── CTA de contacto / WhatsApp (FAQ) ── */
+  .cta-contact-box {
+    background-color: var(--color-primary-950);
+    border-radius: 1rem;             /* rounded-2xl */
+    padding: 1.5rem;                 /* p-6 */
+    text-align: center;
+    color: var(--color-white);
+  }
+
+  /* ── Íconos de contacto (Contact page) ── */
+  .contact-icon-wrapper {
+    background-color: var(--color-primary-100);
+    padding: 0.75rem;
+    border-radius: var(--radius-base);
+    color: var(--color-primary-700);
+    transition: transform var(--transition-base),
+                background-color var(--transition-base),
+                color var(--transition-base);
+  }
+  .group:hover .contact-icon-wrapper {
+    transform: scale(1.10);
+    background-color: var(--color-primary-600);
+    color: var(--color-white);
+  }
+
+  /* ── Toast de éxito ── */
+  .toast-success { background-color: var(--color-primary-600); }
+  /* ── Toast de error ── */
+  .toast-error   { background-color: var(--color-danger-600); }
+  /* ── Toast de info ── */
+  .toast-info    { background-color: var(--color-info-600); }
+
+  /* ── Asiento disponible (SeatPicker) ── */
+  .seat-available {
+    background-color: var(--color-white);
+    color: var(--color-primary-900);
+    border: 2px solid var(--color-primary-100);
+    border-radius: 0.25rem;
+    transition: border-color var(--transition-base), transform var(--transition-base), box-shadow var(--transition-base);
+  }
+  .seat-available:hover {
+    border-color: var(--color-primary-500);
+    transform: scale(1.05);
+    box-shadow: var(--shadow-card);
+  }
+  .seat-available:active { transform: scale(0.95); }
+  /* ── Asiento ocupado ── */
+  .seat-occupied {
+    background-color: var(--color-neutral-300);
+    color: var(--color-neutral-400);
+    border-radius: 0.25rem;
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+  /* ── Asiento seleccionado ── */
+  .seat-selected {
+    background-color: var(--color-primary-500);
+    color: var(--color-white);
+    border-radius: 0.25rem;
+    transform: scale(1.10);
+    box-shadow: 0 0 24px 0 rgb(16 185 129 / 0.50);
+    outline: 2px solid var(--color-primary-300);
+  }
+
+  /* ── Box de clase "Salón Cama Premium" ── */
+  .seat-class-premium {
+    background-color: var(--color-primary-50);
+    padding: 2rem;
+    border-radius: var(--radius-2xl);
+    border-left: 8px solid var(--color-primary-600);
+    box-shadow: var(--shadow-card);
+  }
+
+  /* ── Box de clase "Semi Cama Panorámico" ── */
+  .seat-class-semicama {
+    background-color: var(--color-neutral-50);
+    padding: 2rem;
+    border-radius: var(--radius-2xl);
+    border-left: 8px solid var(--color-neutral-400);
+    box-shadow: var(--shadow-card);
+  }
+
+  /* ── Overlay de pago (PaymentSimulator) ── */
+  .payment-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background-color: rgb(17 24 39 / 0.90);   /* bg-gray-900/90 */
+    backdrop-filter: blur(4px);
+  }
+
+  /* ── Modal card de pago ── */
+  .payment-modal {
+    background-color: var(--color-white);
+    width: 100%;
+    max-width: 28rem;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-2xl);
+  }
+
+  /* ── Ícono de pago exitoso ── */
+  .payment-success-icon {
+    background-color: var(--color-primary-100);
+    width: 5rem;
+    height: 5rem;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    color: var(--color-primary-600);
+  }
+
+  /* ─────────────────────────────────────────────
+     Spinner / Loading
+     ───────────────────────────────────────────── */
+  .spinner-track {
+    border-color: var(--color-primary-200);
+    border-top-color: var(--color-primary-600);
+    border-radius: var(--radius-full);
+    animation: spin 1s linear infinite;
+  }
+
+  /* ─────────────────────────────────────────────
+     Fondos de página
+     ───────────────────────────────────────────── */
+  .page-white { background-color: var(--color-white); }
+  .page-light { background-color: var(--color-neutral-50); min-height: 100vh; }
+
+  /* ─────────────────────────────────────────────
+     Variantes de sección
+     ───────────────────────────────────────────── */
+  .section-dark-bg {
+    background-color: var(--color-primary-950);
+    color: var(--color-white);
+  }
+  .section-gray-bg  { background-color: var(--color-neutral-50); }
+  .section-faq-bg   { background-color: #e5e7eb; }           /* bg-gray-200 */
+
+  /* ─────────────────────────────────────────────
+     Hero — elementos internos
+     ───────────────────────────────────────────── */
+  .hero-title    { color: var(--color-white); }
+  .hero-subtitle { color: rgb(209 250 229 / 0.70); }         /* text-emerald-100/70 */
+  .hero-accent   {
+    color: var(--color-primary-500);
+    text-decoration-color: var(--color-primary-800);
+  }
+
+  /* ── Caja buscador (Hero) ── */
+  .search-box {
+    background-color: var(--color-white);
+    border-radius: 1.5rem;                                    /* rounded-3xl */
+    box-shadow: var(--shadow-2xl);
+    border-bottom: 8px solid var(--color-primary-600);
+  }
+  .search-label {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    color: var(--color-primary-900);
+    text-transform: uppercase;
+  }
+
+  /* ─────────────────────────────────────────────
+     Navbar
+     ───────────────────────────────────────────── */
+  .topbar-bg {
+    background-color: var(--color-primary-950);
+    color: #ecfdf5;                                           /* emerald-50 */
+  }
+  .topbar-icon { color: var(--color-primary-400); }
+
+  .navbar-bg {
+    background-color: rgb(255 255 255 / 0.95);
+    border-bottom: 1px solid var(--color-neutral-100);
+    backdrop-filter: blur(12px);
+  }
+  .navbar-brand {
+    font-weight: 800;
+    color: var(--color-primary-950);
+    letter-spacing: -0.05em;
+    font-size: var(--text-xl);
+  }
+  .navbar-brand-accent { color: var(--color-primary-600); }
+  .navbar-brand-icon {
+    background-color: var(--color-primary-700);
+    padding: 0.5rem;
+    border-radius: var(--radius-full);
+    color: var(--color-white);
+  }
+  .navbar-link {
+    color: var(--color-primary-950);
+    font-weight: 700;
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    transition: color var(--transition-base);
+    position: relative;
+  }
+  .navbar-link:hover { color: var(--color-primary-600); }
+  .navbar-link-indicator {
+    position: absolute;
+    bottom: -0.25rem;
+    left: 0;
+    width: 0;
+    height: 0.125rem;
+    background-color: var(--color-primary-600);
+    transition: width var(--transition-base);
+  }
+  .navbar-link:hover .navbar-link-indicator { width: 100%; }
+  .mobile-nav-link {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: var(--color-primary-950);
+    font-weight: 700;
+    border-radius: 0.5rem;
+    transition: background-color var(--transition-base);
+  }
+  .mobile-nav-link:hover { background-color: var(--color-primary-50); }
+
+  /* ─────────────────────────────────────────────
+     Footer
+     ───────────────────────────────────────────── */
+  .footer-bg {
+    background-color: var(--color-primary-950);
+    color: #d1fae5;                                           /* emerald-100 */
+    border-top: 1px solid var(--color-primary-900);
+  }
+  .footer-heading {
+    color: var(--color-primary-400);
+    font-weight: 700;
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-decoration: underline;
+    text-decoration-color: var(--color-primary-600);
+    text-underline-offset: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .footer-link {
+    transition: color var(--transition-fast), transform var(--transition-fast);
+    cursor: pointer;
+  }
+  .footer-link:hover { color: var(--color-white); transform: translateX(0.5rem); }
+  .footer-icon  { color: var(--color-primary-500); }
+  .footer-bottom {
+    border-top: 1px solid rgb(255 255 255 / 0.05);
+    color: var(--color-primary-500);
+    font-weight: 700;
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── Texto de cuerpo en footer ── */
+  .footer-body {
+    color: rgb(167 243 208 / 0.60);                           /* text-emerald-200/60 */
+    font-size: var(--text-sm);
+    line-height: 1.625;
+  }
+
+  /* ── Ícono de marca en footer ── */
+  .footer-brand-icon { color: var(--color-primary-400); }
+
+  /* ── Enlace de ícono en navbar (ej: carrito) ── */
+  .icon-nav-link {
+    color: var(--color-primary-950);
+    transition: color var(--transition-base);
+  }
+  .icon-nav-link:hover { color: var(--color-primary-600); }
+
+  /* ─────────────────────────────────────────────
+     Eyebrow / Section labels
+     ───────────────────────────────────────────── */
+  .section-label-dark {
+    color: var(--color-primary-400);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: var(--text-sm);
+  }
+
+  /* ─────────────────────────────────────────────
+     Botones adicionales
+     ───────────────────────────────────────────── */
+  .btn-text-link {
+    border-bottom: 2px solid var(--color-primary-500);
+    padding-bottom: 0.5rem;
+    font-weight: 700;
+    transition: color var(--transition-base),
+                border-color var(--transition-base),
+                transform var(--transition-base);
+  }
+  .btn-text-link:hover {
+    color: var(--color-primary-400);
+    border-color: var(--color-primary-400);
+    transform: translateX(0.5rem);
+  }
+
+  .btn-cta-dark {
+    background-color: var(--color-primary-950);
+    color: var(--color-white);
+    font-weight: 900;
+    border-radius: var(--radius-lg);
+    transition: transform var(--transition-base);
+  }
+  .btn-cta-dark:hover { transform: scale(1.05); }
+
+  .btn-cta-green {
+    background-color: var(--color-primary-600);
+    color: var(--color-white);
+    font-weight: 900;
+    border-radius: var(--radius-lg);
+    transition: background-color var(--transition-base),
+                transform var(--transition-base),
+                box-shadow var(--transition-base);
+    box-shadow: var(--shadow-cta);
+  }
+  .btn-cta-green:hover { background-color: var(--color-primary-700); }
+
+  /* ─────────────────────────────────────────────
+     CTA block verde
+     ───────────────────────────────────────────── */
+  .cta-green-block {
+    background-color: var(--color-primary-600);
+    color: var(--color-white);
+    border-radius: var(--radius-2_5xl);
+    box-shadow: var(--shadow-cta);
+  }
+
+  /* ─────────────────────────────────────────────
+     Sección Kemel Cargo (Servicio)
+     ───────────────────────────────────────────── */
+  .cargo-section {
+    background-color: var(--color-primary-50);
+    border: 1px solid var(--color-primary-100);
+    border-radius: var(--radius-3xl);
+    box-shadow: var(--shadow-card);
+  }
+  .cargo-icon {
+    background-color: var(--color-primary-600);
+    color: var(--color-white);
+    border-radius: 1.5rem;
+    box-shadow: var(--shadow-xl);
+  }
+  .tag-pill {
+    background-color: var(--color-white);
+    color: var(--color-primary-700);
+    border-radius: var(--radius-full);
+    font-size: var(--text-xs);
+    font-weight: 900;
+    box-shadow: var(--shadow-card);
+    padding: 0.5rem 1rem;
+  }
+
+  /* ─────────────────────────────────────────────
+     Flota — Especificaciones
+     ───────────────────────────────────────────── */
+  .specs-card {
+    background-color: var(--color-neutral-50);
+    border: 1px solid var(--color-neutral-100);
+    border-radius: var(--radius-xl);
+    padding: 2rem;
+    transition: border-color var(--transition-base);
+  }
+  .specs-card:hover { border-color: var(--color-primary-200); }
+  .specs-icon  { color: var(--color-primary-600); }
+  .specs-label {
+    color: var(--color-neutral-400);
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: var(--text-xs);
+    letter-spacing: 0.1em;
+  }
+  .specs-value {
+    color: var(--color-primary-950);
+    font-weight: 900;
+    font-size: var(--text-xl);
+  }
+  .commitment-box {
+    background-color: var(--color-primary-950);
+    padding: 2.5rem;
+    border-radius: var(--radius-3xl);
+    color: var(--color-white);
+  }
+  .commitment-title {
+    font-weight: 900;
+    font-style: italic;
+    text-transform: uppercase;
+    color: var(--color-primary-500);
+    font-size: var(--text-2xl);
+  }
+  .commitment-stat {
+    color: var(--color-white);
+    font-size: var(--text-4xl);
+    font-weight: 900;
+    font-style: italic;
+  }
+  .commitment-stat-label {
+    color: var(--color-primary-400);
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  /* ─────────────────────────────────────────────
+     Contacto
+     ───────────────────────────────────────────── */
+  .help-banner {
+    background-color: var(--color-primary-900);
+    border-radius: var(--radius-xl);
+    color: var(--color-white);
+    box-shadow: var(--shadow-xl);
+    padding: 2rem;
+  }
+  .help-banner-icon { color: var(--color-primary-400); }
+  .help-banner-btn {
+    width: 100%;
+    background-color: var(--color-primary-500);
+    padding: 0.75rem;
+    border-radius: var(--radius-base);
+    font-weight: 700;
+    color: var(--color-primary-950);
+    transition: background-color var(--transition-base),
+                transform var(--transition-base);
+    box-shadow: var(--shadow-card);
+  }
+  .help-banner-btn:hover  { background-color: var(--color-primary-400); transform: scale(1.05); }
+  .help-banner-btn:active { transform: scale(0.95); }
+
+  .contact-form-card {
+    background-color: var(--color-white);
+    border: 2px solid var(--color-primary-100);
+    border-radius: var(--radius-2_5xl);
+    box-shadow: var(--shadow-xl);
+  }
+
+  /* ─────────────────────────────────────────────
+     Checkout — tarjetas de pasajero
+     ───────────────────────────────────────────── */
+  .passenger-card {
+    background-color: white;
+    border-radius: 1.5rem;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    border: 2px solid var(--color-primary-50);
+    transition: all var(--transition-base);
+  }
+  .passenger-card-error {
+    border-color: rgb(252 165 165); /* red-300 */
+  }
+  .passenger-form-divider {
+    border-top: 1px solid var(--color-primary-50);
+  }
+  .ssl-text {
+    color: color-mix(in srgb, var(--color-primary-400) 50%, transparent);
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+  }
+
+  /* ─────────────────────────────────────────────
+     Buscador de viajes — estados vacíos
+     ───────────────────────────────────────────── */
+  .back-link {
+    color: var(--color-primary-400);
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: gap var(--transition-base);
+  }
+  .back-link:hover { gap: 0.75rem; }
+
+  .no-results-box {
+    background-color: var(--color-neutral-50);
+    border: 2px dashed var(--color-neutral-200);
+    border-radius: var(--radius-xl);
+    text-align: center;
+    padding: 3rem;
+  }
+  .no-results-icon  { color: var(--color-neutral-300); }
+  .no-results-title { color: var(--color-neutral-600); font-weight: 700; font-size: var(--text-xl); }
+
+  /* ─────────────────────────────────────────────
+     Selección de asientos
+     ───────────────────────────────────────────── */
+  .seat-header-icon {
+    background-color: var(--color-primary-600);
+    border-radius: 1rem;
+    padding: 1rem;
+    color: var(--color-white);
+  }
+
+  /* ─────────────────────────────────────────────
+     Amenidades (Servicio)
+     ───────────────────────────────────────────── */
+  .amenity-icon {
+    background-color: rgb(16 185 129 / 0.10);               /* emerald-500/10 */
+    border-radius: 1rem;
+    color: var(--color-primary-500);
+    width: 4rem;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    transition: background-color var(--transition-base),
+                color var(--transition-base);
+  }
+  .group:hover .amenity-icon {
+    background-color: var(--color-primary-500);
+    color: var(--color-white);
+  }
+
+  /* ─────────────────────────────────────────────
+     Rutas — variantes de color por zona
+     ───────────────────────────────────────────── */
+  .card-route-norte   { border-color: var(--color-accent-200);   background-color: var(--color-accent-50); }
+  .card-route-central { border-color: var(--color-info-200);     background-color: var(--color-info-50); }
+  .card-route-sur     { border-color: var(--color-primary-200);  background-color: var(--color-primary-50); }
+
+  /* ─────────────────────────────────────────────
+     Iconos de zonas (Routes)
+     ───────────────────────────────────────────── */
+  .route-icon-norte   { color: var(--color-accent-500); }
+  .route-icon-central { color: var(--color-info-500); }
+  .route-icon-sur     { color: var(--color-primary-600); }
+
+  /* ─────────────────────────────────────────────
+     Avatares (Testimonials)
+     ───────────────────────────────────────────── */
+  .avatar {
+    background-color: var(--color-primary-200);
+    color: var(--color-primary-700);
+    border-radius: var(--radius-full);
+    font-weight: 700;
+    transition: all var(--transition-base);
+  }
+  .group:hover .avatar {
+    background-color: var(--color-primary-500);
+    color: var(--color-white);
+    transform: scale(1.10);
+  }
+
+  /* ─────────────────────────────────────────────
+     Íconos de acento (emerald-500)
+     ───────────────────────────────────────────── */
+  .icon-accent { color: var(--color-primary-500); }
+
+  /* ─────────────────────────────────────────────
+     Cards de Servicio — contenido interno
+     ───────────────────────────────────────────── */
+  .card-service-title {
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    transition: color var(--transition-base);
+  }
+  .group:hover .card-service-title { color: var(--color-primary-400); }
+  .card-service-body { color: rgb(209 250 229 / 0.60); line-height: 1.625; }
+
+  /* ─────────────────────────────────────────────
+     Testimonials — contenido interno
+     ───────────────────────────────────────────── */
+  .quote-icon {
+    color: var(--color-primary-200);
+    transition: color var(--transition-base), transform var(--transition-base);
+  }
+  .group:hover .quote-icon { color: var(--color-primary-500); transform: scale(1.10); }
+
+  .star-icon { fill: var(--color-primary-500); color: var(--color-primary-500); }
+
+  .review-text {
+    color: rgb(6 78 59 / 0.80);                               /* emerald-900/80 */
+    font-style: italic;
+    margin-bottom: 2rem;
+    line-height: 1.625;
+  }
+  .review-author-name  { font-weight: 700; color: var(--color-primary-950); }
+  .review-author-route { font-size: var(--text-xs); color: var(--color-primary-600); font-weight: 500; }
+
+  /* ─────────────────────────────────────────────
+     FAQ — contenido interno
+     ───────────────────────────────────────────── */
+  .faq-icon-wrapper {
+    background-color: var(--color-primary-100);
+    color: var(--color-primary-600);
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    margin: 0 auto 1rem;
+  }
+  .faq-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem;
+    text-align: left;
+    transition: background-color var(--transition-base);
+  }
+  .faq-btn:hover { background-color: rgb(236 253 245 / 0.30); }
+  .faq-question { font-weight: 700; color: var(--color-primary-950); padding-right: 2rem; }
+  .faq-answer {
+    padding: 1.5rem;
+    padding-top: 0;
+    color: var(--color-neutral-600);
+    font-size: var(--text-sm);
+    line-height: 1.625;
+    border-top: 1px solid var(--color-primary-50);
+  }
+  .cta-link {
+    margin-top: 0.5rem;
+    display: inline-block;
+    color: var(--color-primary-400);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 0.25rem;
+    transition: color var(--transition-base);
+  }
+  .cta-link:hover { color: var(--color-primary-300); }
+
+  /* ─────────────────────────────────────────────
+     Rutas — contenido interno
+     ───────────────────────────────────────────── */
+  .route-footer-text {
+    font-size: var(--text-xs);
+    color: rgb(6 78 59 / 0.60);
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .route-divider {
+    border-top: 1px solid rgb(6 78 59 / 0.10);
+  }
+  .stats-divider {
+    border-right: 1px solid var(--color-primary-800);
+  }
+  .bus-hero-image {
+    border-radius: 2rem;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    border: 4px solid rgb(6 78 59 / 0.50);
+  }
+  .route-region-title { color: var(--color-primary-950); font-size: var(--text-2xl); font-weight: 900; }
+  .route-arrow {
+    color: var(--color-primary-300);
+    opacity: 0;
+    transform: translateX(-0.5rem);
+    transition: opacity var(--transition-base), transform var(--transition-base);
+  }
+  .group:hover .route-arrow { opacity: 1; transform: translateX(0); }
+
+  /* ─────────────────────────────────────────────
+     Decoración abstracta
+     ───────────────────────────────────────────── */
+  .hero-decoration {
+    background-color: rgb(6 95 70 / 0.20);                  /* emerald-800/20 */
+    border-radius: var(--radius-full);
+    filter: blur(3rem);
+  }
+
+  /* ─────────────────────────────────────────────
+     Webpay / Payment brand elements
+     ───────────────────────────────────────────── */  .webpay-spinner { color: var(--color-danger-600); }
+  .webpay-dot {
+    background-color: var(--color-danger-600);
+    border-radius: var(--radius-full);
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+  .payment-footer {
+    background-color: var(--color-neutral-50);
+    color: var(--color-neutral-400);
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-top: 1px solid var(--color-neutral-100);
+  }
+  .payment-title         { color: #1f2937; font-size: var(--text-xl); font-weight: 700; }
+  .payment-title-success { color: var(--color-primary-950); font-size: var(--text-2xl); font-weight: 700; }
+  .payment-order-code    { color: var(--color-primary-700); font-weight: 700; margin-top: 0.25rem; }
+  .payment-description   { color: var(--color-neutral-500); font-size: var(--text-sm); line-height: 1.625; }
+
+  /* ─────────────────────────────────────────────
+     Formularios — etiquetas y campos
+     ───────────────────────────────────────────── */
+  .form-label {
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--color-primary-950);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* ─────────────────────────────────────────────
+     Selector de piso (Selección de asientos)
+     ───────────────────────────────────────────── */
+  .floor-btn-active {
+    background-color: var(--color-primary-600);
+    color: var(--color-white);
+    box-shadow: var(--shadow-md);
+  }
+  .floor-btn-inactive {
+    color: var(--color-primary-950);
+  }
+  .floor-btn-inactive:hover {
+    background-color: var(--color-primary-50);
+    color: var(--color-primary-600);
+  }
+
+  /* ─────────────────────────────────────────────
+     Panel de info del asiento seleccionado
+     ───────────────────────────────────────────── */
+  .seat-info-panel {
+    background-color: var(--color-primary-50);
+    border: 1px solid var(--color-primary-200);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: all var(--transition-base);
+  }
+
+  /* ─────────────────────────────────────────────
+     Back-link sobre fondo claro
+     ───────────────────────────────────────────── */
+  .back-link-light {
+    color: var(--color-primary-700);
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: gap var(--transition-base);
+  }
+  .back-link-light:hover { gap: 0.75rem; }
+
+  /* ─────────────────────────────────────────────
+     Spinner pequeño (variante border-b)
+     ───────────────────────────────────────────── */
+  .loading-spinner {
+    display: inline-block;
+    border-radius: 9999px;
+    border-width: 2px;
+    border-color: rgb(52 211 153 / 0.30);                   /* emerald-400/30 */
+    border-bottom-color: rgb(52 211 153);                   /* emerald-400 */
+  }
+
+  /* ─────────────────────────────────────────────
+     Utilidades de color de marca
+     ───────────────────────────────────────────── */
+  .text-brand-dark  { color: var(--color-primary-950); }
+  .text-brand-mid   { color: var(--color-primary-700); }
+  .text-brand-light { color: var(--color-primary-400); }
+  .text-brand-muted { color: color-mix(in srgb, var(--color-primary-900) 70%, transparent); }
+
+  /* ─────────────────────────────────────────────
+     Top Banner
+     ───────────────────────────────────────────── */
+  .top-banner {
+    background-color: var(--color-primary-600);
+    color: var(--color-white);
+  }
+  .top-banner-cta {
+    background-color: rgb(2 44 34 / 0.20);                  /* emerald-950/20 */
+    border-radius: var(--radius-full);
+    transition: background-color var(--transition-base);
+  }
+  .top-banner-cta:hover { background-color: rgb(2 44 34 / 0.40); }
+
+  /* ─────────────────────────────────────────────
+     Scroll To Top
+     ───────────────────────────────────────────── */
+  .scroll-top-btn {
+    background-color: var(--color-primary-600);
+    color: var(--color-white);
+    border-radius: var(--radius-full);
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-base);
+  }
+  .scroll-top-btn:hover {
+    background-color: var(--color-primary-700);
+    transform: scale(1.10);
+  }
+
+  /* ─────────────────────────────────────────────
+     Fleet cards
+     ───────────────────────────────────────────── */
+  .card-fleet {
+    background-color: var(--color-primary-50);
+    border: 1px solid var(--color-primary-100);
+    border-radius: var(--radius-2xl);
+    transition: box-shadow var(--transition-slow), border-color var(--transition-slow), transform var(--transition-slow);
+    cursor: pointer;
+  }
+  .card-fleet:hover {
+    box-shadow: var(--shadow-2xl);
+    transform: translateY(-0.5rem);
+    border-color: var(--color-primary-300);
+  }
+
+  .fleet-amenity {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--color-primary-900);
+    font-weight: 500;
+    background-color: rgb(255 255 255 / 0.50);
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    transition: all var(--transition-base);
+  }
+  .fleet-amenity:hover {
+    background-color: var(--color-white);
+    box-shadow: var(--shadow-card);
+    transform: translateX(0.5rem);
+  }
+
+  .fleet-image-placeholder {
+    background-color: var(--color-primary-200);
+    color: var(--color-primary-800);
+    border-radius: 1rem;
+    transition: background-color var(--transition-base);
+  }
+  .group:hover .fleet-image-placeholder { background-color: var(--color-primary-300); }
+
+  /* ─────────────────────────────────────────────
+     Map card wrapper
+     ───────────────────────────────────────────── */
+  .map-card {
+    background-color: var(--color-primary-50);
+    border: 1px solid var(--color-primary-100);
+    border-radius: 3rem;
+    box-shadow: inset 0 2px 8px 0 rgb(0 0 0 / 0.06);
+    overflow: hidden;
+  }
+
+  /* ─────────────────────────────────────────────
+     Contacto — canales de contacto (hover)
+     ───────────────────────────────────────────── */
+  .contact-channel-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    transition: background-color var(--transition-base);
+    cursor: pointer;
+  }
+  .contact-channel-item:hover { background-color: var(--color-primary-50); }
+
+  /* ─────────────────────────────────────────────
+     Mapa de asientos — marco del bus
+     ───────────────────────────────────────────── */
+  .bus-frame {
+    background-color: white;
+    border-radius: 3rem;
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    border: 1px solid var(--color-primary-100);
+    overflow: hidden;
+  }
+  .bus-floor-nav {
+    display: flex;
+    border-bottom: 1px solid var(--color-primary-50);
+  }
+  .bus-seat-map {
+    background-color: var(--color-neutral-100);
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    border-left: 8px solid var(--color-primary-900);
+    border-right: 8px solid var(--color-primary-900);
+    position: relative;
+  }
+  .conductor-block {
+    background-color: var(--color-primary-900);
+    border-radius: 0.5rem;
+    width: 4rem;
+    height: 4rem;
+    margin: 0.5rem auto 0;
+  }
+}
+
+
+/* ─────────────────────────────────────────────
+   8. REFERENCIA RÁPIDA — CLASES DEL PROYECTO
+      Mapa entre clases del código y variables/componentes CSS
+   ───────────────────────────────────────────── */
+/*
+  PÁGINAS / FONDOS
+  ──────────────────────────────────────
+  bg-white          → .page-white
+  bg-gray-50 (page) → .page-light
+  bg-gray-50 (sección) → .section-gray-bg
+  bg-gray-200       → .section-faq-bg
+
+  SECCIONES HERO (bg-emerald-950 pt-32 pb-20)
+  ──────────────────────────────────────
+  Todas las secciones hero → .section-hero (incluye fondo, padding y color de texto)
+  bg-emerald-950 (solo fondo) → .section-dark-bg
+
+  NAVBAR
+  ──────────────────────────────────────
+  bg-emerald-950 text-emerald-50 (top bar)  → .topbar-bg
+  text-emerald-400 (iconos top bar)         → .topbar-icon
+  bg-white/95 backdrop-blur border-gray-100 → .navbar-bg
+  font-extrabold text-emerald-950           → .navbar-brand
+  text-emerald-600 (acento logo)            → .navbar-brand-accent
+  bg-emerald-700 rounded-full               → .navbar-brand-icon
+  text-emerald-950 font-bold hover:text-emerald-600 → .navbar-link
+  w-0 bg-emerald-600 (línea hover)          → .navbar-link-indicator
+  block py-3 px-4 hover:bg-emerald-50       → .mobile-nav-link
+
+  FOOTER
+  ──────────────────────────────────────
+  bg-emerald-950 text-emerald-100 border-emerald-900 → .footer-bg
+  text-emerald-400 font-bold tracking-widest         → .footer-heading
+  hover:text-white hover:translate-x-2               → .footer-link
+  text-emerald-500 (iconos)                          → .footer-icon
+  border-white/5 text-emerald-500 font-bold          → .footer-bottom
+
+  HERO — CONTENIDO
+  ──────────────────────────────────────
+  text-white (título)         → .hero-title
+  text-emerald-100/70 (sub)   → .hero-subtitle
+  text-emerald-500 (acento)   → .hero-accent
+  bg-white rounded-3xl border-b-8 border-emerald-600 → .search-box
+  text-xs font-bold text-emerald-900 uppercase        → .search-label
+
+  BOTONES
+  ──────────────────────────────────────
+  bg-emerald-600 rounded-full hover:bg-emerald-700   → .btn-primary
+  bg-emerald-600 rounded-xl py-4 (buscar)            → .btn-search
+  border-b-2 border-emerald-500 font-bold            → .btn-text-link
+  bg-emerald-950 text-white rounded-2xl              → .btn-cta-dark
+  bg-emerald-600 text-white rounded-2xl (grande)     → .btn-cta-green
+
+  CARDS
+  ──────────────────────────────────────
+  bg-white/5 border-white/10 rounded-3xl             → .card-service-dark
+  bg-emerald-50/50 border-emerald-100 rounded-[2.5rem] → .card-testimonial
+  border-2 rounded-3xl (ruta)                        → .card-route
+  bg-white border-emerald-100 rounded-2xl            → .card-faq
+  bg-white border-2 border-emerald-100 rounded-3xl   → .card-bus-result
+  border-orange-200 bg-orange-50 → .card-route-norte
+  border-blue-200 bg-blue-50     → .card-route-central
+  border-emerald-200 bg-emerald-50 → .card-route-sur
+
+  INPUTS
+  ──────────────────────────────────────
+  p-3 bg-gray-50 border-gray-200 rounded-xl         → .input-base
+  p-4 bg-gray-50 border-2 border-gray-200 rounded-xl → .input-form
+  .input-form + error state                         → añadir clase CSS 'error'
+
+  BADGES
+  ──────────────────────────────────────
+  bg-emerald-600 text-white p-3 rounded-2xl (bus)   → .badge-bus
+  bg-red-500 text-white rounded-full (carrito)      → .badge-cart
+
+  ETIQUETAS DE SECCIÓN
+  ──────────────────────────────────────
+  text-emerald-600 font-bold uppercase              → .section-label
+  text-emerald-400 font-bold uppercase (sobre fondo oscuro) → .section-label-dark
+  text-4xl font-black text-emerald-950              → .section-title
+
+  BANNER CONECTIVIDAD
+  ──────────────────────────────────────
+  bg-emerald-950 rounded-[2.5rem] overflow-hidden   → .banner-connectivity
+  text-3xl font-black text-emerald-400              → .stat-number
+  text-[10px] uppercase text-emerald-200            → .stat-label
+
+  SECCIÓN SERVICIOS / AMENIDADES
+  ──────────────────────────────────────
+  bg-emerald-500/10 rounded-2xl text-emerald-500    → .amenity-icon
+
+  SECCIÓN CARGO (SERVICIO)
+  ──────────────────────────────────────
+  bg-emerald-50 border-emerald-100 rounded-[3rem]   → .cargo-section
+  bg-emerald-600 rounded-3xl text-white             → .cargo-icon
+  bg-white text-emerald-700 rounded-full            → .tag-pill
+  bg-emerald-600 text-white rounded-[2.5rem]        → .cta-green-block
+
+  FLOTA
+  ──────────────────────────────────────
+  bg-gray-50 border-gray-100 rounded-3xl            → .specs-card
+  text-emerald-600 (ícono spec)                     → .specs-icon
+  bg-emerald-950 p-10 rounded-[3rem] text-white     → .commitment-box
+
+  CONTACTO
+  ──────────────────────────────────────
+  bg-emerald-100 p-3 rounded-xl text-emerald-700    → .contact-icon-wrapper
+  bg-emerald-900 rounded-3xl text-white             → .help-banner
+  bg-emerald-500 py-3 rounded-xl text-emerald-950   → .help-banner-btn
+  bg-white border-2 border-emerald-100 rounded-[2.5rem] → .contact-form-card
+
+  TOAST
+  ──────────────────────────────────────
+  bg-emerald-600 → .toast-success
+  bg-red-600     → .toast-error
+  bg-blue-600    → .toast-info
+
+  PAGO (PaymentSimulator)
+  ──────────────────────────────────────
+  fixed inset-0 bg-gray-900/90 backdrop-blur        → .payment-overlay
+  bg-white max-w-md rounded-3xl shadow-2xl          → .payment-modal
+  bg-emerald-100 rounded-full text-emerald-600      → .payment-success-icon
+
+  LOADING
+  ──────────────────────────────────────
+  border-emerald-200 border-t-emerald-600 rounded-full → .spinner-track
+
+  ASIENTOS
+  ──────────────────────────────────────
+  bg-white border-2 border-emerald-100   → .seat-available
+  bg-gray-300                            → .seat-occupied
+  bg-emerald-500                         → .seat-selected
+  bg-emerald-50 border-l-8 border-emerald-600 → .seat-class-premium
+  bg-gray-50 border-l-8 border-gray-400        → .seat-class-semicama
+  bg-emerald-600 rounded-2xl p-4              → .seat-header-icon
+
+  BUSCAR
+  ──────────────────────────────────────
+  text-emerald-400 font-bold             → .back-link
+  bg-gray-50 border-dashed border-gray-200 → .no-results-box
+
+  TESTIMONIALS
+  ──────────────────────────────────────
+  bg-emerald-200 text-emerald-700 rounded-full → .avatar
+
+  DECORACIÓN
+  ──────────────────────────────────────
+  bg-emerald-800/20 rounded-full blur-3xl      → .hero-decoration
+
+  FAQ — CTA
+  ──────────────────────────────────────
+  bg-emerald-950 rounded-2xl text-white text-center → .cta-contact-box
+*/

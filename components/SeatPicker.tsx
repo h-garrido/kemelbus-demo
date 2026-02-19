@@ -80,7 +80,7 @@ const SeatPicker = () => {
   // 3. Importante: No renderizamos los botones hasta que el cliente esté listo
   if (!hasMounted) {
     return (
-      <div className="py-20 text-center text-emerald-900 font-bold">
+      <div className="py-20 text-center text-brand-dark font-bold">
         Cargando mapa de asientos...
       </div>
     );
@@ -96,29 +96,29 @@ const SeatPicker = () => {
           onClose={hideToast}
         />
       )}
-      <section className="py-20 bg-gray-50">
+      <section className="section-gray-bg py-20">
       <div className="max-w-4xl mx-auto px-6">
-        <h2 className="text-4xl md:text-5xl font-black text-emerald-950 text-center mb-12">
+        <h2 className="section-title md:text-5xl text-center mb-12">
           Selección de Asiento
         </h2>
-        <div className="bg-white rounded-[3rem] shadow-xl border border-emerald-100 overflow-hidden">
-          <div className="flex border-b border-emerald-50">
+        <div className="bus-frame">
+          <div className="bus-floor-nav">
             <button
               onClick={() => setFloor(1)}
-              className={`flex-1 py-6 font-bold transition-all duration-300 ${floor === 1 ? "bg-emerald-600 text-white shadow-lg" : "text-emerald-950 hover:bg-emerald-50 hover:text-emerald-600"}`}
+              className={`flex-1 py-6 font-bold transition-all duration-300 ${floor === 1 ? "floor-btn-active" : "floor-btn-inactive"}`}
             >
               Piso 1: Salón Cama
             </button>
             <button
               onClick={() => setFloor(2)}
-              className={`flex-1 py-6 font-bold transition-all duration-300 ${floor === 2 ? "bg-emerald-600 text-white shadow-lg" : "text-emerald-950 hover:bg-emerald-50 hover:text-emerald-600"}`}
+              className={`flex-1 py-6 font-bold transition-all duration-300 ${floor === 2 ? "floor-btn-active" : "floor-btn-inactive"}`}
             >
               Piso 2: Semi Cama
             </button>
           </div>
 
           <div className="p-8 md:p-12 grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <div className="bg-gray-100 rounded-3xl p-6 border-x-8 border-emerald-900 relative">
+            <div className="bus-seat-map">
               <div className="grid grid-cols-4 gap-4 mt-8">
                 {seatsToShow.map((seat) => (
                   <button
@@ -129,10 +129,10 @@ const SeatPicker = () => {
                       relative aspect-square rounded-lg flex items-center justify-center transition-all duration-300 transform
                       ${
                         seat.isOccupied
-                          ? "bg-gray-300 text-gray-400 cursor-not-allowed opacity-50"
+                          ? "seat-occupied"
                           : selectedSeat?.id === seat.id
-                            ? "bg-emerald-500 text-white scale-110 shadow-xl shadow-emerald-500/50 ring-2 ring-emerald-300"
-                            : "bg-white text-emerald-900 border-2 border-emerald-100 hover:border-emerald-500 hover:scale-105 hover:shadow-md active:scale-95"
+                            ? "seat-selected"
+                            : "seat-available"
                       }
                     `}
                   >
@@ -146,21 +146,21 @@ const SeatPicker = () => {
             </div>
 
             <div className="flex flex-col justify-center space-y-8">
-              <div className="bg-emerald-50 p-6 rounded-2xl border border-emerald-200 min-h-[140px] flex flex-col justify-center transition-all duration-300">
+              <div className="seat-info-panel">
                 {selectedSeat ? (
                   <div className="animate-[fadeIn_0.3s_ease-out]">
-                    <p className="text-3xl font-black text-emerald-950">
+                    <p className="text-brand-dark text-3xl font-black">
                       Asiento {selectedSeat.number}
                     </p>
-                    <p className="text-emerald-700 font-bold uppercase text-xs">
+                    <p className="text-brand-mid font-bold uppercase text-xs">
                       {selectedSeat.type}
                     </p>
-                    <p className="text-2xl font-bold mt-4 text-emerald-900">
+                    <p className="text-brand-dark text-2xl font-bold mt-4">
                       ${selectedSeat.price.toLocaleString("es-CL")}
                     </p>
                   </div>
                 ) : (
-                  <p className="text-emerald-800/50 font-bold italic text-center">
+                  <p className="text-brand-muted font-bold italic text-center">
                     Selecciona un asiento
                   </p>
                 )}
@@ -170,7 +170,7 @@ const SeatPicker = () => {
                 onClick={handleConfirm}
                 disabled={!selectedSeat}
                 data-confirm-button
-                className="w-full py-4 bg-emerald-600 text-white rounded-xl font-black disabled:bg-gray-200 disabled:text-gray-400 transition-all duration-300 hover:bg-emerald-700 hover:shadow-xl hover:scale-105 active:scale-95 disabled:hover:scale-100 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
+                className="btn-primary w-full py-4 flex items-center justify-center gap-2 group disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
                 {selectedSeat && <CheckCircle className="group-hover:animate-bounce" size={20} />}
                 AGREGAR AL VIAJE

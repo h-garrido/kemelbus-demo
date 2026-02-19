@@ -7,18 +7,18 @@ const Map = () => {
   return (
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="bg-emerald-50 rounded-[3rem] p-4 md:p-8 border border-emerald-100 shadow-inner overflow-hidden">
+        <div className="map-card p-4 md:p-8">
           <div className="flex flex-col md:flex-row justify-between items-center mb-8 px-4">
             <div>
-              <h3 className="text-2xl font-black text-emerald-950 flex items-center gap-2">
-                <MapPin className="text-emerald-500" /> Encuéntranos en el Terminal
+              <h3 className="route-region-title flex items-center gap-2">
+                <MapPin className="icon-accent" /> Encuéntranos en el Terminal
               </h3>
-              <p className="text-emerald-900/60 text-sm mt-1">Av. Libertador Bernardo O'Higgins 3850, Estación Central.</p>
+              <p className="text-brand-muted text-sm mt-1">Av. Libertador Bernardo O'Higgins 3850, Estación Central.</p>
             </div>
             <a 
               href="https://maps.app.goo.gl/..." 
               target="_blank" 
-              className="mt-4 md:mt-0 text-emerald-700 font-bold text-sm hover:text-emerald-500 flex items-center gap-2 underline"
+              className="back-link-light mt-4 md:mt-0 text-sm flex items-center gap-2 underline"
             >
               Abrir en Google Maps
             </a>

@@ -29,9 +29,9 @@ export default function Toast({ message, type = 'success', duration = 3000, onCl
   };
 
   const colors = {
-    success: 'bg-emerald-600',
-    error: 'bg-red-600',
-    info: 'bg-blue-600',
+    success: 'toast-success',
+    error: 'toast-error',
+    info: 'toast-info',
   };
 
   return (

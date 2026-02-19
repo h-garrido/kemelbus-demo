@@ -90,10 +90,10 @@ function SeatSelectionContent() {
 
   if (isLoading) {
     return (
-      <div className="bg-white min-h-screen">
-        <section className="bg-emerald-950 pt-32 pb-20 px-6 text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-400"></div>
-          <p className="mt-4 text-emerald-100/70">Cargando mapa de asientos...</p>
+      <div className="page-white min-h-screen">
+        <section className="section-hero pt-32 pb-20 px-6 text-center">
+          <div className="loading-spinner animate-spin h-12 w-12"></div>
+          <p className="hero-subtitle mt-4">Cargando mapa de asientos...</p>
         </section>
       </div>
     );
@@ -101,10 +101,10 @@ function SeatSelectionContent() {
 
   if (!serviceId || !service || !route) {
     return (
-      <div className="bg-white min-h-screen">
-        <section className="bg-emerald-950 pt-32 pb-20 px-6 text-center">
-          <p className="text-emerald-100/70 mb-4">Servicio no encontrado</p>
-          <Link href="/" className="text-emerald-400 hover:underline font-bold">
+      <div className="page-white min-h-screen">
+        <section className="section-hero pt-32 pb-20 px-6 text-center">
+          <p className="hero-subtitle mb-4">Servicio no encontrado</p>
+          <Link href="/" className="back-link">
             Volver al inicio
           </Link>
         </section>
@@ -124,7 +124,7 @@ function SeatSelectionContent() {
   };
 
   return (
-    <div className="bg-white">
+    <div className="page-white">
       {toast && (
         <Toast
           message={toast.message}
@@ -135,22 +135,22 @@ function SeatSelectionContent() {
       )}
 
       {/* Header */}
-      <section className="bg-emerald-950 pt-32 pb-20 px-6">
+      <section className="section-hero pt-32 pb-20 px-6">
         <div className="max-w-7xl mx-auto">
-          <Link href="/buscar" className="inline-flex items-center gap-2 text-emerald-400 font-bold mb-8 hover:gap-3 transition-all">
+          <Link href="/buscar" className="back-link mb-8">
             <ArrowLeft size={18} /> Ver otros servicios
           </Link>
 
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mt-6">
             <div className="flex items-center gap-4">
-              <div className="bg-emerald-600 p-4 rounded-2xl">
+              <div className="badge-bus p-4">
                 <Bus size={32} />
               </div>
               <div>
                 <h1 className="text-3xl md:text-5xl font-black text-white mb-1">
                   {route.origin_city} → {route.destination_city}
                 </h1>
-                <p className="text-emerald-300 capitalize">
+                <p className="hero-subtitle capitalize">
                   {formatDate(service.departure_date)}
                 </p>
               </div>
@@ -158,15 +158,15 @@ function SeatSelectionContent() {
 
             <div className="flex gap-6 text-sm">
               <div>
-                <p className="text-emerald-400 uppercase text-xs font-bold mb-1">Salida</p>
+                <p className="text-brand-light uppercase text-xs font-bold mb-1">Salida</p>
                 <p className="text-2xl font-black text-white">{formatTime(service.departure_time)}</p>
               </div>
               <div>
-                <p className="text-emerald-400 uppercase text-xs font-bold mb-1">Llegada</p>
+                <p className="text-brand-light uppercase text-xs font-bold mb-1">Llegada</p>
                 <p className="text-2xl font-black text-white">{formatTime(service.arrival_time)}</p>
               </div>
               <div>
-                <p className="text-emerald-400 uppercase text-xs font-bold mb-1">Bus</p>
+                <p className="text-brand-light uppercase text-xs font-bold mb-1">Bus</p>
                 <p className="text-xl font-black text-white">{service.bus_type}</p>
               </div>
             </div>
@@ -176,14 +176,14 @@ function SeatSelectionContent() {
 
       <section className="py-16 max-w-7xl mx-auto px-6">
         {/* Selección de Asientos */}
-        <div className="bg-white rounded-[3rem] shadow-xl border border-emerald-100 overflow-hidden">
-          <div className="flex border-b border-emerald-50">
+        <div className="bus-frame">
+          <div className="bus-floor-nav">
             <button
               onClick={() => setFloor(1)}
               className={`flex-1 py-6 font-bold transition-all duration-300 ${
                 floor === 1 
-                  ? "bg-emerald-600 text-white shadow-lg" 
-                  : "text-emerald-950 hover:bg-emerald-50 hover:text-emerald-600"
+                  ? "floor-btn-active" 
+                  : "floor-btn-inactive"
               }`}
             >
               Piso 1 ({firstFloorSeats.length} asientos)
@@ -192,8 +192,8 @@ function SeatSelectionContent() {
               onClick={() => setFloor(2)}
               className={`flex-1 py-6 font-bold transition-all duration-300 ${
                 floor === 2 
-                  ? "bg-emerald-600 text-white shadow-lg" 
-                  : "text-emerald-950 hover:bg-emerald-50 hover:text-emerald-600"
+                  ? "floor-btn-active" 
+                  : "floor-btn-inactive"
               }`}
             >
               Piso 2 ({secondFloorSeats.length} asientos)
@@ -202,10 +202,10 @@ function SeatSelectionContent() {
 
           <div className="p-8 md:p-12 grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Mapa de Asientos */}
-            <div className="bg-gray-100 rounded-3xl p-6 border-x-8 border-emerald-900 relative">
+            <div className="bus-seat-map">
               <div className="text-center mb-4">
                 <p className="text-xs uppercase font-bold text-gray-500">Conductor</p>
-                <div className="w-16 h-16 mx-auto mt-2 bg-emerald-900 rounded-lg"></div>
+                <div className="conductor-block"></div>
               </div>
               
               <div className="grid grid-cols-4 gap-4 mt-8">
@@ -222,10 +222,10 @@ function SeatSelectionContent() {
                         relative aspect-square rounded-lg flex items-center justify-center transition-all duration-300 transform
                         ${
                           isOccupied
-                            ? "bg-gray-300 text-gray-400 cursor-not-allowed opacity-50"
+                            ? "seat-occupied"
                             : isSelected
-                              ? "bg-emerald-500 text-white scale-110 shadow-xl shadow-emerald-500/50 ring-2 ring-emerald-300"
-                              : "bg-white text-emerald-900 border-2 border-emerald-100 hover:border-emerald-500 hover:scale-105 hover:shadow-md active:scale-95"
+                              ? "seat-selected"
+                              : "seat-available"
                         }
                       `}
                     >
@@ -239,17 +239,17 @@ function SeatSelectionContent() {
               </div>
 
               {/* Leyenda */}
-              <div className="mt-6 flex justify-center gap-4 text-xs">
+                <div className="mt-6 flex justify-center gap-4 text-xs">
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 bg-white border-2 border-emerald-100 rounded"></div>
+                  <div className="seat-available w-4 h-4"></div>
                   <span>Disponible</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 bg-gray-300 rounded"></div>
+                  <div className="seat-occupied w-4 h-4"></div>
                   <span>Ocupado</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 bg-emerald-500 rounded"></div>
+                  <div className="seat-selected w-4 h-4"></div>
                   <span>Seleccionado</span>
                 </div>
               </div>
@@ -257,21 +257,21 @@ function SeatSelectionContent() {
 
             {/* Panel de Información */}
             <div className="flex flex-col justify-center space-y-8">
-              <div className="bg-emerald-50 p-6 rounded-2xl border border-emerald-200 min-h-[140px] flex flex-col justify-center transition-all duration-300">
+              <div className="seat-info-panel">
                 {selectedSeat ? (
                   <div className="animate-[fadeIn_0.3s_ease-out]">
-                    <p className="text-3xl font-black text-emerald-950">
+                    <p className="text-brand-dark text-3xl font-black">
                       Asiento {selectedSeat.seat_number}
                     </p>
-                    <p className="text-emerald-700 font-bold uppercase text-xs">
+                    <p className="text-brand-mid font-bold uppercase text-xs">
                       {selectedSeat.type} - Piso {selectedSeat.floor}
                     </p>
-                    <p className="text-2xl font-bold mt-4 text-emerald-900">
+                    <p className="text-brand-dark text-2xl font-bold mt-4">
                       ${selectedSeat.price.toLocaleString("es-CL")}
                     </p>
                   </div>
                 ) : (
-                  <p className="text-emerald-800/50 font-bold italic text-center">
+                  <p className="text-brand-muted font-bold italic text-center">
                     Selecciona un asiento
                   </p>
                 )}
@@ -281,7 +281,7 @@ function SeatSelectionContent() {
                 onClick={handleConfirm}
                 disabled={!selectedSeat}
                 data-confirm-button
-                className="w-full py-4 bg-emerald-600 text-white rounded-xl font-black disabled:bg-gray-200 disabled:text-gray-400 transition-all duration-300 hover:bg-emerald-700 hover:shadow-xl hover:scale-105 active:scale-95 disabled:hover:scale-100 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
+                className="btn-primary w-full py-4 flex items-center justify-center gap-2 group disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
                 {selectedSeat && <CheckCircle className="group-hover:animate-bounce" size={20} />}
                 AGREGAR AL CARRITO
@@ -289,7 +289,7 @@ function SeatSelectionContent() {
 
               <Link 
                 href="/checkout"
-                className="text-center text-emerald-600 hover:underline font-bold"
+                className="text-center icon-accent font-bold hover:underline"
               >
                 Ir al carrito →
               </Link>
@@ -304,9 +304,9 @@ function SeatSelectionContent() {
 export default function SeleccionarAsientoPage() {
   return (
     <Suspense fallback={
-      <div className="bg-white min-h-screen">
-        <section className="bg-emerald-950 pt-32 pb-20 px-6 text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-400"></div>
+      <div className="page-white min-h-screen">
+        <section className="section-hero pt-32 pb-20 px-6 text-center">
+          <div className="loading-spinner animate-spin h-12 w-12"></div>
         </section>
       </div>
     }>

@@ -367,7 +367,7 @@ export async function createBooking(request: BookingRequest): Promise<CreateBook
         bus_service_id: seatData.bus_service_id,
         seat_id: seatInfo.seat_id,
         passenger_name: seatInfo.passenger.name,
-        passenger_rut: seatInfo.passenger.rut,
+        passenger_rut: seatInfo.passenger.document_number,
         price: seatData.price,
         ticket_code: ticketCode,
         status: 'active'
@@ -379,7 +379,7 @@ export async function createBooking(request: BookingRequest): Promise<CreateBook
         .update({
           status: 'reserved',
           passenger_name: seatInfo.passenger.name,
-          passenger_rut: seatInfo.passenger.rut,
+          passenger_rut: seatInfo.passenger.document_number,
           reserved_at: new Date().toISOString()
         })
         .eq('id', seatInfo.seat_id);

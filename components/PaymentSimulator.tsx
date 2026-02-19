@@ -40,16 +40,16 @@ const PaymentSimulator = ({ onClose, onSuccess }: PaymentSimulatorProps) => {
 
   const stepConfigs: Record<PaymentStep, StepConfig> = {
     redirecting: {
-      icon: <Loader2 className="w-12 h-12 text-red-600 animate-spin mx-auto" />,
+      icon: <Loader2 className="webpay-spinner w-12 h-12 animate-spin mx-auto" />,
       title: 'Conectando con Transbank...',
       description: `Estamos estableciendo una conexión segura para procesar tu pago de $${total.toLocaleString('es-CL')}.`
     },
     processing: {
       icon: (
         <div className="flex justify-center gap-2">
-          <div className="w-3 h-3 bg-red-600 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-          <div className="w-3 h-3 bg-red-600 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-          <div className="w-3 h-3 bg-red-600 rounded-full animate-bounce"></div>
+          <div className="webpay-dot animate-bounce [animation-delay:-0.3s]"></div>
+          <div className="webpay-dot animate-bounce [animation-delay:-0.15s]"></div>
+          <div className="webpay-dot animate-bounce"></div>
         </div>
       ),
       title: 'Validando Transacción',
@@ -57,7 +57,7 @@ const PaymentSimulator = ({ onClose, onSuccess }: PaymentSimulatorProps) => {
     },
     success: {
       icon: (
-        <div className="bg-emerald-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto text-emerald-600">
+        <div className="payment-success-icon">
           <CheckCircle2 size={48} />
         </div>
       ),
@@ -69,8 +69,8 @@ const PaymentSimulator = ({ onClose, onSuccess }: PaymentSimulatorProps) => {
   const currentStep = stepConfigs[step];
 
   return (
-    <div className="fixed inset-0 z-50 bg-gray-900/90 backdrop-blur-sm flex items-center justify-center p-6">
-      <div className="bg-white w-full max-w-md rounded-3xl overflow-hidden shadow-2xl animate-in zoom-in-95 duration-300">
+    <div className="payment-overlay flex items-center justify-center p-6">
+      <div className="payment-modal animate-in zoom-in-95 duration-300">
         
         {/* Cabecera Estilo Webpay */}
         <div className="bg-webpay p-6 text-white flex justify-between items-center">
@@ -85,23 +85,23 @@ const PaymentSimulator = ({ onClose, onSuccess }: PaymentSimulatorProps) => {
             {currentStep.icon}
             
             <div>
-              <h2 className={`text-xl font-bold ${step === 'success' ? 'text-2xl text-emerald-950' : 'text-gray-800'}`}>
+              <h2 className={`${step === 'success' ? 'payment-title-success' : 'payment-title'}`}>
                 {currentStep.title}
               </h2>
               {step === 'success' && (
-                <p className="text-emerald-700 font-bold mt-1">
+                <p className="payment-order-code">
                   Orden #TL-{orderNumber}
                 </p>
               )}
             </div>
             
-            <p className="text-sm text-gray-500 leading-relaxed">
+            <p className="payment-description">
               {currentStep.description}
             </p>
           </div>
         </div>
 
-        <div className="bg-gray-50 p-4 flex items-center justify-center gap-2 border-t text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+        <div className="payment-footer p-4 flex items-center justify-center gap-2">
           <ShieldCheck size={14} /> Transacción Protegida por Transbank
         </div>
       </div>

@@ -63,10 +63,10 @@ function SearchContent() {
 
   if (isLoading) {
     return (
-      <div className="bg-white min-h-screen">
-        <section className="bg-emerald-950 pt-32 pb-20 px-6 text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-400"></div>
-          <p className="mt-4 text-emerald-100/70">Buscando servicios disponibles...</p>
+      <div className="page-white min-h-screen">
+        <section className="section-hero pt-32 pb-20 px-6 text-center">
+          <div className="loading-spinner animate-spin h-12 w-12"></div>
+          <p className="hero-subtitle mt-4">Buscando servicios disponibles...</p>
         </section>
       </div>
     );
@@ -74,10 +74,10 @@ function SearchContent() {
 
   if (!origen || !destino || !fecha) {
     return (
-      <div className="bg-white min-h-screen">
-        <section className="bg-emerald-950 pt-32 pb-20 px-6 text-center">
-          <p className="text-emerald-100/70">Parámetros de búsqueda inválidos</p>
-          <Link href="/" className="mt-4 inline-block text-emerald-400 hover:underline font-bold">
+      <div className="page-white min-h-screen">
+        <section className="section-hero pt-32 pb-20 px-6 text-center">
+          <p className="hero-subtitle">Parámetros de búsqueda inválidos</p>
+          <Link href="/" className="back-link mt-4">
             Volver al inicio
           </Link>
         </section>
@@ -86,17 +86,17 @@ function SearchContent() {
   }
 
   return (
-    <div className="bg-white">
+    <div className="page-white">
       {/* Header */}
-      <section className="bg-emerald-950 pt-32 pb-20 px-6">
+      <section className="section-hero pt-32 pb-20 px-6">
         <div className="max-w-7xl mx-auto">
-          <Link href="/" className="inline-flex items-center gap-2 text-emerald-400 font-bold mb-8 hover:gap-3 transition-all">
+          <Link href="/" className="back-link mb-8">
             <ArrowLeft size={18} /> Nueva búsqueda
           </Link>
           <h1 className="text-4xl md:text-6xl font-black text-white italic mb-4">
-            {originName} <span className="text-emerald-500">→</span> {destinationName}
+            {originName} <span className="hero-accent">→</span> {destinationName}
           </h1>
-          <p className="text-emerald-100/70 text-lg capitalize">
+          <p className="hero-subtitle text-lg capitalize">
             {fecha && formatDate(fecha)}
           </p>
         </div>
@@ -105,9 +105,9 @@ function SearchContent() {
       <section className="py-16 max-w-7xl mx-auto px-6">
 
       {services.length === 0 ? (
-        <div className="bg-gray-50 rounded-3xl p-12 text-center border-2 border-dashed border-gray-200">
-          <Bus size={48} className="mx-auto text-gray-300 mb-4" />
-          <h3 className="text-xl font-bold text-gray-600 mb-2">
+        <div className="no-results-box p-12 text-center">
+          <Bus size={48} className="no-results-icon mx-auto mb-4" />
+          <h3 className="no-results-title mb-2">
             No hay servicios disponibles
           </h3>
           <p className="text-gray-500">
@@ -124,17 +124,17 @@ function SearchContent() {
           {services.map((service) => (
             <div
               key={service.id}
-              className="bg-white border-2 border-emerald-100 rounded-3xl p-6 hover:border-emerald-400 hover:shadow-xl transition-all cursor-pointer group"
+              className="card-bus-result p-6 group"
               onClick={() => handleSelectService(service.id)}
             >
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div className="flex-1">
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="bg-emerald-600 text-white p-3 rounded-2xl">
+                    <div className="badge-bus p-3">
                       <Bus size={24} />
                     </div>
                     <div>
-                      <h3 className="text-2xl font-black text-emerald-950">
+                      <h3 className="route-region-title">
                         {service.bus_type}
                       </h3>
                       {service.bus_number && (
@@ -145,10 +145,10 @@ function SearchContent() {
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                     <div className="flex items-center gap-2 text-gray-700">
-                      <Clock size={16} className="text-emerald-600" />
+                      <Clock size={16} className="icon-accent" />
                       <div>
                         <p className="font-bold">Salida</p>
-                        <p className="text-lg font-black text-emerald-950">
+                        <p className="text-lg font-black text-brand-dark">
                           {formatTime(service.departure_time)}
                         </p>
                       </div>
@@ -179,7 +179,7 @@ function SearchContent() {
                 <div className="flex flex-col items-end gap-3 min-w-[180px]">
                   <div className="text-right">
                     <p className="text-xs text-gray-500 uppercase font-bold">Desde</p>
-                    <p className="text-3xl font-black text-emerald-950">
+                    <p className="text-3xl font-black text-brand-dark">
                       ${service.base_price.toLocaleString('es-CL')}
                     </p>
                   </div>
@@ -189,7 +189,7 @@ function SearchContent() {
                   </div>
 
                   <button 
-                    className="bg-emerald-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-emerald-700 transition-all flex items-center gap-2 group-hover:gap-3"
+                    className="btn-primary px-6 py-3 flex items-center gap-2 group-hover:gap-3"
                   >
                     Seleccionar Asientos
                     <ChevronRight size={18} />
@@ -208,9 +208,9 @@ function SearchContent() {
 export default function BuscarPage() {
   return (
     <Suspense fallback={
-      <div className="bg-white min-h-screen">
-        <section className="bg-emerald-950 pt-32 pb-20 px-6 text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-400"></div>
+      <div className="page-white min-h-screen">
+        <section className="section-hero pt-32 pb-20 px-6 text-center">
+          <div className="loading-spinner animate-spin h-12 w-12"></div>
         </section>
       </div>
     }>
