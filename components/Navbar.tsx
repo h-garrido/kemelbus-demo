@@ -29,9 +29,6 @@ const Navbar = () => {
             Personal y Turismo
           </span>
         </div>
-        <div className="font-semibold tracking-wide">
-          Servicio Interregional de Transporte de Pasajeros
-        </div>
       </div>
 
       {/* Main Nav */}

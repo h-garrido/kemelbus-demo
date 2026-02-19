@@ -19,7 +19,7 @@ export default function FlotaPage() {
               Potencia y <span className="hero-accent">Seguridad</span>
             </h1>
             <p className="hero-subtitle text-lg leading-relaxed">
-              En KemelBus operamos con una flota de última generación. Nuestros buses de dos pisos cuentan con los más altos estándares de seguridad internacional para garantizar un viaje tranquilo por las rutas del sur de Chile.
+              En KemelBus operamos con una flota de última generación. Nuestros buses cuentan con los más altos estándares de seguridad internacional para garantizar un viaje tranquilo por las rutas del sur de Chile.
             </p>
           </div>
           <div className="md:w-1/2">

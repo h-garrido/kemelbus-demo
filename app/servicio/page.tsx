@@ -25,7 +25,7 @@ export default function ServiciosPage() {
       <section className="py-24 max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div className="space-y-8">
-            <h2 className="text-brand-dark text-3xl font-black uppercase italic">Confort en cada nivel</h2>
+            <h2 className="text-brand-dark text-3xl font-black uppercase italic">Confort en cada viaje</h2>
             
             <div className="seat-class-premium p-8">
               <div className="flex items-center gap-4 mb-4">
@@ -33,7 +33,7 @@ export default function ServiciosPage() {
                 <h3 className="text-brand-dark text-2xl font-black">Salón Cama Premium</h3>
               </div>
               <p className="text-brand-muted mb-4 font-medium">
-                Ubicado en el primer piso. Asientos de cuero con inclinación de 180°, extra anchos y con separadores de privacidad para un descanso total.
+                Asientos de cuero con inclinación de 180°, extra anchos y con separadores de privacidad para un descanso total durante el viaje.
               </p>
               <ul className="text-sm font-bold text-brand-mid space-y-1">
                 <li>• Máximo espacio entre filas</li>
@@ -45,13 +45,13 @@ export default function ServiciosPage() {
             <div className="seat-class-semicama p-8">
               <div className="flex items-center gap-4 mb-4">
                 <Armchair className="text-gray-600" size={32} />
-                <h3 className="text-2xl font-black text-gray-900">Semi Cama Panorámico</h3>
+                <h3 className="text-2xl font-black text-gray-900">Semi Cama</h3>
               </div>
               <p className="text-gray-600 mb-4 font-medium">
-                Ubicado en el segundo piso. Disfruta de la mejor vista de la ruta con asientos reclinables de 150° y climatización controlada.
+                Disfruta de asientos reclinables de 150° con climatización controlada y excelente comodidad durante el trayecto.
               </p>
               <ul className="text-sm font-bold text-gray-500 space-y-1">
-                <li>• Vista panorámica frontal</li>
+                <li>• Amplio espacio entre asientos</li>
                 <li>• Reposapiés ajustable</li>
                 <li>• Excelente relación precio-calidad</li>
               </ul>

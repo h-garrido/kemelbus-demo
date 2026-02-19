@@ -44,6 +44,25 @@ export default function CheckoutPage() {
     }
   };
 
+  const handleRemoveItem = (itemId: string) => {
+    removeFromCart(itemId);
+    setPassengersData(prev => {
+      const next = new Map(prev);
+      next.delete(itemId);
+      return next;
+    });
+    setExpandedCards(prev => {
+      const next = new Set(prev);
+      next.delete(itemId);
+      return next;
+    });
+    setErrors(prev => {
+      const next = { ...prev };
+      delete next[itemId];
+      return next;
+    });
+  };
+
   const toggleCard = (id: string) => {
     setExpandedCards(prev => {
       const next = new Set(prev);
@@ -84,8 +103,12 @@ export default function CheckoutPage() {
       }
     }
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!userEmail.trim()) {
       newErrors['contact'] = { email: 'El email es obligatorio para enviar los tickets' };
+      valid = false;
+    } else if (!emailRegex.test(userEmail)) {
+      newErrors['contact'] = { email: 'Ingresa un email válido' };
       valid = false;
     }
 
@@ -173,7 +196,7 @@ export default function CheckoutPage() {
 
       <section className="py-12 max-w-6xl mx-auto px-6">
         <Link
-          href="/seleccionar-asiento"
+          href="/buscar"
           className="back-link-light mb-10"
         >
           <ArrowLeft size={18} /> Agregar otro pasaje
@@ -207,9 +230,12 @@ export default function CheckoutPage() {
                     className={`passenger-card${hasErrors ? ' passenger-card-error' : ''}`}
                   >
                     {/* Cabecera del pasajero */}
-                    <button
+                    <div
+                      role="button"
+                      tabIndex={0}
                       onClick={() => toggleCard(item.id)}
-                      className="w-full flex items-center justify-between p-6 text-left"
+                      onKeyDown={(e) => e.key === 'Enter' && toggleCard(item.id)}
+                      className="w-full flex items-center justify-between p-6 text-left cursor-pointer"
                     >
                       <div className="flex items-center gap-4">
                         <div className="badge-bus w-10 h-10 flex items-center justify-center font-black text-lg shrink-0">
@@ -246,7 +272,7 @@ export default function CheckoutPage() {
                           ${item.price.toLocaleString('es-CL')}
                         </span>
                         <button
-                          onClick={(e) => { e.stopPropagation(); removeFromCart(item.id); }}
+                          onClick={(e) => { e.stopPropagation(); handleRemoveItem(item.id); }}
                           className="text-red-400 hover:bg-red-50 p-2 rounded-lg transition-colors"
                           title="Eliminar pasaje"
                         >
@@ -258,7 +284,7 @@ export default function CheckoutPage() {
                           <ChevronDown size={20} className="icon-accent" />
                         )}
                       </div>
-                    </button>
+                    </div>
 
                     {/* Formulario expandible */}
                     {isExpanded && (

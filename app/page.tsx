@@ -1,5 +1,4 @@
 import Hero from '@/components/Hero';
-import SeatPicker from '@/components/SeatPicker';
 import Services from '@/components/Services';
 import Routes from '@/components/Routes';
 import Testimonials from '@/components/Testimonials';

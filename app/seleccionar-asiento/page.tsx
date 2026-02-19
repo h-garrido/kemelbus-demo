@@ -19,7 +19,6 @@ function SeatSelectionContent() {
   const [service, setService] = useState<BusService | null>(null);
   const [route, setRoute] = useState<RouteWithCities | null>(null);
   const [seats, setSeats] = useState<Seat[]>([]);
-  const [floor, setFloor] = useState<number>(1);
   const [selectedSeat, setSelectedSeat] = useState<Seat | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -53,9 +52,7 @@ function SeatSelectionContent() {
     loadData();
   }, [serviceId]);
 
-  const firstFloorSeats = seats.filter(s => s.floor === 1);
-  const secondFloorSeats = seats.filter(s => s.floor === 2);
-  const seatsToShow = floor === 1 ? firstFloorSeats : secondFloorSeats;
+  const seatsToShow = seats;
 
   const handleSelect = (seat: Seat) => {
     if (seat.status === 'available') {
@@ -73,7 +70,7 @@ function SeatSelectionContent() {
         destination: route.destination_city,
         date: service.departure_date,
         time: service.departure_time.substring(0, 5),
-        seat: `${selectedSeat.type} - Piso ${selectedSeat.floor} - N°${selectedSeat.seat_number}`,
+        seat: `${selectedSeat.type} - N°${selectedSeat.seat_number}`,
         seatNumber: selectedSeat.seat_number,
         price: selectedSeat.price,
       });
@@ -177,29 +174,6 @@ function SeatSelectionContent() {
       <section className="py-16 max-w-7xl mx-auto px-6">
         {/* Selección de Asientos */}
         <div className="bus-frame">
-          <div className="bus-floor-nav">
-            <button
-              onClick={() => setFloor(1)}
-              className={`flex-1 py-6 font-bold transition-all duration-300 ${
-                floor === 1 
-                  ? "floor-btn-active" 
-                  : "floor-btn-inactive"
-              }`}
-            >
-              Piso 1 ({firstFloorSeats.length} asientos)
-            </button>
-            <button
-              onClick={() => setFloor(2)}
-              className={`flex-1 py-6 font-bold transition-all duration-300 ${
-                floor === 2 
-                  ? "floor-btn-active" 
-                  : "floor-btn-inactive"
-              }`}
-            >
-              Piso 2 ({secondFloorSeats.length} asientos)
-            </button>
-          </div>
-
           <div className="p-8 md:p-12 grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Mapa de Asientos */}
             <div className="bus-seat-map">
@@ -264,7 +238,7 @@ function SeatSelectionContent() {
                       Asiento {selectedSeat.seat_number}
                     </p>
                     <p className="text-brand-mid font-bold uppercase text-xs">
-                      {selectedSeat.type} - Piso {selectedSeat.floor}
+                      {selectedSeat.type}
                     </p>
                     <p className="text-brand-dark text-2xl font-bold mt-4">
                       ${selectedSeat.price.toLocaleString("es-CL")}

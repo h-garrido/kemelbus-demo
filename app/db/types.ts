@@ -53,7 +53,7 @@ export interface Seat {
   id: string;
   bus_service_id: string;
   seat_number: number;
-  floor: 1 | 2;
+  floor: 1;
   type: SeatType;
   price: number;
   status: SeatStatus;

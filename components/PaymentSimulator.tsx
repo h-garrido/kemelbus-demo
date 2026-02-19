@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useCart } from '@/context/CartContext';
 import { Loader2, CheckCircle2, ShieldCheck, Lock } from 'lucide-react';
 
@@ -22,21 +22,30 @@ const PaymentSimulator = ({ onClose, onSuccess }: PaymentSimulatorProps) => {
   const [orderNumber] = useState(() => Math.floor(Math.random() * 100000));
   const [transactionId] = useState(() => `TBK-${Date.now()}-${Math.floor(Math.random() * 10000)}`);
 
+  // Keep a stable ref so the effect doesn't re-run when the parent re-renders
+  const onSuccessRef = useRef(onSuccess);
+  useEffect(() => { onSuccessRef.current = onSuccess; }, [onSuccess]);
+
   useEffect(() => {
+    let timer3: ReturnType<typeof setTimeout>;
+
     const timer1 = setTimeout(() => setStep('processing'), 2000);
     const timer2 = setTimeout(() => {
       setStep('success');
-      // Llamar al callback de éxito si existe
-      if (onSuccess) {
-        onSuccess(transactionId);
-      }
+      // Wait 1.5s so the user actually sees the success screen before parent takes over
+      timer3 = setTimeout(() => {
+        if (onSuccessRef.current) {
+          onSuccessRef.current(transactionId);
+        }
+      }, 1500);
     }, 5000);
 
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
+      clearTimeout(timer3);
     };
-  }, [onSuccess, transactionId]);
+  }, [transactionId]); // transactionId is stable; onSuccess handled via ref
 
   const stepConfigs: Record<PaymentStep, StepConfig> = {
     redirecting: {

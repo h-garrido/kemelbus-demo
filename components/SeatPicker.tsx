@@ -9,40 +9,33 @@ interface Seat {
   id: string;
   number: number;
   isOccupied: boolean;
-  type: "Salón Cama" | "Semi Cama";
+  type: "Premium" | "Clásico";
   price: number;
 }
 
-const generateSeats = (rows: number, prefix: string): Seat[] => {
+const generateSeats = (rows: number): Seat[] => {
   return Array.from({ length: rows * 4 }, (_, i) => ({
-    id: `${prefix}-${i + 1}`,
+    id: `S-${i + 1}`,
     number: i + 1,
-    // La aleatoriedad ahora solo ocurrirá en el cliente
     isOccupied: Math.random() < 0.3,
-    type: prefix === "P1" ? "Salón Cama" : "Semi Cama",
-    price: prefix === "P1" ? 28900 : 18500,
+    type: i < 8 ? "Premium" : "Clásico",
+    price: i < 8 ? 28900 : 18500,
   }));
 };
 
 const SeatPicker = () => {
   const { addToCart } = useCart();
   const { toast, showToast, hideToast } = useToast();
-  const [floor, setFloor] = useState<number>(1);
   const [selectedSeat, setSelectedSeat] = useState<Seat | null>(null);
-
-  // 1. Inicializamos con arreglos vacíos para que coincidan servidor y cliente
-  const [firstFloorSeats, setFirstFloorSeats] = useState<Seat[]>([]);
-  const [secondFloorSeats, setSecondFloorSeats] = useState<Seat[]>([]);
+  const [seats, setSeats] = useState<Seat[]>([]);
   const [hasMounted, setHasMounted] = useState(false);
 
-  // 2. Usamos useEffect para generar los datos SOLO en el navegador
   useEffect(() => {
-    setFirstFloorSeats(generateSeats(3, "P1"));
-    setSecondFloorSeats(generateSeats(10, "P2"));
+    setSeats(generateSeats(10));
     setHasMounted(true);
   }, []);
 
-  const seatsToShow = floor === 1 ? firstFloorSeats : secondFloorSeats;
+  const seatsToShow = seats;
 
   const handleSelect = (seat: Seat) => {
     if (!seat.isOccupied) setSelectedSeat(seat);
@@ -102,21 +95,6 @@ const SeatPicker = () => {
           Selección de Asiento
         </h2>
         <div className="bus-frame">
-          <div className="bus-floor-nav">
-            <button
-              onClick={() => setFloor(1)}
-              className={`flex-1 py-6 font-bold transition-all duration-300 ${floor === 1 ? "floor-btn-active" : "floor-btn-inactive"}`}
-            >
-              Piso 1: Salón Cama
-            </button>
-            <button
-              onClick={() => setFloor(2)}
-              className={`flex-1 py-6 font-bold transition-all duration-300 ${floor === 2 ? "floor-btn-active" : "floor-btn-inactive"}`}
-            >
-              Piso 2: Semi Cama
-            </button>
-          </div>
-
           <div className="p-8 md:p-12 grid grid-cols-1 lg:grid-cols-2 gap-12">
             <div className="bus-seat-map">
               <div className="grid grid-cols-4 gap-4 mt-8">

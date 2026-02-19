@@ -15,7 +15,7 @@
 KemelBus es una aplicación web moderna y totalmente responsiva construida con **Next.js 16 (App Router)** y conectada a una base de datos real mediante **Supabase**. Cubre el flujo completo de compra de pasajes:
 
 1. Búsqueda de servicios disponibles por origen, destino y fecha
-2. Selección de asientos en tiempo real (bus de dos pisos)
+2. Selección de asientos en tiempo real
 3. Registro de datos de pasajeros por ticket
 4. Proceso de pago simulado con Webpay Plus (Transbank)
 5. Confirmación y generación de código de reserva
@@ -27,7 +27,7 @@ KemelBus es una aplicación web moderna y totalmente responsiva construida con *
 ### ✨ Implementadas
 
 - **Búsqueda de Servicios**: Filtra por ciudad de origen, destino y fecha de viaje consultando Supabase en tiempo real
-- **Mapa de Asientos Interactivo**: Visualización en tiempo real de disponibilidad por piso (Piso 1: Salón Cama — Piso 2: Semi Cama)
+- **Mapa de Asientos Interactivo**: Visualización en tiempo real de disponibilidad de asientos (Salón Cama y Semi Cama)
 - **Carrito de Compras**: Gestión global con Context API y persistencia en `localStorage`
 - **Formulario de Pasajeros**: Captura de nombre y RUT por cada ticket antes del pago
 - **Simulador de Pago Webpay**: Flujo completo con estados de redirección, procesamiento y confirmación

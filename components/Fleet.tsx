@@ -7,13 +7,13 @@ const fleetDetails = [
   {
     type: "Premium Suite",
     seats: "Salón Cama 180°",
-    description: "Máximo descanso en el primer piso. Asientos de cuero totalmente reclinables.",
+    description: "Máximo descanso a bordo. Asientos de cuero totalmente reclinables con separadores de privacidad.",
     amenities: ["Cargador USB", "Manta y Almohada", "Cenas abordo"],
   },
   {
     type: "Ejecutivo",
     seats: "Semi Cama",
-    description: "Ubicados en el segundo piso con vista panorámica y climatización controlada.",
+    description: "Amplio espacio con vista a la ruta y climatización controlada. Ideal para viajes nocturnos.",
     amenities: ["WiFi Gratis", "Reposapiés", "Baño Químico"],
   }
 ];
@@ -31,7 +31,7 @@ const Fleet = () => {
           }`}
         >
           <h2 className="section-label mb-4">Nuestra Flota</h2>
-          <p className="section-title md:text-5xl">Tecnología de Doble Piso</p>
+          <p className="section-title md:text-5xl">Flota de Última Generación</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
