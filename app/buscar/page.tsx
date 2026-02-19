@@ -57,8 +57,8 @@ function SearchContent() {
   };
 
   const handleSelectService = (serviceId: string) => {
-    // Navegar a la página de selección de asientos con el servicio
-    router.push(`/seleccionar-asiento?servicio=${serviceId}`);
+    // Navegar a la página de selección de asientos con el servicio + params de búsqueda para poder volver
+    router.push(`/seleccionar-asiento?servicio=${serviceId}&origen=${origen}&destino=${destino}&fecha=${fecha}`);
   };
 
   if (isLoading) {

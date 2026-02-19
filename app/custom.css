@@ -435,6 +435,25 @@
     box-shadow: 0 0 24px 0 rgb(16 185 129 / 0.50);
     outline: 2px solid var(--color-primary-300);
   }
+  /* ── Asiento Salón Cama disponible (tinte premium) ── */
+  .seat-salon-cama {
+    background-color: var(--color-primary-50);
+    border-color: var(--color-primary-300) !important;
+    color: var(--color-primary-700);
+  }
+  .seat-salon-cama:hover {
+    background-color: var(--color-primary-100);
+    border-color: var(--color-primary-500) !important;
+  }
+  /* ── Asiento ya en el carrito ── */
+  .seat-in-cart {
+    background-color: #dbeafe;        /* blue-100 */
+    color: #1d4ed8;                   /* blue-700 */
+    border: 2px solid #93c5fd;        /* blue-300 */
+    border-radius: 0.25rem;
+    cursor: not-allowed;
+    opacity: 0.85;
+  }
 
   /* ── Box de clase "Salón Cama Premium" ── */
   .seat-class-premium {
@@ -1257,6 +1276,14 @@
     width: 4rem;
     height: 4rem;
     margin: 0.5rem auto 0;
+  }
+  /* ── Parabrisas del bus (frente del croquis) ── */
+  .bus-windshield {
+    width: 5rem;
+    height: 1rem;
+    background-color: var(--color-primary-200);
+    border-radius: 9999px 9999px 0 0;
+    opacity: 0.6;
   }
 }
 

@@ -36,9 +36,6 @@ const Services = () => {
             <p className="hero-subtitle text-lg mb-10">
               Contamos con una logística avanzada que nos permite no solo mover personas, sino también conectar los negocios de nuestros clientes a través de nuestro servicio de carga.
             </p>
-            <button className="btn-text-link">
-              Explorar convenios para empresas
-            </button>
           </div>
           
           <div className="grid grid-cols-1 gap-6">

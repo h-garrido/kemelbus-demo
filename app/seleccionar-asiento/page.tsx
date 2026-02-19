@@ -6,44 +6,42 @@ import type { BusService, Seat, RouteWithCities } from "@/app/db/types";
 import { useCart } from "@/context/CartContext";
 import { useToast } from "@/hooks/useToast";
 import Toast from "@/components/Toast";
-import { Armchair, CheckCircle, ArrowLeft, Bus } from "lucide-react";
+import { Armchair, CheckCircle, ArrowLeft, Bus, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 
 function SeatSelectionContent() {
   const searchParams = useSearchParams();
-  const { addToCart } = useCart();
+  const { addToCart, cart } = useCart();
   const { toast, showToast, hideToast } = useToast();
-  
-  const serviceId = searchParams.get('servicio');
-  
+
+  const serviceId    = searchParams.get('servicio');
+  const origenParam  = searchParams.get('origen');
+  const destinoParam = searchParams.get('destino');
+  const fechaParam   = searchParams.get('fecha');
+
+  // Reconstruir URL de retorno con los parámetros de búsqueda originales
+  const backUrl =
+    origenParam && destinoParam && fechaParam
+      ? `/buscar?origen=${origenParam}&destino=${destinoParam}&fecha=${fechaParam}`
+      : '/buscar';
+
   const [service, setService] = useState<BusService | null>(null);
-  const [route, setRoute] = useState<RouteWithCities | null>(null);
-  const [seats, setSeats] = useState<Seat[]>([]);
+  const [route,   setRoute]   = useState<RouteWithCities | null>(null);
+  const [seats,   setSeats]   = useState<Seat[]>([]);
   const [selectedSeat, setSelectedSeat] = useState<Seat | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadData = async () => {
-      if (!serviceId) {
-        setIsLoading(false);
-        return;
-      }
+      if (!serviceId) { setIsLoading(false); return; }
 
-      // Cargar detalles del servicio
       const serviceData = await getServiceDetails(serviceId);
-      if (!serviceData) {
-        setIsLoading(false);
-        return;
-      }
+      if (!serviceData) { setIsLoading(false); return; }
       setService(serviceData);
 
-      // Cargar ruta
       const routeData = await getRouteById(serviceData.route_id);
-      if (routeData) {
-        setRoute(routeData);
-      }
+      if (routeData) setRoute(routeData);
 
-      // Cargar asientos
       const seatsData = await getSeats(serviceId);
       setSeats(seatsData);
       setIsLoading(false);
@@ -52,12 +50,15 @@ function SeatSelectionContent() {
     loadData();
   }, [serviceId]);
 
-  const seatsToShow = seats;
+  // Asientos de este servicio que ya están en el carrito
+  const cartSeatIds = new Set(
+    cart.filter(i => i.service_id === serviceId).map(i => i.seat_id)
+  );
 
   const handleSelect = (seat: Seat) => {
-    if (seat.status === 'available') {
-      setSelectedSeat(seat);
-    }
+    if (seat.status !== 'available' || cartSeatIds.has(seat.id)) return;
+    // Toggle: si ya está seleccionado, lo deselecciona
+    setSelectedSeat(prev => (prev?.id === seat.id ? null : seat));
   };
 
   const handleConfirm = () => {
@@ -74,22 +75,17 @@ function SeatSelectionContent() {
         seatNumber: selectedSeat.seat_number,
         price: selectedSeat.price,
       });
-      
-      showToast({
-        message: `Asiento ${selectedSeat.seat_number} agregado al carrito`,
-        type: 'success',
-        duration: 3000
-      });
-      
+      showToast({ message: `Asiento ${selectedSeat.seat_number} agregado al carrito`, type: 'success', duration: 3000 });
       setSelectedSeat(null);
     }
   };
 
+  // ── Loading ──────────────────────────────────────────────────────────────
   if (isLoading) {
     return (
       <div className="page-white min-h-screen">
         <section className="section-hero pt-32 pb-20 px-6 text-center">
-          <div className="loading-spinner animate-spin h-12 w-12"></div>
+          <div className="loading-spinner animate-spin h-12 w-12 mx-auto" />
           <p className="hero-subtitle mt-4">Cargando mapa de asientos...</p>
         </section>
       </div>
@@ -101,55 +97,67 @@ function SeatSelectionContent() {
       <div className="page-white min-h-screen">
         <section className="section-hero pt-32 pb-20 px-6 text-center">
           <p className="hero-subtitle mb-4">Servicio no encontrado</p>
-          <Link href="/" className="back-link">
-            Volver al inicio
-          </Link>
+          <Link href="/" className="back-link">Volver al inicio</Link>
         </section>
       </div>
     );
   }
 
-  const formatTime = (time: string) => time.substring(0, 5);
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString + 'T00:00:00');
-    return date.toLocaleDateString('es-CL', { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
+  const formatTime = (t: string) => t.substring(0, 5);
+  const formatDate = (d: string) =>
+    new Date(d + 'T00:00:00').toLocaleDateString('es-CL', {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
     });
+
+  // ── Agrupación de asientos en filas de 4 (columnas A B | C D) ───────────
+  const rows: Seat[][] = [];
+  for (let i = 0; i < seats.length; i += 4) rows.push(seats.slice(i, i + 4));
+
+  const availableCount = seats.filter(s => s.status === 'available' && !cartSeatIds.has(s.id)).length;
+  const occupiedCount  = seats.filter(s => s.status !== 'available').length;
+  const cartCount      = cartSeatIds.size;
+
+  const getSeatClass = (seat: Seat) => {
+    if (cartSeatIds.has(seat.id))     return 'seat-in-cart';
+    if (seat.status !== 'available')  return 'seat-occupied';
+    if (selectedSeat?.id === seat.id) return 'seat-selected';
+    if (seat.type === 'Salón Cama')   return 'seat-available seat-salon-cama';
+    return 'seat-available';
   };
+
+  const SeatButton = ({ seat }: { seat: Seat }) => (
+    <button
+      disabled={seat.status !== 'available' || cartSeatIds.has(seat.id)}
+      onClick={() => handleSelect(seat)}
+      title={`Asiento ${seat.seat_number} — ${seat.type} — $${seat.price.toLocaleString('es-CL')}`}
+      className={`relative h-11 rounded-md flex flex-col items-center justify-center gap-0.5 transition-all duration-200 ${getSeatClass(seat)}`}
+    >
+      <Armchair size={14} />
+      <span className="text-[10px] font-black leading-none">{seat.seat_number}</span>
+    </button>
+  );
 
   return (
     <div className="page-white">
       {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          duration={toast.duration}
-          onClose={hideToast}
-        />
+        <Toast message={toast.message} type={toast.type} duration={toast.duration} onClose={hideToast} />
       )}
 
-      {/* Header */}
+      {/* ── Header ── */}
       <section className="section-hero pt-32 pb-20 px-6">
         <div className="max-w-7xl mx-auto">
-          <Link href="/buscar" className="back-link mb-8">
+          <Link href={backUrl} className="back-link mb-8 inline-flex">
             <ArrowLeft size={18} /> Ver otros servicios
           </Link>
 
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mt-6">
             <div className="flex items-center gap-4">
-              <div className="badge-bus p-4">
-                <Bus size={32} />
-              </div>
+              <div className="badge-bus p-4"><Bus size={32} /></div>
               <div>
                 <h1 className="text-3xl md:text-5xl font-black text-white mb-1">
                   {route.origin_city} → {route.destination_city}
                 </h1>
-                <p className="hero-subtitle capitalize">
-                  {formatDate(service.departure_date)}
-                </p>
+                <p className="hero-subtitle capitalize">{formatDate(service.departure_date)}</p>
               </div>
             </div>
 
@@ -171,103 +179,165 @@ function SeatSelectionContent() {
         </div>
       </section>
 
+      {/* ── Cuerpo ── */}
       <section className="py-16 max-w-7xl mx-auto px-6">
-        {/* Selección de Asientos */}
         <div className="bus-frame">
           <div className="p-8 md:p-12 grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Mapa de Asientos */}
+
+            {/* ────── Mapa de asientos ────── */}
             <div className="bus-seat-map">
-              <div className="text-center mb-4">
-                <p className="text-xs uppercase font-bold text-gray-500">Conductor</p>
-                <div className="conductor-block"></div>
+
+              {/* Frente del bus */}
+              <div className="flex flex-col items-center mb-2">
+                <div className="bus-windshield" />
+                <p className="text-[10px] uppercase font-bold text-gray-400 tracking-widest mt-2 mb-1">
+                  Conductor
+                </p>
+                <div className="conductor-block" />
               </div>
-              
-              <div className="grid grid-cols-4 gap-4 mt-8">
-                {seatsToShow.map((seat) => {
-                  const isOccupied = seat.status !== 'available';
-                  const isSelected = selectedSeat?.id === seat.id;
-                  
-                  return (
-                    <button
-                      key={seat.id}
-                      disabled={isOccupied}
-                      onClick={() => handleSelect(seat)}
-                      className={`
-                        relative aspect-square rounded-lg flex items-center justify-center transition-all duration-300 transform
-                        ${
-                          isOccupied
-                            ? "seat-occupied"
-                            : isSelected
-                              ? "seat-selected"
-                              : "seat-available"
-                        }
-                      `}
-                    >
-                      <Armchair size={20} className={isSelected ? "animate-pulse" : ""} />
-                      <span className="absolute -bottom-1 text-[8px] font-bold uppercase">
-                        {seat.seat_number}
-                      </span>
-                    </button>
-                  );
-                })}
+
+              {/* Cabeceras de columna */}
+              <div className="grid grid-cols-[1fr_1fr_28px_1fr_1fr] gap-2 text-center text-[9px] font-bold text-gray-400 uppercase tracking-wider mt-5 mb-2 px-0.5">
+                <span>A</span><span>B</span><span /><span>C</span><span>D</span>
+              </div>
+
+              {/* Filas */}
+              <div className="space-y-1.5">
+                {rows.map((row, rowIdx) => (
+                  <div key={rowIdx} className="grid grid-cols-[1fr_1fr_28px_1fr_1fr] gap-2 items-center">
+                    {row[0] ? <SeatButton seat={row[0]} /> : <div />}
+                    {row[1] ? <SeatButton seat={row[1]} /> : <div />}
+                    {/* Número de fila en el pasillo */}
+                    <div className="text-center text-[9px] font-bold text-gray-400 leading-none select-none">
+                      {rowIdx + 1}
+                    </div>
+                    {row[2] ? <SeatButton seat={row[2]} /> : <div />}
+                    {row[3] ? <SeatButton seat={row[3]} /> : <div />}
+                  </div>
+                ))}
+              </div>
+
+              {/* Parte trasera del bus */}
+              <div className="mt-3 h-2.5 bg-gray-800 rounded-b-2xl opacity-20" />
+
+              {/* Contadores */}
+              <div className="mt-4 flex justify-center gap-5 text-xs font-bold">
+                <span className="text-emerald-600">{availableCount} disponibles</span>
+                {cartCount > 0 && <span className="text-blue-600">{cartCount} en carrito</span>}
+                <span className="text-gray-400">{occupiedCount} ocupados</span>
               </div>
 
               {/* Leyenda */}
-                <div className="mt-6 flex justify-center gap-4 text-xs">
-                <div className="flex items-center gap-2">
-                  <div className="seat-available w-4 h-4"></div>
-                  <span>Disponible</span>
+              <div className="mt-4 flex flex-wrap justify-center gap-x-4 gap-y-2 text-xs font-semibold text-gray-600">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-6 h-6 rounded seat-available seat-salon-cama flex items-center justify-center shrink-0">
+                    <Armchair size={11} />
+                  </div>
+                  <span>Salón Cama</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="seat-occupied w-4 h-4"></div>
-                  <span>Ocupado</span>
+                <div className="flex items-center gap-1.5">
+                  <div className="w-6 h-6 rounded seat-available flex items-center justify-center shrink-0">
+                    <Armchair size={11} />
+                  </div>
+                  <span>Semi Cama</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="seat-selected w-4 h-4"></div>
+                <div className="flex items-center gap-1.5">
+                  <div className="w-6 h-6 rounded seat-selected flex items-center justify-center shrink-0">
+                    <Armchair size={11} />
+                  </div>
                   <span>Seleccionado</span>
                 </div>
+                <div className="flex items-center gap-1.5">
+                  <div className="w-6 h-6 rounded seat-occupied shrink-0" />
+                  <span>Ocupado</span>
+                </div>
+                {cartCount > 0 && (
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-6 h-6 rounded seat-in-cart flex items-center justify-center shrink-0">
+                      <Armchair size={11} />
+                    </div>
+                    <span>En carrito</span>
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Panel de Información */}
-            <div className="flex flex-col justify-center space-y-8">
+            {/* ────── Panel de información ────── */}
+            <div className="flex flex-col justify-center space-y-6">
+
+              {!selectedSeat && (
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest text-center">
+                  ← Selecciona un asiento en el mapa
+                </p>
+              )}
+
+              {/* Tarjeta del asiento */}
               <div className="seat-info-panel">
                 {selectedSeat ? (
-                  <div className="animate-[fadeIn_0.3s_ease-out]">
-                    <p className="text-brand-dark text-3xl font-black">
-                      Asiento {selectedSeat.seat_number}
-                    </p>
-                    <p className="text-brand-mid font-bold uppercase text-xs">
-                      {selectedSeat.type}
-                    </p>
-                    <p className="text-brand-dark text-2xl font-bold mt-4">
-                      ${selectedSeat.price.toLocaleString("es-CL")}
-                    </p>
+                  <div>
+                    <div className="flex items-start justify-between mb-3">
+                      <div>
+                        <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">
+                          Asiento seleccionado
+                        </p>
+                        <p className="text-brand-dark text-4xl font-black leading-none">
+                          N° {selectedSeat.seat_number}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <span className={`inline-block text-xs font-black uppercase px-3 py-1 rounded-full mb-2 ${
+                          selectedSeat.type === 'Salón Cama'
+                            ? 'bg-emerald-100 text-emerald-700'
+                            : 'bg-gray-100 text-gray-600'
+                        }`}>
+                          {selectedSeat.type}
+                        </span>
+                        <p className="text-brand-dark text-2xl font-black">
+                          ${selectedSeat.price.toLocaleString('es-CL')}
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setSelectedSeat(null)}
+                      className="text-xs text-gray-400 hover:text-red-400 font-semibold transition-colors"
+                    >
+                      Cambiar selección ✕
+                    </button>
                   </div>
                 ) : (
-                  <p className="text-brand-muted font-bold italic text-center">
-                    Selecciona un asiento
-                  </p>
+                  <div className="text-center py-4">
+                    <Armchair size={32} className="mx-auto mb-2 text-gray-200" />
+                    <p className="text-brand-muted font-bold italic">Ningún asiento seleccionado</p>
+                  </div>
                 )}
               </div>
 
+              {/* Botón agregar */}
               <button
                 onClick={handleConfirm}
                 disabled={!selectedSeat}
                 data-confirm-button
-                className="btn-primary w-full py-4 flex items-center justify-center gap-2 group disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed disabled:hover:scale-100"
+                className="btn-primary w-full py-4 flex items-center justify-center gap-2 group
+                           disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
                 {selectedSeat && <CheckCircle className="group-hover:animate-bounce" size={20} />}
                 AGREGAR AL CARRITO
               </button>
 
-              <Link 
-                href="/checkout"
-                className="text-center icon-accent font-bold hover:underline"
-              >
-                Ir al carrito →
-              </Link>
+              {/* Ir al carrito */}
+              {cart.length > 0 && (
+                <Link
+                  href="/checkout"
+                  className="flex items-center justify-center gap-2 text-sm font-bold
+                             bg-emerald-50 text-emerald-700 border border-emerald-200
+                             rounded-xl py-3 hover:bg-emerald-100 transition-colors"
+                >
+                  <ShoppingCart size={16} />
+                  Ver carrito ({cart.length} {cart.length === 1 ? 'asiento' : 'asientos'}) →
+                </Link>
+              )}
             </div>
+
           </div>
         </div>
       </section>
@@ -280,7 +350,7 @@ export default function SeleccionarAsientoPage() {
     <Suspense fallback={
       <div className="page-white min-h-screen">
         <section className="section-hero pt-32 pb-20 px-6 text-center">
-          <div className="loading-spinner animate-spin h-12 w-12"></div>
+          <div className="loading-spinner animate-spin h-12 w-12 mx-auto" />
         </section>
       </div>
     }>
