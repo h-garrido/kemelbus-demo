@@ -1,12 +1,13 @@
 "use client";
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import { createBooking, confirmPayment } from '@/app/db/services';
 import type { BookingRequest, PassengerInfo } from '@/app/db/types';
 import { Trash2, ShieldCheck, ArrowLeft, User, Bus, Calendar, Clock, Armchair, ChevronDown, ChevronUp, Mail, Phone } from 'lucide-react';
 import Link from 'next/link';
 import PaymentSimulator from '@/components/PaymentSimulator';
-import LoadingSpinner from '@/components/LoadingSpinner';
+import LoadingModal from '@/components/LoadingModal';
 
 const emptyPassenger = (): PassengerInfo => ({
   name: '',
@@ -18,6 +19,7 @@ const emptyPassenger = (): PassengerInfo => ({
 });
 
 export default function CheckoutPage() {
+  const router = useRouter();
   const { cart, removeFromCart, clearCart, total } = useCart();
   const [isPaying, setIsPaying] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -174,15 +176,11 @@ export default function CheckoutPage() {
         />
       )}
 
-      {/* Procesando */}
       {isProcessing && (
-        <div className="payment-overlay flex items-center justify-center">
-          <div className="payment-modal p-8 text-center">
-            <div className="flex justify-center mb-4"><LoadingSpinner size="lg" /></div>
-            <p className="text-gray-700 font-bold">Procesando tu reserva...</p>
-            <p className="text-gray-400 text-sm mt-1">No cierres ni recargues la ventana</p>
-          </div>
-        </div>
+        <LoadingModal
+          message="Procesando tu reserva..."
+          submessage="No cierres ni recargues la ventana"
+        />
       )}
 
       {/* Header */}
@@ -198,12 +196,21 @@ export default function CheckoutPage() {
       </section>
 
       <section className="py-12 max-w-6xl mx-auto px-6">
-        <Link
-          href="/buscar"
-          className="back-link-light mb-10"
-        >
-          <ArrowLeft size={18} /> Agregar otro pasaje
-        </Link>
+        <div className="flex items-center gap-4 mb-10">
+          <button
+            onClick={() => router.back()}
+            className="back-link-light cursor-pointer"
+          >
+            <ArrowLeft size={18} /> Volver
+          </button>
+          <span className="text-gray-300 select-none">|</span>
+          <Link
+            href="/buscar"
+            className="back-link-light"
+          >
+            <ArrowLeft size={18} /> Cambiar búsqueda
+          </Link>
+        </div>
 
         {cart.length === 0 ? (
           <div className="no-results-box p-16 text-center bg-white">

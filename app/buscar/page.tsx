@@ -3,9 +3,9 @@ import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { getAvailableServices, getCities } from '@/app/db/services';
 import type { ServiceWithRoute } from '@/app/db/types';
-import { ArrowLeft, Clock, Bus, MapPin, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Clock, Bus, MapPin, ChevronRight, Anchor } from 'lucide-react';
 import Link from 'next/link';
-import LoadingSpinner from '@/components/LoadingSpinner';
+import LoadingModal from '@/components/LoadingModal';
 
 function SearchContent() {
   const searchParams = useSearchParams();
@@ -63,14 +63,7 @@ function SearchContent() {
   };
 
   if (isLoading) {
-    return (
-      <div className="page-white min-h-screen">
-        <section className="section-hero pt-32 pb-20 px-6 text-center">
-          <div className="flex justify-center"><LoadingSpinner size="lg" /></div>
-          <p className="hero-subtitle mt-4">Buscando servicios disponibles...</p>
-        </section>
-      </div>
-    );
+    return <LoadingModal message="Buscando servicios disponibles..." submessage="Consultando horarios y disponibilidad" />;
   }
 
   if (!origen || !destino || !fecha) {
@@ -122,7 +115,12 @@ function SearchContent() {
             {services.length} {services.length === 1 ? 'servicio disponible' : 'servicios disponibles'}
           </p>
           
-          {services.map((service) => (
+          {services.map((service) => {
+            const isBimodal =
+              service.route.destination_city.includes('Chaitén') ||
+              service.route.origin_city.includes('Chaitén');
+
+            return (
             <div
               key={service.id}
               className="card-bus-result p-6 group"
@@ -135,9 +133,16 @@ function SearchContent() {
                       <Bus size={24} />
                     </div>
                     <div>
-                      <h3 className="route-region-title">
-                        {service.bus_type}
-                      </h3>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <h3 className="route-region-title">
+                          {service.bus_type}
+                        </h3>
+                        {isBimodal && (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wide px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">
+                            <Bus size={9} /> Bus <span className="text-blue-400">+</span> <Anchor size={9} /> Ferry
+                          </span>
+                        )}
+                      </div>
                       {service.bus_number && (
                         <p className="text-sm text-gray-500">Bus {service.bus_number}</p>
                       )}
@@ -175,9 +180,15 @@ function SearchContent() {
                       </div>
                     </div>
                   </div>
+
+                  {isBimodal && (
+                    <p className="mt-3 text-xs text-blue-600 font-semibold">
+                      ⛴ Incluye conexión en transbordador Naviera Austral (Hornopirén → Chaitén)
+                    </p>
+                  )}
                 </div>
 
-                <div className="flex flex-col items-end gap-3 min-w-[180px]">
+                <div className="flex flex-col items-end gap-3 min-w-45">
                   <div className="text-right">
                     <p className="text-xs text-gray-500 uppercase font-bold">Desde</p>
                     <p className="text-3xl font-black text-brand-dark">
@@ -198,7 +209,8 @@ function SearchContent() {
                 </div>
               </div>
             </div>
-          ))}
+          );
+          })}
         </div>
       )}
       </section>
@@ -208,13 +220,7 @@ function SearchContent() {
 
 export default function BuscarPage() {
   return (
-    <Suspense fallback={
-      <div className="page-white min-h-screen">
-        <section className="section-hero pt-32 pb-20 px-6 text-center">
-          <div className="flex justify-center"><LoadingSpinner size="lg" /></div>
-        </section>
-      </div>
-    }>
+    <Suspense fallback={<LoadingModal message="Cargando..." />}>
       <SearchContent />
     </Suspense>
   );

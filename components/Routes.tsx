@@ -1,6 +1,6 @@
 'use client';
 
-import { MapPin, ArrowRight, Mountain, Ship, Waves, Clock } from 'lucide-react';
+import { MapPin, ArrowRight, Mountain, Ship, Waves, Clock, Bus, Anchor } from 'lucide-react';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 interface RouteScheduleDisplay {
@@ -11,6 +11,8 @@ interface RouteScheduleDisplay {
 interface DestinationRoute {
   name: string;
   schedules: RouteScheduleDisplay[];
+  bimodal?: boolean;   // Bus + Transbordador
+  ferryOnly?: boolean; // Solo transbordador
 }
 
 const destinations = [
@@ -28,6 +30,7 @@ const destinations = [
       },
       {
         name: "Puerto Montt → Chaitén",
+        bimodal: true,
         schedules: [
           { days: "Lun – Dom", times: ["07:00"] },
         ],
@@ -50,6 +53,7 @@ const destinations = [
       },
       {
         name: "Hornopirén → Chaitén",
+        ferryOnly: true,
         schedules: [],
       },
     ] as DestinationRoute[],
@@ -62,12 +66,14 @@ const destinations = [
     routes: [
       {
         name: "Chaitén → Puerto Montt",
+        bimodal: true,
         schedules: [
           { days: "Lun – Dom", times: ["10:30"] },
         ],
       },
       {
         name: "Chaitén → Hornopirén",
+        ferryOnly: true,
         schedules: [],
       },
     ] as DestinationRoute[],
@@ -125,9 +131,44 @@ const Routes = () => {
                         <MapPin size={16} className="icon-accent" />
                         {route.name}
                       </div>
-                      <ArrowRight size={14} className="route-arrow" />
+                      <div className="flex items-center gap-2">
+                        {route.bimodal && (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wide px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">
+                            <Bus size={9} /> Bus
+                            <span className="text-blue-400">+</span>
+                            <Anchor size={9} /> Ferry
+                          </span>
+                        )}
+                        {route.ferryOnly && (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wide px-2 py-0.5 rounded-full bg-cyan-100 text-cyan-700">
+                            <Anchor size={9} /> Solo Ferry
+                          </span>
+                        )}
+                        <ArrowRight size={14} className="route-arrow" />
+                      </div>
                     </div>
-                    {route.schedules.length > 0 ? (
+                    {route.ferryOnly ? (
+                      <p className="ml-7 text-xs text-cyan-600 font-semibold italic">
+                        Naviera Austral — consultar horarios en navieraustral.cl
+                      </p>
+                    ) : route.bimodal ? (
+                      <>
+                        <ul className="ml-7 space-y-1">
+                          {route.schedules.map((s, sIdx) => (
+                            <li key={sIdx} className="flex items-start gap-2 text-xs text-gray-500">
+                              <Clock size={11} className="mt-0.5 shrink-0 icon-accent" />
+                              <span>
+                                <span className="font-semibold text-gray-600">{s.days}:</span>{' '}
+                                {s.times.join(' · ')}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                        <p className="ml-7 mt-1 text-xs text-blue-600 font-semibold italic">
+                          Incluye conexión en transbordador (Naviera Austral)
+                        </p>
+                      </>
+                    ) : route.schedules.length > 0 ? (
                       <ul className="ml-7 space-y-1">
                         {route.schedules.map((s, sIdx) => (
                           <li key={sIdx} className="flex items-start gap-2 text-xs text-gray-500">

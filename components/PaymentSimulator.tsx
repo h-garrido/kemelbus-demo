@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from 'react';
 import { useCart } from '@/context/CartContext';
-import { Loader2, CheckCircle2, ShieldCheck, Lock } from 'lucide-react';
+import { Loader2, CheckCircle2, ShieldCheck, Lock, X } from 'lucide-react';
 
 interface PaymentSimulatorProps {
   onClose: () => void;
@@ -107,6 +107,15 @@ const PaymentSimulator = ({ onClose, onSuccess }: PaymentSimulatorProps) => {
             <p className="payment-description">
               {currentStep.description}
             </p>
+
+            {step === 'redirecting' && (
+              <button
+                onClick={onClose}
+                className="mt-2 flex items-center gap-2 mx-auto text-sm text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X size={15} /> Cancelar y volver al checkout
+              </button>
+            )}
           </div>
         </div>
 

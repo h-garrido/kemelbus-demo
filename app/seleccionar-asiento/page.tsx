@@ -8,7 +8,7 @@ import { useToast } from "@/hooks/useToast";
 import Toast from "@/components/Toast";
 import { Armchair, CheckCircle, ArrowLeft, Bus, ShoppingCart } from "lucide-react";
 import Link from "next/link";
-import LoadingSpinner from "@/components/LoadingSpinner";
+import LoadingModal from "@/components/LoadingModal";
 
 function SeatSelectionContent() {
   const searchParams = useSearchParams();
@@ -95,14 +95,7 @@ function SeatSelectionContent() {
 
   // ── Loading ──────────────────────────────────────────────────────────────
   if (isLoading) {
-    return (
-      <div className="page-white min-h-screen">
-        <section className="section-hero pt-32 pb-20 px-6 text-center">
-          <div className="flex justify-center"><LoadingSpinner size="lg" /></div>
-          <p className="hero-subtitle mt-4">Cargando mapa de asientos...</p>
-        </section>
-      </div>
-    );
+    return <LoadingModal message="Cargando mapa de asientos..." submessage="Preparando la disponibilidad del servicio" />;
   }
 
   if (!serviceId || !service || !route) {
@@ -381,13 +374,7 @@ function SeatSelectionContent() {
 
 export default function SeleccionarAsientoPage() {
   return (
-    <Suspense fallback={
-      <div className="page-white min-h-screen">
-        <section className="section-hero pt-32 pb-20 px-6 text-center">
-          <div className="flex justify-center"><LoadingSpinner size="lg" /></div>
-        </section>
-      </div>
-    }>
+    <Suspense fallback={<LoadingModal message="Cargando..." />}>
       <SeatSelectionContent />
     </Suspense>
   );
