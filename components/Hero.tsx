@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import img1 from '@/app/assets/img/img1.jpg';
 import { Search, MapPin, Calendar } from 'lucide-react';
 import { getOriginCities, getDestinationCities } from '@/app/db/services';
 import type { City } from '@/app/db/types';
@@ -55,9 +56,10 @@ const Hero = () => {
       {/* Fondo con textura */}
       <div className="absolute inset-0 z-0 opacity-10">
         <Image 
-          src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=2000" 
+          src={img1}
           alt="Rutas de Chile" 
           fill
+          sizes="100vw"
           className="object-cover"
           priority={false}
         />

@@ -1,5 +1,7 @@
 import { Armchair, MapPin, Wifi, BatteryCharging, ShieldCheck, Clock } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
+import img3 from '@/app/assets/img/img3.jpg';
 
 export default function ServiciosPage() {
   const amenities = [
@@ -57,10 +59,12 @@ export default function ServiciosPage() {
           </div>
 
           <div className="page-light relative h-[500px] rounded-[3rem] overflow-hidden shadow-2xl">
-            <img 
-              src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=1000" 
-              alt="Interior KemelBus" 
-              className="w-full h-full object-cover grayscale-[0.2] hover:grayscale-0 transition-all duration-700"
+            <Image 
+              src={img3}
+              alt="Bus KemelBus con destino Hornopirén" 
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover grayscale-[0.2] hover:grayscale-0 transition-all duration-700"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/60 to-transparent"></div>
           </div>

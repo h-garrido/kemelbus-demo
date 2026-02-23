@@ -1,5 +1,6 @@
 import { ShieldCheck, Wind, Gauge, Zap, Cog, Eye } from 'lucide-react';
 import Link from 'next/link';
+import FleetCarousel from '@/components/FleetCarousel';
 
 export default function FlotaPage() {
   const specs = [
@@ -23,17 +24,7 @@ export default function FlotaPage() {
             </p>
           </div>
           <div className="md:w-1/2">
-             {/* Imagen de un bus moderno */}
-             <div className="bus-hero-image relative">
-               <img 
-                 src="https://images.unsplash.com/photo-1570125909232-eb263c188f7e?q=80&w=1000" 
-                 alt="Bus KemelBus" 
-                 className="w-full h-full object-cover"
-               />
-               <div className="badge-bus absolute bottom-4 right-4 px-4 py-2 text-xs font-black uppercase">
-                 Modelo 2024
-               </div>
-             </div>
+            <FleetCarousel />
           </div>
         </div>
       </section>

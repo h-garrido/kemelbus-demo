@@ -1,14 +1,27 @@
 'use client';
 
+import Image from 'next/image';
 import { Monitor, Check } from 'lucide-react';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
+import img4 from '@/app/assets/img/img4.jpg';
+import img5 from '@/app/assets/img/img5.jpg';
 
 const fleetDetails = [
   {
     type: "Bus Semi Cama",
     seats: "Semi Cama",
-    description: "Asientos reclinables y cómodos, ideales para los recorridos entre Puerto Montt, Hornopirén y Chaitén por la Carretera Austral.",
+    description: "Carrocería Busscar Vissta Buss HI sobre chasis Mercedes-Benz. Unidad climatizada que opera en la Región de Los Lagos, fotografiada frente a la cordillera patagónica con sus característicos cumbres nevadas.",
     amenities: ["Asientos reclinables", "Climatización", "Baño a bordo"],
+    image: img4,
+    imageAlt: "Bus KemelBus Busscar Vissta Buss HI con cumbres nevadas al fondo, Región de Los Lagos",
+  },
+  {
+    type: "Bus Semi Cama",
+    seats: "Semi Cama",
+    description: "Carrocería Mascarello Roma sobre chasis Mercedes-Benz. Unidad con aire acondicionado, sistema de entretenimiento a bordo (música y video) y baño, operando en las rutas de la Patagonia Norte.",
+    amenities: ["GPS en tiempo real", "WiFi a bordo", "Cargadores USB"],
+    image: img5,
+    imageAlt: "Bus KemelBus Mascarello Roma en librea turquesa y verde, estacionado en patio de operaciones",
   }
 ];
 
@@ -61,9 +74,14 @@ const Fleet = () => {
                 ))}
               </ul>
               
-              <div className="fleet-image-placeholder h-48 flex items-center justify-center italic font-medium overflow-hidden">
-                {/* Aquí pondrías una foto real del interior del bus */}
-                [ Foto Interior {item.type} ]
+              <div className="relative h-48 rounded-xl overflow-hidden">
+                <Image
+                  src={item.image}
+                  alt={item.imageAlt}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover hover:scale-105 transition-transform duration-700"
+                />
               </div>
             </div>
             );

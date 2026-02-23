@@ -1,8 +1,10 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, Bus, Phone, MapPin, Users, ShoppingCart } from "lucide-react";
+import Image from "next/image";
+import { Menu, X, Phone, Users, ShoppingCart } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import logo from "@/app/assets/img/LOGO-OFICIAL.jpg";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,13 +37,14 @@ const Navbar = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-20">
             <div className="flex items-center">
-              <Link href="/" className="flex items-center gap-2">
-                <div className="navbar-brand-icon">
-                  <Bus className="h-6 w-6" />
-                </div>
-                <span className="navbar-brand">
-                  Kemel<span className="navbar-brand-accent">Bus</span>
-                </span>
+              <Link href="/" className="flex items-center">
+                <Image
+                  src={logo}
+                  alt="KemelBus"
+                  style={{ height: '52px', width: 'auto' }}
+                  className="object-contain"
+                  priority
+                />
               </Link>
             </div>
 
