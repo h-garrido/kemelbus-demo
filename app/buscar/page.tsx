@@ -5,6 +5,7 @@ import { getAvailableServices, getCities } from '@/app/db/services';
 import type { ServiceWithRoute } from '@/app/db/types';
 import { ArrowLeft, Clock, Bus, MapPin, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 function SearchContent() {
   const searchParams = useSearchParams();
@@ -65,7 +66,7 @@ function SearchContent() {
     return (
       <div className="page-white min-h-screen">
         <section className="section-hero pt-32 pb-20 px-6 text-center">
-          <div className="loading-spinner animate-spin h-12 w-12"></div>
+          <div className="flex justify-center"><LoadingSpinner size="lg" /></div>
           <p className="hero-subtitle mt-4">Buscando servicios disponibles...</p>
         </section>
       </div>
@@ -210,7 +211,7 @@ export default function BuscarPage() {
     <Suspense fallback={
       <div className="page-white min-h-screen">
         <section className="section-hero pt-32 pb-20 px-6 text-center">
-          <div className="loading-spinner animate-spin h-12 w-12"></div>
+          <div className="flex justify-center"><LoadingSpinner size="lg" /></div>
         </section>
       </div>
     }>

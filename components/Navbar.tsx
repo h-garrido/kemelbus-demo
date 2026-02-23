@@ -24,7 +24,7 @@ const Navbar = () => {
       <div className="topbar-bg py-2 px-6 hidden md:flex justify-between items-center text-xs">
         <div className="flex gap-6">
           <span className="flex items-center gap-2">
-            <Phone size={14} className="topbar-icon" /> +56 2 2345 6789
+            <Phone size={14} className="topbar-icon" /> +56 2 2987 6543
           </span>
           <span className="flex items-center gap-2">
             <Users size={14} className="topbar-icon" /> Puerto Montt · Hornopirén · Chaitén

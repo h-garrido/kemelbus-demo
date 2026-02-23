@@ -8,7 +8,7 @@ import img5 from '@/app/assets/img/img5.jpg';
 
 const fleetDetails = [
   {
-    type: "Bus Semi Cama",
+    type: "Busscar Vissta Buss HI",
     seats: "Semi Cama",
     description: "Carrocería Busscar Vissta Buss HI sobre chasis Mercedes-Benz. Unidad climatizada que opera en la Región de Los Lagos, fotografiada frente a la cordillera patagónica con sus característicos cumbres nevadas.",
     amenities: ["Asientos reclinables", "Climatización", "Baño a bordo"],
@@ -16,7 +16,7 @@ const fleetDetails = [
     imageAlt: "Bus KemelBus Busscar Vissta Buss HI con cumbres nevadas al fondo, Región de Los Lagos",
   },
   {
-    type: "Bus Semi Cama",
+    type: "Mascarello Roma",
     seats: "Semi Cama",
     description: "Carrocería Mascarello Roma sobre chasis Mercedes-Benz. Unidad con aire acondicionado, sistema de entretenimiento a bordo (música y video) y baño, operando en las rutas de la Patagonia Norte.",
     amenities: ["GPS en tiempo real", "WiFi a bordo", "Cargadores USB"],

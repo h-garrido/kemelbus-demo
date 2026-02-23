@@ -6,6 +6,7 @@ import type { BookingRequest, PassengerInfo } from '@/app/db/types';
 import { Trash2, ShieldCheck, ArrowLeft, User, Bus, Calendar, Clock, Armchair, ChevronDown, ChevronUp, Mail, Phone } from 'lucide-react';
 import Link from 'next/link';
 import PaymentSimulator from '@/components/PaymentSimulator';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const emptyPassenger = (): PassengerInfo => ({
   name: '',
@@ -177,9 +178,9 @@ export default function CheckoutPage() {
       {isProcessing && (
         <div className="payment-overlay flex items-center justify-center">
           <div className="payment-modal p-8 text-center">
-            <div className="loading-spinner animate-spin h-12 w-12 mb-4" />
+            <div className="flex justify-center mb-4"><LoadingSpinner size="lg" /></div>
             <p className="text-gray-700 font-bold">Procesando tu reserva...</p>
-            <p className="text-gray-400 text-sm mt-1">No cierres esta ventana</p>
+            <p className="text-gray-400 text-sm mt-1">No cierres ni recargues la ventana</p>
           </div>
         </div>
       )}

@@ -155,7 +155,7 @@ const SeatPicker = () => {
                 className="btn-primary w-full py-4 flex items-center justify-center gap-2 group disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
                 {selectedSeat && <CheckCircle className="group-hover:animate-bounce" size={20} />}
-                AGREGAR AL VIAJE
+                AGREGAR AL CARRITO
               </button>
             </div>
           </div>

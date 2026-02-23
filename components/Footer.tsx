@@ -39,7 +39,7 @@ const Footer = () => {
             <h4 className="footer-heading">Oficinas de Venta</h4>
             <div className="space-y-4 text-sm">
               <p className="flex items-start justify-center md:justify-start gap-3">
-                <MapPin size={18} className="footer-icon mt-0.5 shrink-0" /> Puerto Montt — Terminal Municipal, Oficina N°40
+                <MapPin size={18} className="footer-icon mt-0.5 shrink-0" /> Puerto Montt — Terminal Municipal, Of. N°40
               </p>
               <p className="flex items-start justify-center md:justify-start gap-3">
                 <MapPin size={18} className="footer-icon mt-0.5 shrink-0" /> Hornopirén — Terminal Municipal, Oficina N°03
@@ -48,7 +48,7 @@ const Footer = () => {
                 <MapPin size={18} className="footer-icon mt-0.5 shrink-0" /> Chaitén — Agencia Green Patagonia Travel (Frente Copec)
               </p>
               <p className="flex items-center justify-center md:justify-start gap-3">
-                <Phone size={18} className="footer-icon" /> +56 9 1234 5678
+                <Phone size={18} className="footer-icon" /> +56 2 2987 6543
               </p>
               <p className="flex items-center justify-center md:justify-start gap-3">
                 <Mail size={18} className="footer-icon" /> reservas@kemelbus.cl

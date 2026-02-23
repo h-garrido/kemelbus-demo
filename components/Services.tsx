@@ -11,7 +11,7 @@ const Services = () => {
   const serviceList = [
     {
       title: "Rutas Regionales",
-      desc: "Salidas diarias conectando Puerto Montt, Hornopirén y Chaitén. Buses cómodos y puntuales en la Patagonia Norte.",
+      desc: "Salidas diarias conectando Puerto Montt, Hornopirén y Chaitén.",
       icon: <Map className="w-10 h-10" />
     },
     {
