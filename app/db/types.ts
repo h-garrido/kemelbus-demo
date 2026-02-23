@@ -4,8 +4,8 @@
 
 // Tipos de estado
 export type RouteStatus = 'active' | 'inactive' | 'seasonal';
-export type BusType = 'Salón Cama' | 'Semi Cama' | 'Clásico';
-export type SeatType = 'Salón Cama' | 'Semi Cama' | 'Clásico';
+export type BusType = 'Semi Cama';
+export type SeatType = 'Semi Cama';
 export type SeatStatus = 'available' | 'reserved' | 'occupied';
 export type ServiceStatus = 'scheduled' | 'boarding' | 'departed' | 'arrived' | 'cancelled';
 export type PaymentStatus = 'pending' | 'paid' | 'failed' | 'refunded';
@@ -77,6 +77,14 @@ export interface Booking {
   updated_at: string;
 }
 
+export interface RouteFare {
+  id: string;
+  route_id: string;
+  fare_type: 'Normal' | 'Estudiante' | 'Adulto Mayor' | 'Residente' | 'No Residente';
+  price: number;
+  created_at: string;
+}
+
 export interface Ticket {
   id: string;
   booking_id: string;
@@ -85,6 +93,7 @@ export interface Ticket {
   passenger_name: string;
   passenger_rut: string;
   price: number;
+  fare_type: string;
   ticket_code: string;
   status: TicketStatus;
   created_at: string;
@@ -188,7 +197,7 @@ export interface CartTicket {
   destination: string;
   date: string;
   time: string;
-  seat: string; // Ej: "Salón Cama - N°5"
+  seat: string; // Ej: "Semi Cama - N°5"
   seatNumber: number;
   price: number;
   passengerName?: string;

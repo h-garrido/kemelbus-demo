@@ -1,6 +1,6 @@
 'use client';
 
-import { Truck, Map, ShieldCheck, Ticket } from 'lucide-react';
+import { Map, ShieldCheck, Ticket } from 'lucide-react';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 const Services = () => {
@@ -10,14 +10,14 @@ const Services = () => {
 
   const serviceList = [
     {
-      title: "Rutas Interregionales",
-      desc: "Salidas diarias desde los principales terminales de Chile hacia el Norte y Sur.",
+      title: "Rutas Regionales",
+      desc: "Salidas diarias conectando Puerto Montt, Hornopirén y Chaitén. Buses cómodos y puntuales en la Patagonia Norte.",
       icon: <Map className="w-10 h-10" />
     },
     {
-      title: "Cargo & Encomiendas",
-      desc: "Envío de paquetes y documentos a todo el país con entrega en 24 horas.",
-      icon: <Truck className="w-10 h-10" />
+      title: "Tarifas Especiales",
+      desc: "Contamos con tarifas diferenciadas para estudiantes, adultos mayores y residentes locales de Hornopirén y Chaitén.",
+      icon: <Ticket className="w-10 h-10" />
     }
   ];
 
@@ -32,9 +32,9 @@ const Services = () => {
             }`}
           >
             <h2 className="section-label-dark mb-4">Más que solo viajes</h2>
-            <h3 className="text-5xl font-black mb-8 leading-tight">Soluciones integrales de transporte nacional.</h3>
+            <h3 className="text-5xl font-black mb-8 leading-tight">Transporte de pasajeros en la Patagonia Norte.</h3>
             <p className="hero-subtitle text-lg mb-10">
-              Contamos con una logística avanzada que nos permite no solo mover personas, sino también conectar los negocios de nuestros clientes a través de nuestro servicio de carga.
+              Ofrecemos un servicio de bus cómodo y confiable entre Puerto Montt, Hornopirén y Chaitén, con tarifas diferenciadas para estudiantes, adultos mayores y residentes.
             </p>
           </div>
           

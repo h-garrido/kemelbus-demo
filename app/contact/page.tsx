@@ -57,11 +57,11 @@ export default function ContactoPage() {
                     <MapPin size={24} />
                   </div>
                   <div>
-                    <p className="font-bold text-brand-dark">
-                      Oficina Central
-                    </p>
+                    <p className="font-bold text-brand-dark">Oficinas de Venta</p>
                     <p className="text-gray-600 text-sm">
-                      Terminal Sur, Oficina 45, Estación Central, RM.
+                      Puerto Montt: Terminal Municipal, Of. N°40<br />
+                      Hornopirén: Terminal Municipal, Of. N°03<br />
+                      Chaitén: Agencia Green Patagonia Travel (Frente Copec)
                     </p>
                   </div>
                 </div>

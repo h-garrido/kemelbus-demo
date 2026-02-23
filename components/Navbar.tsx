@@ -25,8 +25,7 @@ const Navbar = () => {
             <Phone size={14} className="topbar-icon" /> +56 2 2345 6789
           </span>
           <span className="flex items-center gap-2">
-            <Users size={14} className="topbar-icon" /> Traslado de
-            Personal y Turismo
+            <Users size={14} className="topbar-icon" /> Puerto Montt · Hornopirén · Chaitén
           </span>
         </div>
       </div>

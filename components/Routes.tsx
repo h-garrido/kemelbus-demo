@@ -1,26 +1,29 @@
 'use client';
 
-import { MapPin, ArrowRight, Mountain, Palmtree, Waves } from 'lucide-react';
+import { MapPin, ArrowRight, Mountain, Ship, Waves } from 'lucide-react';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 const destinations = [
   {
-    region: "Zona Norte",
-    cities: ["Antofagasta", "Iquique", "Calama", "Arica"],
-    icon: <Palmtree className="route-icon-norte" />,
-    color: "card-route-norte"
-  },
-  {
-    region: "Zona Central",
-    cities: ["Santiago", "Viña del Mar", "Valparaíso", "Rancagua"],
+    city: "Puerto Montt",
+    description: "Terminal principal de KemelBus. Hub de conexión hacia la Patagonia Norte.",
+    routes: ["Puerto Montt → Hornopirén", "Puerto Montt → Chaitén"],
     icon: <Waves className="route-icon-central" />,
     color: "card-route-central"
   },
   {
-    region: "Zona Sur",
-    cities: ["Concepción", "Temuco", "Puerto Montt", "Pucón"],
+    city: "Hornopirén",
+    description: "Puerta de entrada a la Carretera Austral. Rodeada de volcanes y fiordos.",
+    routes: ["Hornopirén → Puerto Montt", "Hornopirén → Chaitén"],
     icon: <Mountain className="route-icon-sur" />,
     color: "card-route-sur"
+  },
+  {
+    city: "Chaitén",
+    description: "Capital de la provincia de Palena, en el corazón de la Patagonia chilena.",
+    routes: ["Chaitén → Puerto Montt", "Chaitén → Hornopirén"],
+    icon: <Ship className="route-icon-norte" />,
+    color: "card-route-norte"
   }
 ];
 
@@ -38,8 +41,8 @@ const Routes = () => {
           }`}
         >
           <div className="text-center md:text-left">
-            <h2 className="section-label mb-2">Cobertura Nacional</h2>
-            <p className="section-title">Nuestros Destinos Principales</p>
+            <h2 className="section-label mb-2">Conectando la Patagonia</h2>
+            <p className="section-title">Nuestras Ciudades y Rutas</p>
           </div>
         </div>
 
@@ -56,19 +59,21 @@ const Routes = () => {
                 }`}
                 style={{ transitionDelay: `${index * 150}ms` }}
               >
-              <div className="flex items-center gap-4 mb-6">
+              <div className="flex items-center gap-4 mb-4">
                 <div className="bg-white p-3 rounded-2xl shadow-sm">
                   {dest.icon}
                 </div>
-                <h3 className="route-region-title">{dest.region}</h3>
+                <h3 className="route-region-title">{dest.city}</h3>
               </div>
 
+              <p className="text-sm text-gray-500 mb-6 leading-relaxed">{dest.description}</p>
+
               <ul className="space-y-4">
-                {dest.cities.map((city, cIndex) => (
-                  <li key={cIndex} className="flex items-center justify-between group cursor-pointer">
+                {dest.routes.map((route, rIndex) => (
+                  <li key={rIndex} className="flex items-center justify-between group cursor-pointer">
                     <div className="flex items-center gap-3 text-brand-dark font-medium">
                       <MapPin size={16} className="icon-accent" />
-                      {city}
+                      {route}
                     </div>
                     <ArrowRight size={14} className="route-arrow" />
                   </li>
@@ -76,26 +81,26 @@ const Routes = () => {
               </ul>
 
               <div className="mt-8 pt-6 route-divider">
-                <p className="route-footer-text">Salidas diarias desde Terminal Sur</p>
+                <p className="route-footer-text">Salidas diarias desde Terminal KemelBus</p>
               </div>
             </div>
             );
           })}
         </div>
 
-        {/* Banner de conectividad rápida */}
+        {/* Banner de conectividad regional */}
         <div className="banner-connectivity mt-16 p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="relative z-10">
-            <h4 className="text-2xl font-bold mb-2">¿Viajas desde Santiago?</h4>
-              <p className="hero-subtitle">Salidas cada 30 minutos a los principales destinos del país.</p>
+            <h4 className="text-2xl font-bold mb-2">¿Viajas por la Patagonia?</h4>
+              <p className="hero-subtitle">Salidas diarias conectando Puerto Montt, Hornopirén y Chaitén.</p>
           </div>
           <div className="flex gap-4 relative z-10">
             <div className="text-center px-6 stats-divider">
-              <p className="stat-number">45</p>
+              <p className="stat-number">3</p>
               <p className="stat-label">Terminales</p>
             </div>
             <div className="text-center px-6">
-              <p className="stat-number">120</p>
+              <p className="stat-number">3</p>
               <p className="stat-label">Rutas Activas</p>
             </div>
           </div>

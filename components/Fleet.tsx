@@ -1,20 +1,14 @@
 'use client';
 
-import { Users, Wind, Monitor, Coffee, Check } from 'lucide-react';
+import { Monitor, Check } from 'lucide-react';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 const fleetDetails = [
   {
-    type: "Premium Suite",
-    seats: "Salón Cama 180°",
-    description: "Máximo descanso a bordo. Asientos de cuero totalmente reclinables con separadores de privacidad.",
-    amenities: ["Cargador USB", "Manta y Almohada", "Cenas abordo"],
-  },
-  {
-    type: "Ejecutivo",
+    type: "Bus Semi Cama",
     seats: "Semi Cama",
-    description: "Amplio espacio con vista a la ruta y climatización controlada. Ideal para viajes nocturnos.",
-    amenities: ["WiFi Gratis", "Reposapiés", "Baño Químico"],
+    description: "Asientos reclinables y cómodos, ideales para los recorridos entre Puerto Montt, Hornopirén y Chaitén por la Carretera Austral.",
+    amenities: ["Asientos reclinables", "Climatización", "Baño a bordo"],
   }
 ];
 
@@ -53,7 +47,7 @@ const Fleet = () => {
                   <p className="icon-accent font-bold">{item.seats}</p>
                 </div>
                 <div className="contact-icon-wrapper p-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
-                  {idx === 0 ? <Coffee size={32} /> : <Monitor size={32} />}
+                  <Monitor size={32} />
                 </div>
               </div>
               

@@ -13,17 +13,16 @@ const Footer = () => {
               <span className="text-2xl font-black text-white">KemelBus</span>
             </div>
             <p className="footer-body">
-              Nos especializamos en mover personas, no solo vehículos. Tu seguridad y bienestar en cada trayecto son nuestra prioridad número uno.
+              Conectamos Puerto Montt, Hornopirén y Chaitén con servicios de bus seguros y confiables en el corazón de la Patagonia Norte.
             </p>
           </div>
 
           <div>
-            <h4 className="footer-heading">Servicios</h4>
+            <h4 className="footer-heading">Rutas</h4>
             <ul className="space-y-3 text-sm font-medium">
-              <li className="footer-link">Traslado de Personal</li>
-              <li className="footer-link">Turismo y Giras</li>
-              <li className="footer-link">Transporte para Eventos</li>
-              <li className="footer-link">Traslados Aeropuerto</li>
+              <li className="footer-link">Puerto Montt → Hornopirén</li>
+              <li className="footer-link">Puerto Montt → Chaitén</li>
+              <li className="footer-link">Hornopirén → Chaitén</li>
             </ul>
           </div>
 
@@ -37,10 +36,16 @@ const Footer = () => {
           </div>
 
           <div>
-            <h4 className="footer-heading">Central de Reservas</h4>
+            <h4 className="footer-heading">Oficinas de Venta</h4>
             <div className="space-y-4 text-sm">
-              <p className="flex items-center justify-center md:justify-start gap-3">
-                <MapPin size={18} className="footer-icon" /> Santiago, RM - Chile
+              <p className="flex items-start justify-center md:justify-start gap-3">
+                <MapPin size={18} className="footer-icon mt-0.5 shrink-0" /> Puerto Montt — Terminal Municipal, Oficina N°40
+              </p>
+              <p className="flex items-start justify-center md:justify-start gap-3">
+                <MapPin size={18} className="footer-icon mt-0.5 shrink-0" /> Hornopirén — Terminal Municipal, Oficina N°03
+              </p>
+              <p className="flex items-start justify-center md:justify-start gap-3">
+                <MapPin size={18} className="footer-icon mt-0.5 shrink-0" /> Chaitén — Agencia Green Patagonia Travel (Frente Copec)
               </p>
               <p className="flex items-center justify-center md:justify-start gap-3">
                 <Phone size={18} className="footer-icon" /> +56 9 1234 5678

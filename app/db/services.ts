@@ -16,6 +16,7 @@ import type {
   BookingRequest,
   CreateBookingResponse,
   ServiceWithRoute,
+  RouteFare,
 } from './types';
 
 // ========================================
@@ -131,6 +132,24 @@ export async function getRoute(originCityId: string, destinationCityId: string):
   }
 
   return data;
+}
+
+/**
+ * Obtener tarifas por tipo de pasajero para una ruta específica
+ */
+export async function getRouteFares(routeId: string): Promise<RouteFare[]> {
+  const { data, error } = await supabase
+    .from('route_fares')
+    .select('*')
+    .eq('route_id', routeId)
+    .order('price');
+
+  if (error) {
+    console.error('Error fetching route fares:', error);
+    return [];
+  }
+
+  return data || [];
 }
 
 // ========================================

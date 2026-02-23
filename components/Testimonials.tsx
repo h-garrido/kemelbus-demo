@@ -6,20 +6,20 @@ import { useScrollReveal } from '@/hooks/useScrollReveal';
 const reviews = [
   {
     name: "Camila Arancibia",
-    route: "Ruta: Santiago - Temuco",
-    text: "Excelente servicio. El bus salió puntual y el asiento Salón Cama es realmente cómodo para viajar de noche. Los auxiliares muy amables.",
+    route: "Ruta: Puerto Montt - Chaitén",
+    text: "Excelente servicio. El bus salió puntual y los asientos Semi Cama son muy cómodos para el trayecto por la Carretera Austral. Los conductores muy amables y atentos.",
     rating: 5
   },
   {
     name: "Ricardo Lagos M.",
-    route: "Ruta: Concepción - Puerto Montt",
-    text: "Me sorprendió la limpieza del bus y que el WiFi funcionara todo el trayecto. Ideal para quienes necesitamos trabajar durante el viaje.",
+    route: "Ruta: Hornopirén - Puerto Montt",
+    text: "Me sorprendió la puntualidad y la limpieza del bus en cada tramo. Ideal para quienes viajamos seguido por la zona. Totalmente recomendado.",
     rating: 5
   },
   {
     name: "Elena Fuenzalida",
-    route: "Ruta: Antofagasta - La Serena",
-    text: "Viajé con mi mascota de asistencia y no tuve ningún problema. Un servicio muy profesional y seguro. Totalmente recomendado.",
+    route: "Ruta: Puerto Montt - Hornopirén",
+    text: "Viajé con mi mascota de asistencia y no tuve ningún problema. Un servicio muy profesional y seguro para recorrer la Patagonia.",
     rating: 4
   }
 ];

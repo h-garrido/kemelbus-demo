@@ -1,11 +1,11 @@
-import { Armchair, Luggage, Truck, Wifi, BatteryCharging, Coffee, ShieldCheck } from 'lucide-react';
+import { Armchair, MapPin, Wifi, BatteryCharging, ShieldCheck, Clock } from 'lucide-react';
 import Link from 'next/link';
 
 export default function ServiciosPage() {
   const amenities = [
-    { icon: <Wifi size={24} />, title: "WiFi a Bordo", desc: "Conexión gratuita en nuestras rutas principales." },
-    { icon: <BatteryCharging size={24} />, title: "Cargadores USB", desc: "Mantén tus dispositivos con carga durante todo el viaje." },
-    { icon: <Coffee size={24} />, title: "Snack & Café", desc: "Servicio de cortesía en trayectos de larga distancia." },
+    { icon: <Clock size={24} />, title: "Puntualidad", desc: "Salidas diarias a las 07:30 y 13:00 horas desde cada terminal." },
+    { icon: <Wifi size={24} />, title: "WiFi a Bordo", desc: "Conexión disponible durante el recorrido." },
+    { icon: <BatteryCharging size={24} />, title: "Cargadores USB", desc: "Mantente conectado durante todo el viaje." },
     { icon: <ShieldCheck size={24} />, title: "Seguridad GPS", desc: "Monitoreo en tiempo real y conductores certificados." },
   ];
 
@@ -17,7 +17,7 @@ export default function ServiciosPage() {
           Nuestros <span className="hero-accent">Servicios</span>
         </h1>
         <p className="hero-subtitle max-w-2xl mx-auto text-lg font-medium">
-          En KemelBus no solo vendemos pasajes, entregamos una experiencia de viaje superior con tecnología de punta y la calidez del sur.
+          Viaja cómodo y seguro entre Puerto Montt, Hornopirén y Chaitén con KemelBus. Servicio Semi Cama con tarifas especiales para estudiantes, adultos mayores y residentes.
         </p>
       </section>
 
@@ -27,33 +27,31 @@ export default function ServiciosPage() {
           <div className="space-y-8">
             <h2 className="text-brand-dark text-3xl font-black uppercase italic">Confort en cada viaje</h2>
             
-            <div className="seat-class-premium p-8">
-              <div className="flex items-center gap-4 mb-4">
-                <Armchair className="icon-accent" size={32} />
-                <h3 className="text-brand-dark text-2xl font-black">Salón Cama Premium</h3>
-              </div>
-              <p className="text-brand-muted mb-4 font-medium">
-                Asientos de cuero con inclinación de 180°, extra anchos y con separadores de privacidad para un descanso total durante el viaje.
-              </p>
-              <ul className="text-sm font-bold text-brand-mid space-y-1">
-                <li>• Máximo espacio entre filas</li>
-                <li>• Atención personalizada</li>
-                <li>• Mantas y almohadas sanitizadas</li>
-              </ul>
-            </div>
-
             <div className="seat-class-semicama p-8">
               <div className="flex items-center gap-4 mb-4">
                 <Armchair className="text-gray-600" size={32} />
                 <h3 className="text-2xl font-black text-gray-900">Semi Cama</h3>
               </div>
               <p className="text-gray-600 mb-4 font-medium">
-                Disfruta de asientos reclinables de 150° con climatización controlada y excelente comodidad durante el trayecto.
+                Asientos reclinables cómodos con climatización controlada, ideal para disfrutar del paisaje patagónico en los recorridos entre Puerto Montt, Hornopirén y Chaitén.
               </p>
               <ul className="text-sm font-bold text-gray-500 space-y-1">
-                <li>• Amplio espacio entre asientos</li>
-                <li>• Reposapiés ajustable</li>
-                <li>• Excelente relación precio-calidad</li>
+                <li>• Asientos reclinables</li>
+                <li>• Climatización a bordo</li>
+                <li>• Baño a bordo</li>
+              </ul>
+            </div>
+
+            <div className="seat-class-premium p-8">
+              <div className="flex items-center gap-4 mb-4">
+                <Armchair className="icon-accent" size={32} />
+                <h3 className="text-brand-dark text-2xl font-black">Tarifas por tipo de pasajero</h3>
+              </div>
+              <ul className="text-sm font-bold text-brand-mid space-y-2">
+                <li>• <strong>Normal:</strong> tarifa estándar para todos los pasajeros</li>
+                <li>• <strong>Estudiante:</strong> tarifa preferencial con credencial vigente</li>
+                <li>• <strong>Adulto Mayor:</strong> tarifa reducida (ruta Puerto Montt – Hornopirén)</li>
+                <li>• <strong>Residente:</strong> tarifa local para habitantes de Hornopirén y Chaitén</li>
               </ul>
             </div>
           </div>
@@ -86,24 +84,24 @@ export default function ServiciosPage() {
         </div>
       </section>
 
-      {/* Kemel Cargo */}
+      {/* Oficinas de Venta */}
       <section className="py-24 max-w-7xl mx-auto px-6">
-          <div className="cargo-section p-8 md:p-16 flex flex-col md:flex-row items-center gap-12">
+        <div className="cargo-section p-8 md:p-16 flex flex-col md:flex-row items-center gap-12">
           <div className="md:w-1/3">
             <div className="cargo-icon w-20 h-20 mb-6 flex items-center justify-center">
-              <Truck size={40} />
+              <MapPin size={40} />
             </div>
-            <h2 className="section-title italic uppercase tracking-tighter">Kemel<span className="icon-accent">Cargo</span></h2>
+            <h2 className="section-title italic uppercase tracking-tighter">Puntos de <span className="icon-accent">Venta</span></h2>
           </div>
           <div className="md:w-2/3 space-y-6">
-            <h3 className="text-brand-dark text-2xl font-bold">Enviamos tus encomiendas a todo el sur</h3>
+            <h3 className="text-brand-dark text-2xl font-bold">Compra tu pasaje en nuestras oficinas</h3>
             <p className="text-brand-muted text-lg leading-relaxed font-medium">
-              Aprovechamos la frecuencia de nuestras rutas para llevar tus paquetes de forma rápida y segura. Contamos con seguimiento en línea y entrega en terminal o domicilio.
+              Además de la compra en línea, puedes adquirir tus pasajes directamente en nuestros puntos de atención.
             </p>
             <div className="flex flex-wrap gap-4">
-              <span className="tag-pill px-4 py-2">ENVÍO DE DOCUMENTOS</span>
-              <span className="tag-pill px-4 py-2">CARGA SOBREDIMENSIONADA</span>
-              <span className="tag-pill px-4 py-2">CONVENIOS EMPRESA</span>
+              <span className="tag-pill px-4 py-2">PUERTO MONTT — TERMINAL MUNICIPAL, OF. N°40</span>
+              <span className="tag-pill px-4 py-2">HORNOPIRÉN — TERMINAL MUNICIPAL, OF. N°03</span>
+              <span className="tag-pill px-4 py-2">CHAITÉN — GREEN PATAGONIA TRAVEL (FRENTE COPEC)</span>
             </div>
           </div>
         </div>

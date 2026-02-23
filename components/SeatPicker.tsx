@@ -9,7 +9,7 @@ interface Seat {
   id: string;
   number: number;
   isOccupied: boolean;
-  type: "Premium" | "Clásico";
+  type: "Semi Cama";
   price: number;
 }
 
@@ -18,8 +18,8 @@ const generateSeats = (rows: number): Seat[] => {
     id: `S-${i + 1}`,
     number: i + 1,
     isOccupied: Math.random() < 0.3,
-    type: i < 8 ? "Premium" : "Clásico",
-    price: i < 8 ? 28900 : 18500,
+    type: "Semi Cama",
+    price: 8000,
   }));
 };
 
@@ -46,9 +46,9 @@ const SeatPicker = () => {
         id: crypto.randomUUID(),
         service_id: "",
         seat_id: selectedSeat.id,
-        origin: "Santiago",
-        destination: "Puerto Montt",
-        date: "2026-02-20",
+        origin: "Puerto Montt",
+        destination: "Hornopirén",
+        date: new Date().toISOString().split('T')[0],
         time: "",
         seat: `${selectedSeat.type} - N°${selectedSeat.number}`,
         seatNumber: selectedSeat.number,

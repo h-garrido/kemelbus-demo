@@ -121,7 +121,6 @@ function SeatSelectionContent() {
     if (cartSeatIds.has(seat.id))     return 'seat-in-cart';
     if (seat.status !== 'available')  return 'seat-occupied';
     if (selectedSeat?.id === seat.id) return 'seat-selected';
-    if (seat.type === 'Salón Cama')   return 'seat-available seat-salon-cama';
     return 'seat-available';
   };
 
@@ -230,12 +229,6 @@ function SeatSelectionContent() {
               {/* Leyenda */}
               <div className="mt-4 flex flex-wrap justify-center gap-x-4 gap-y-2 text-xs font-semibold text-gray-600">
                 <div className="flex items-center gap-1.5">
-                  <div className="w-6 h-6 rounded seat-available seat-salon-cama flex items-center justify-center shrink-0">
-                    <Armchair size={11} />
-                  </div>
-                  <span>Salón Cama</span>
-                </div>
-                <div className="flex items-center gap-1.5">
                   <div className="w-6 h-6 rounded seat-available flex items-center justify-center shrink-0">
                     <Armchair size={11} />
                   </div>
@@ -285,11 +278,7 @@ function SeatSelectionContent() {
                         </p>
                       </div>
                       <div className="text-right">
-                        <span className={`inline-block text-xs font-black uppercase px-3 py-1 rounded-full mb-2 ${
-                          selectedSeat.type === 'Salón Cama'
-                            ? 'bg-emerald-100 text-emerald-700'
-                            : 'bg-gray-100 text-gray-600'
-                        }`}>
+                        <span className="inline-block text-xs font-black uppercase px-3 py-1 rounded-full mb-2 bg-gray-100 text-gray-600">
                           {selectedSeat.type}
                         </span>
                         <p className="text-brand-dark text-2xl font-black">
