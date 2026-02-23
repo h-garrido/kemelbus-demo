@@ -85,6 +85,15 @@ export interface RouteFare {
   created_at: string;
 }
 
+export interface RouteSchedule {
+  id: string;
+  route_id: string;
+  /** 0 = Domingo, 1 = Lunes, ..., 6 = Sábado */
+  day_of_week: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+  departure_time: string; // HH:MM:SS
+  created_at: string;
+}
+
 export interface Ticket {
   id: string;
   booking_id: string;
@@ -172,6 +181,8 @@ export interface BookingRequest {
   seats: {
     seat_id: string;
     passenger: PassengerInfo;
+    fare_type: string;
+    fare_price: number;
   }[];
   user_email?: string;
   user_phone?: string;
@@ -200,6 +211,7 @@ export interface CartTicket {
   seat: string; // Ej: "Semi Cama - N°5"
   seatNumber: number;
   price: number;
+  fare_type: string; // Tipo de tarifa seleccionada (Normal, Estudiante, etc.)
   passengerName?: string;
   passengerRut?: string;
 }

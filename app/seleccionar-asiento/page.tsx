@@ -1,8 +1,8 @@
 "use client";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { getServiceDetails, getSeats, getRouteById } from "@/app/db/services";
-import type { BusService, Seat, RouteWithCities } from "@/app/db/types";
+import { getServiceDetails, getSeats, getRouteById, getRouteFares } from "@/app/db/services";
+import type { BusService, Seat, RouteWithCities, RouteFare } from "@/app/db/types";
 import { useCart } from "@/context/CartContext";
 import { useToast } from "@/hooks/useToast";
 import Toast from "@/components/Toast";
@@ -28,7 +28,9 @@ function SeatSelectionContent() {
   const [service, setService] = useState<BusService | null>(null);
   const [route,   setRoute]   = useState<RouteWithCities | null>(null);
   const [seats,   setSeats]   = useState<Seat[]>([]);
+  const [fares,   setFares]   = useState<RouteFare[]>([]);
   const [selectedSeat, setSelectedSeat] = useState<Seat | null>(null);
+  const [selectedFareType, setSelectedFareType] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -40,7 +42,13 @@ function SeatSelectionContent() {
       setService(serviceData);
 
       const routeData = await getRouteById(serviceData.route_id);
-      if (routeData) setRoute(routeData);
+      if (routeData) {
+        setRoute(routeData);
+        const faresData = await getRouteFares(routeData.id);
+        setFares(faresData);
+        // Preseleccionar la primera tarifa
+        if (faresData.length > 0) setSelectedFareType(faresData[0].fare_type);
+      }
 
       const seatsData = await getSeats(serviceId);
       setSeats(seatsData);
@@ -63,6 +71,9 @@ function SeatSelectionContent() {
 
   const handleConfirm = () => {
     if (selectedSeat && service && route) {
+      const activeFare = fares.find(f => f.fare_type === selectedFareType);
+      const farePrice  = activeFare ? activeFare.price : selectedSeat.price;
+      const fareLabel  = selectedFareType || 'Normal';
       addToCart({
         id: crypto.randomUUID(),
         service_id: service.id,
@@ -73,12 +84,13 @@ function SeatSelectionContent() {
         time: service.departure_time.substring(0, 5),
         seat: `${selectedSeat.type} - N°${selectedSeat.seat_number}`,
         seatNumber: selectedSeat.seat_number,
-        price: selectedSeat.price,
+        price: farePrice,
+        fare_type: fareLabel,
       });
       showToast({ message: `Asiento ${selectedSeat.seat_number} agregado al carrito`, type: 'success', duration: 3000 });
       setSelectedSeat(null);
     }
-  };
+  };;
 
   // ── Loading ──────────────────────────────────────────────────────────────
   if (isLoading) {
@@ -282,7 +294,7 @@ function SeatSelectionContent() {
                           {selectedSeat.type}
                         </span>
                         <p className="text-brand-dark text-2xl font-black">
-                          ${selectedSeat.price.toLocaleString('es-CL')}
+                          ${(fares.find(f => f.fare_type === selectedFareType)?.price ?? selectedSeat.price).toLocaleString('es-CL')}
                         </p>
                       </div>
                     </div>
@@ -300,6 +312,38 @@ function SeatSelectionContent() {
                   </div>
                 )}
               </div>
+
+              {/* Selector de tarifa */}
+              {fares.length > 0 && (
+                <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
+                  <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Tipo de tarifa</p>
+                  <div className="grid grid-cols-1 gap-2">
+                    {fares.map((fare) => (
+                      <label
+                        key={fare.fare_type}
+                        className={`flex items-center justify-between px-4 py-3 rounded-lg border-2 cursor-pointer transition-all ${
+                          selectedFareType === fare.fare_type
+                            ? 'border-brand-dark bg-white shadow-sm'
+                            : 'border-transparent bg-white hover:border-gray-300'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <input
+                            type="radio"
+                            name="fare_type"
+                            value={fare.fare_type}
+                            checked={selectedFareType === fare.fare_type}
+                            onChange={() => setSelectedFareType(fare.fare_type)}
+                            className="accent-brand-dark"
+                          />
+                          <span className="text-sm font-semibold text-brand-dark">{fare.fare_type}</span>
+                        </div>
+                        <span className="text-sm font-black text-brand-dark">${fare.price.toLocaleString('es-CL')}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Botón agregar */}
               <button

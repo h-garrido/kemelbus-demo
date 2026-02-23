@@ -1,27 +1,76 @@
 'use client';
 
-import { MapPin, ArrowRight, Mountain, Ship, Waves } from 'lucide-react';
+import { MapPin, ArrowRight, Mountain, Ship, Waves, Clock } from 'lucide-react';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
+
+interface RouteScheduleDisplay {
+  days: string;
+  times: string[];
+}
+
+interface DestinationRoute {
+  name: string;
+  schedules: RouteScheduleDisplay[];
+}
 
 const destinations = [
   {
     city: "Puerto Montt",
     description: "Terminal principal de KemelBus. Hub de conexión hacia la Patagonia Norte.",
-    routes: ["Puerto Montt → Hornopirén", "Puerto Montt → Chaitén"],
+    routes: [
+      {
+        name: "Puerto Montt → Hornopirén",
+        schedules: [
+          { days: "Lun – Vie", times: ["08:00", "10:00", "12:00", "14:30"] },
+          { days: "Sábado",    times: ["08:00", "16:30"] },
+          { days: "Domingo",   times: ["10:00", "16:30"] },
+        ],
+      },
+      {
+        name: "Puerto Montt → Chaitén",
+        schedules: [
+          { days: "Lun – Dom", times: ["07:00"] },
+        ],
+      },
+    ] as DestinationRoute[],
     icon: <Waves className="route-icon-central" />,
     color: "card-route-central"
   },
   {
     city: "Hornopirén",
     description: "Puerta de entrada a la Carretera Austral. Rodeada de volcanes y fiordos.",
-    routes: ["Hornopirén → Puerto Montt", "Hornopirén → Chaitén"],
+    routes: [
+      {
+        name: "Hornopirén → Puerto Montt",
+        schedules: [
+          { days: "Lun – Vie", times: ["05:30", "07:30", "13:00", "16:30"] },
+          { days: "Sábado",    times: ["10:30", "13:00"] },
+          { days: "Domingo",   times: ["13:00", "16:30"] },
+        ],
+      },
+      {
+        name: "Hornopirén → Chaitén",
+        schedules: [],
+      },
+    ] as DestinationRoute[],
     icon: <Mountain className="route-icon-sur" />,
     color: "card-route-sur"
   },
   {
     city: "Chaitén",
     description: "Capital de la provincia de Palena, en el corazón de la Patagonia chilena.",
-    routes: ["Chaitén → Puerto Montt", "Chaitén → Hornopirén"],
+    routes: [
+      {
+        name: "Chaitén → Puerto Montt",
+        schedules: [
+          { days: "Lun – Dom", times: ["10:30"] },
+        ],
+      },
+      {
+        name: "Chaitén → Hornopirén",
+        schedules: [],
+      },
+    ] as DestinationRoute[],
     icon: <Ship className="route-icon-norte" />,
     color: "card-route-norte"
   }
@@ -68,20 +117,37 @@ const Routes = () => {
 
               <p className="text-sm text-gray-500 mb-6 leading-relaxed">{dest.description}</p>
 
-              <ul className="space-y-4">
+              <ul className="space-y-6">
                 {dest.routes.map((route, rIndex) => (
-                  <li key={rIndex} className="flex items-center justify-between group cursor-pointer">
-                    <div className="flex items-center gap-3 text-brand-dark font-medium">
-                      <MapPin size={16} className="icon-accent" />
-                      {route}
+                  <li key={rIndex}>
+                    <div className="flex items-center justify-between group cursor-pointer mb-2">
+                      <div className="flex items-center gap-3 text-brand-dark font-medium">
+                        <MapPin size={16} className="icon-accent" />
+                        {route.name}
+                      </div>
+                      <ArrowRight size={14} className="route-arrow" />
                     </div>
-                    <ArrowRight size={14} className="route-arrow" />
+                    {route.schedules.length > 0 ? (
+                      <ul className="ml-7 space-y-1">
+                        {route.schedules.map((s, sIdx) => (
+                          <li key={sIdx} className="flex items-start gap-2 text-xs text-gray-500">
+                            <Clock size={11} className="mt-0.5 shrink-0 icon-accent" />
+                            <span>
+                              <span className="font-semibold text-gray-600">{s.days}:</span>{' '}
+                              {s.times.join(' · ')}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="ml-7 text-xs text-gray-400 italic">Consultar disponibilidad</p>
+                    )}
                   </li>
                 ))}
               </ul>
 
               <div className="mt-8 pt-6 route-divider">
-                <p className="route-footer-text">Salidas diarias desde Terminal KemelBus</p>
+                <p className="route-footer-text">Horarios establecidos por KemelBus</p>
               </div>
             </div>
             );

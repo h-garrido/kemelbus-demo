@@ -17,6 +17,7 @@ import type {
   CreateBookingResponse,
   ServiceWithRoute,
   RouteFare,
+  RouteSchedule,
 } from './types';
 
 // ========================================
@@ -132,6 +133,25 @@ export async function getRoute(originCityId: string, destinationCityId: string):
   }
 
   return data;
+}
+
+/**
+ * Obtener horarios fijos de una ruta específica
+ */
+export async function getRouteSchedules(routeId: string): Promise<RouteSchedule[]> {
+  const { data, error } = await supabase
+    .from('route_schedules')
+    .select('*')
+    .eq('route_id', routeId)
+    .order('day_of_week')
+    .order('departure_time');
+
+  if (error) {
+    console.error('Error fetching route schedules:', error);
+    return [];
+  }
+
+  return data || [];
 }
 
 /**
@@ -325,18 +345,8 @@ export async function createBooking(request: BookingRequest): Promise<CreateBook
 
     const bookingCode = codeData;
 
-    // 3. Calcular total
-    const seatIds = request.seats.map(s => s.seat_id);
-    const { data: seatsData, error: seatsError } = await supabase
-      .from('seats')
-      .select('price')
-      .in('id', seatIds);
-
-    if (seatsError || !seatsData) {
-      throw new Error('Error obteniendo precios de asientos');
-    }
-
-    const totalAmount = seatsData.reduce((sum, seat) => sum + seat.price, 0);
+    // 3. Calcular total usando las tarifas seleccionadas por el usuario
+    const totalAmount = request.seats.reduce((sum, s) => sum + s.fare_price, 0);
 
     // 4. Crear booking
     const { data: booking, error: bookingError } = await supabase
@@ -387,7 +397,8 @@ export async function createBooking(request: BookingRequest): Promise<CreateBook
         seat_id: seatInfo.seat_id,
         passenger_name: seatInfo.passenger.name,
         passenger_rut: seatInfo.passenger.document_number,
-        price: seatData.price,
+        price: seatInfo.fare_price,
+        fare_type: seatInfo.fare_type,
         ticket_code: ticketCode,
         status: 'active'
       });

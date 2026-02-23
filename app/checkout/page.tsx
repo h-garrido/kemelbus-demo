@@ -127,6 +127,8 @@ export default function CheckoutPage() {
         seats: cart.map(item => ({
           seat_id: item.seat_id,
           passenger: passengersData.get(item.id) ?? emptyPassenger(),
+          fare_type: item.fare_type,
+          fare_price: item.price,
         })),
         user_email: userEmail,
         user_phone: userPhone,
@@ -257,6 +259,9 @@ export default function CheckoutPage() {
                             </span>
                             <span className="flex items-center gap-1">
                               <Armchair size={11} /> {item.seat}
+                            </span>
+                            <span className="inline-block px-2 py-0.5 rounded-full bg-brand-dark/10 text-brand-dark font-bold">
+                              {item.fare_type}
                             </span>
                           </div>
                           {hasErrors && (
