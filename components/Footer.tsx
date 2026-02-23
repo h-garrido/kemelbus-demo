@@ -1,5 +1,7 @@
 import Link from 'next/link';
-import { Bus, Mail, MapPin, Phone, Instagram, Facebook } from 'lucide-react';
+import Image from 'next/image';
+import { Mail, MapPin, Phone, Instagram, Facebook } from 'lucide-react';
+import logo from '@/app/assets/img/LOGO-OFICIAL.png';
 
 const Footer = () => {
   return (
@@ -8,9 +10,13 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 text-center md:text-left">
           
           <div className="space-y-6">
-            <div className="flex items-center justify-center md:justify-start gap-2">
-              <Bus className="h-8 w-8 footer-brand-icon" />
-              <span className="text-2xl font-black text-white">KemelBus</span>
+            <div className="flex items-center justify-center md:justify-start">
+              <Image
+                src={logo}
+                alt="KemelBus"
+                style={{ height: '116px', width: 'auto' }}
+                className="object-contain"
+              />
             </div>
             <p className="footer-body">
               Conectamos Puerto Montt, Hornopirén y Chaitén con servicios de bus seguros y confiables en el corazón de la Patagonia Norte.
@@ -58,7 +64,7 @@ const Footer = () => {
         </div>
 
         <div className="footer-bottom mt-16 pt-8 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p>© {new Date().getFullYear()} KemelBus Chile SpA.</p>
+          <p>© {new Date().getFullYear()} BGS Projects SpA.</p>
           <div className="flex gap-8">
             <Facebook size={20} className="hover:text-white hover:scale-125 transition-all duration-300 cursor-pointer" />
             <Instagram size={20} className="hover:text-white hover:scale-125 transition-all duration-300 cursor-pointer" />

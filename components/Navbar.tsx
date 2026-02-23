@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Menu, X, Phone, Users, ShoppingCart } from "lucide-react";
 import { useCart } from "@/context/CartContext";
-import logo from "@/app/assets/img/LOGO-OFICIAL.jpg";
+import logo from "@/app/assets/img/LOGO-OFICIAL.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,7 +41,7 @@ const Navbar = () => {
                 <Image
                   src={logo}
                   alt="KemelBus"
-                  style={{ height: '52px', width: 'auto' }}
+                  style={{ height: '116px', width: 'auto' }}
                   className="object-contain"
                   priority
                 />

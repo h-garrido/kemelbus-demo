@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Image, { StaticImageData } from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import img1 from '@/app/assets/img/img1.jpg';
@@ -51,7 +51,8 @@ const slides: Slide[] = [
 
 export default function FleetCarousel() {
   const [current, setCurrent] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const touchStartX = useRef<number | null>(null);
 
   const prev = useCallback(() =>
     setCurrent(c => (c === 0 ? slides.length - 1 : c - 1)), []);
@@ -60,16 +61,33 @@ export default function FleetCarousel() {
     setCurrent(c => (c === slides.length - 1 ? 0 : c + 1)), []);
 
   useEffect(() => {
-    if (isHovered) return;
+    if (isPaused) return;
     const timer = setInterval(next, 4000);
     return () => clearInterval(timer);
-  }, [isHovered, next]);
+  }, [isPaused, next]);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    setIsPaused(true);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const delta = e.changedTouches[0].clientX - touchStartX.current;
+    if (Math.abs(delta) > 40) {
+      delta < 0 ? next() : prev();
+    }
+    touchStartX.current = null;
+    setIsPaused(false);
+  };
 
   return (
     <div
-      className="bus-hero-image relative h-[420px] select-none"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      className="bus-hero-image relative h-65 sm:h-85 md:h-105 select-none w-full"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
       {/* Slides */}
       {slides.map((slide, idx) => (
@@ -88,7 +106,7 @@ export default function FleetCarousel() {
             priority={idx === 0}
           />
           {/* Overlay degradado inferior */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
         </div>
       ))}
 

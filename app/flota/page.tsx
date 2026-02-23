@@ -13,17 +13,17 @@ export default function FlotaPage() {
   return (
     <div className="page-white min-h-screen">
       {/* Hero Flota */}
-      <section className="section-hero pt-32 pb-20 px-6">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
-          <div className="md:w-1/2 space-y-6">
+      <section className="section-hero pt-24 md:pt-32 pb-16 md:pb-20 px-4 md:px-6">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-8 md:gap-12">
+          <div className="w-full md:w-1/2 space-y-4 md:space-y-6 text-center md:text-left">
             <h1 className="text-4xl md:text-6xl font-black text-white italic uppercase tracking-tighter">
               Potencia y <span className="hero-accent">Seguridad</span>
             </h1>
-            <p className="hero-subtitle text-lg leading-relaxed">
+            <p className="hero-subtitle text-base md:text-lg leading-relaxed">
               En KemelBus operamos con una flota de última generación. Nuestros buses cuentan con los más altos estándares de seguridad internacional para garantizar un viaje tranquilo por las rutas del sur de Chile.
             </p>
           </div>
-          <div className="md:w-1/2">
+          <div className="w-full md:w-1/2">
             <FleetCarousel />
           </div>
         </div>
