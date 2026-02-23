@@ -83,7 +83,7 @@ export default function ContactoPage() {
             </div>
 
             {/* Banner de Ayuda Rápida */}
-            <div className="help-banner p-8">
+            {/* <div className="help-banner p-8">
               <MessageSquare className="help-banner-icon mb-4 animate-pulse" size={32} />
               <h3 className="text-xl font-bold mb-2">¿Buscas tu pasaje?</h3>
               <p className="hero-subtitle text-sm mb-6">
@@ -93,7 +93,7 @@ export default function ContactoPage() {
               <button className="help-banner-btn w-full py-3">
                 Ir a Mis Pasajes
               </button>
-            </div>
+            </div> */}
           </div>
 
           {/* Formulario de Contacto */}

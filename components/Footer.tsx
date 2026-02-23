@@ -29,7 +29,7 @@ const Footer = () => {
           <div>
             <h4 className="footer-heading">Links Útiles</h4>
             <ul className="space-y-3 text-sm">
-              <li><Link href="#" className="footer-link inline-block">Preguntas Frecuentes</Link></li>
+              {/* <li><Link href="#" className="footer-link inline-block">Preguntas Frecuentes</Link></li> */}
               <li><Link href="#" className="footer-link inline-block">Nuestra Política de Seguridad</Link></li>
               <li><Link href="#" className="footer-link inline-block">Trabaja como Conductor</Link></li>
             </ul>
