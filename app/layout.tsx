@@ -13,7 +13,7 @@ export default function RootLayout({
   return (
     <html lang="es" className="scroll-smooth">
       <body className="antialiased font-sans">
-        <TopBanner />
+        {/* <TopBanner /> */}
         <CartProvider>
           <Navbar />
           {/* 'children' representa el contenido de tu page.tsx */}
