@@ -60,7 +60,7 @@ const Navbar = () => {
                 </Link>
               ))}
               <Link
-                href="#reserva"
+                href="/#reserva"
                 className="btn-primary px-6 py-2.5 shadow-md"
               >
                 RESERVAR VIAJE

@@ -52,7 +52,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="section-hero relative lg:pt-44 lg:pb-32 overflow-hidden">
+    <section id="reserva" className="section-hero relative lg:pt-44 lg:pb-32 overflow-hidden">
       {/* Fondo con textura */}
       <div className="absolute inset-0 z-0 opacity-10">
         <Image 
