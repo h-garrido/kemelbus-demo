@@ -53,6 +53,7 @@ const SeatPicker = () => {
         seat: `${selectedSeat.type} - N°${selectedSeat.number}`,
         seatNumber: selectedSeat.number,
         price: selectedSeat.price,
+        fare_type: "Normal",
       });
       
       // Mostrar notificación
