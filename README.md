@@ -12,13 +12,14 @@
 
 ## 📋 Descripción
 
-KemelBus es una aplicación web moderna y totalmente responsiva construida con **Next.js 16 (App Router)** y conectada a una base de datos real mediante **Supabase**. Cubre el flujo completo de compra de pasajes:
+KemelBus es una aplicación web moderna y totalmente responsiva construida con **Next.js 16.1.6 (App Router)** y conectada a una base de datos real mediante **Supabase**. Cubre el flujo completo de compra de pasajes:
 
 1. Búsqueda de servicios disponibles por origen, destino y fecha
 2. Selección de asientos en tiempo real
-3. Registro de datos de pasajeros por ticket
-4. Proceso de pago simulado con Webpay Plus (Transbank)
-5. Confirmación y generación de código de reserva
+3. Elección del tipo de tarifa (Normal, Estudiante, Adulto Mayor, Residente, No Residente)
+4. Registro de nombre y RUT por cada pasajero antes del pago
+5. Proceso de pago simulado con Webpay Plus (Transbank)
+6. Confirmación y generación de código de reserva único
 
 ---
 
@@ -27,13 +28,15 @@ KemelBus es una aplicación web moderna y totalmente responsiva construida con *
 ### ✨ Implementadas
 
 - **Búsqueda de Servicios**: Filtra por ciudad de origen, destino y fecha de viaje consultando Supabase en tiempo real
-- **Mapa de Asientos Interactivo**: Visualización en tiempo real de disponibilidad de asientos (Salón Cama y Semi Cama)
+- **Mapa de Asientos Interactivo**: Visualización en tiempo real de disponibilidad de asientos Semi Cama
+- **Tarifas Diferenciales**: Soporte para 5 tipos de tarifa (`Normal`, `Estudiante`, `Adulto Mayor`, `Residente`, `No Residente`)
 - **Carrito de Compras**: Gestión global con Context API y persistencia en `localStorage`
 - **Formulario de Pasajeros**: Captura de nombre y RUT por cada ticket antes del pago
 - **Simulador de Pago Webpay**: Flujo completo con estados de redirección, procesamiento y confirmación
 - **Generación de Reserva**: Creación de `Booking` y `Tickets` en Supabase con código único
 - **Diseño Responsivo**: Adaptado para móviles, tablets y escritorio
-- **UX Fluida**: Skeleton loaders, spinners, toasts de notificación y animaciones con Tailwind
+- **UX Fluida**: Skeleton loaders, modal de carga, spinners, toasts de notificación y animaciones con Tailwind
+- **Imágenes Optimizadas**: Carga de imágenes remotas desde Unsplash a través de `next/image`
 
 ### 🗂️ Páginas
 
@@ -41,9 +44,9 @@ KemelBus es una aplicación web moderna y totalmente responsiva construida con *
 |------|-------------|
 | `/` | Landing page con buscador hero, selector de asientos, servicios, rutas, testimonios y FAQ |
 | `/buscar` | Listado de servicios disponibles para la ruta y fecha seleccionada |
-| `/seleccionar-asiento` | Mapa de asientos del servicio con selección interactiva por piso |
+| `/seleccionar-asiento` | Mapa de asientos del servicio con selección interactiva |
 | `/checkout` | Confirmación de viaje, datos de pasajeros, resumen y proceso de pago |
-| `/servicio` | Detalle de las clases de servicio (Salón Cama y Semi Cama) |
+| `/servicio` | Detalle de la clase de servicio Semi Cama |
 | `/flota` | Información sobre la flota vehicular y especificaciones técnicas |
 | `/contact` | Canales de contacto, formulario y mapa de ubicación |
 
@@ -56,6 +59,7 @@ KemelBus es una aplicación web moderna y totalmente responsiva construida con *
 | `Services` | Sección de servicios y beneficios |
 | `Routes` | Mapa de destinos por zona geográfica |
 | `Fleet` | Información de la flota |
+| `FleetCarousel` | Carrusel de imágenes de la flota |
 | `Testimonials` | Carrusel de reseñas de clientes |
 | `FAQ` | Acordeón de preguntas frecuentes |
 | `Navbar` | Barra de navegación con contador de carrito |
@@ -64,6 +68,7 @@ KemelBus es una aplicación web moderna y totalmente responsiva construida con *
 | `PaymentSimulator` | Simulador de pago Webpay con estados animados |
 | `Toast` | Sistema de notificaciones emergentes |
 | `LoadingSpinner` | Indicador de carga reutilizable |
+| `LoadingModal` | Modal de carga bloqueante para operaciones críticas |
 | `SkeletonLoader` | Placeholders animados durante la carga de datos |
 | `ScrollToTop` | Botón flotante para volver al inicio |
 | `Map` | Mapa de ubicación en la página de contacto |
@@ -99,10 +104,31 @@ La base de datos en Supabase gestiona las siguientes entidades:
 |-------|-------------|
 | `cities` | Ciudades disponibles con región y nombre de terminal |
 | `routes` | Rutas entre pares de ciudades con duración y distancia |
+| `route_fares` | Tarifas por tipo de pasajero para cada ruta |
+| `route_schedules` | Horarios recurrentes por día de semana para cada ruta |
 | `bus_services` | Servicios programados (fecha, hora, tipo de bus, precios, disponibilidad) |
-| `seats` | Asientos por servicio con piso, tipo, precio y estado de ocupación |
+| `seats` | Asientos por servicio con tipo Semi Cama, precio y estado de ocupación |
 | `bookings` | Reservas con código único, email, monto y estado de pago |
 | `tickets` | Tickets individuales por pasajero dentro de una reserva |
+
+### Tipos de tarifa disponibles
+
+| Tarifa | Descripción |
+|--------|-------------|
+| `Normal` | Tarifa estándar |
+| `Estudiante` | Con credencial vigente |
+| `Adulto Mayor` | 60 años o más |
+| `Residente` | Residente de la zona |
+| `No Residente` | Visitante no residente |
+
+### Estados del sistema
+
+| Entidad | Estados posibles |
+|---------|-----------------|
+| Servicio (`ServiceStatus`) | `scheduled`, `boarding`, `departed`, `arrived`, `cancelled` |
+| Asiento (`SeatStatus`) | `available`, `reserved`, `occupied` |
+| Reserva (`PaymentStatus`) | `pending`, `paid`, `failed`, `refunded` |
+| Ticket (`TicketStatus`) | `active`, `cancelled`, `used` |
 
 ---
 
@@ -144,7 +170,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=<tu-anon-key>
 
 ### 4. Configurar la base de datos
 
-Ejecuta el esquema SQL incluido en `supabase/` desde el editor SQL de Supabase para crear las tablas e insertar datos de prueba.
+Crea las tablas en tu proyecto de Supabase ejecutando el esquema SQL correspondiente desde el editor SQL del panel. Asegúrate de crear todas las tablas descritas en el modelo de datos.
 
 ### 5. Iniciar el servidor de desarrollo
 
@@ -172,6 +198,8 @@ Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
 ```
 kemelbus-demo/
 ├── app/                          # App Router de Next.js
+│   ├── assets/
+│   │   └── img/                  # Imágenes estáticas locales
 │   ├── buscar/
 │   │   └── page.tsx              # Búsqueda de servicios disponibles
 │   ├── checkout/
@@ -188,6 +216,7 @@ kemelbus-demo/
 │   │   └── page.tsx              # Mapa de asientos
 │   ├── servicio/
 │   │   └── page.tsx              # Detalle de servicios
+│   ├── custom.css                # Estilos personalizados
 │   ├── globals.css               # Estilos globales y Tailwind
 │   ├── layout.tsx                # Layout principal con providers
 │   └── page.tsx                  # Página de inicio
@@ -195,8 +224,10 @@ kemelbus-demo/
 ├── components/                   # Componentes reutilizables
 │   ├── FAQ.tsx
 │   ├── Fleet.tsx
+│   ├── FleetCarousel.tsx
 │   ├── Footer.tsx
 │   ├── Hero.tsx
+│   ├── LoadingModal.tsx
 │   ├── LoadingSpinner.tsx
 │   ├── Map.tsx
 │   ├── Navbar.tsx
@@ -214,13 +245,11 @@ kemelbus-demo/
 │   └── CartContext.tsx            # Estado global del carrito
 │
 ├── hooks/
-│   ├── useScrollReveal.ts        # Hook para animaciones en scroll
+│   ├── useScrollReveal.ts        # Hook de animaciones con IntersectionObserver
 │   └── useToast.ts               # Hook para notificaciones toast
 │
-├── supabase/                     # Esquema SQL de la base de datos
-├── public/                       # Archivos estáticos
-├── next.config.ts
-├── tailwind.config.ts
+├── public/                       # Archivos estáticos públicos
+├── next.config.ts                # Configuración de Next.js (imágenes Unsplash)
 ├── tsconfig.json
 └── package.json
 ```
@@ -229,29 +258,33 @@ kemelbus-demo/
 
 ## 🛒 Carrito de Compras
 
-Implementado con React Context API (`CartContext`) y persistencia en `localStorage`.
+Implementado con React Context API (`CartContext`) y persistencia en `localStorage` bajo la clave `kemelbus-cart`.
 
-**Estructura de un ítem en el carrito:**
+**Estructura de un ticket en el carrito (`CartTicket`):**
 
 ```typescript
-interface CartItem {
-  id: string;           // UUID local
-  service_id: string;
-  seat_id: string;
+interface CartTicket {
+  id: string;             // UUID temporal local
+  service_id: string;     // ID del bus_service en Supabase
+  seat_id: string;        // ID del seat reservado
   origin: string;
   destination: string;
   date: string;
   time: string;
-  seat: string;         // Ej: "Salón Cama - Piso 1 - N°5"
+  seat: string;           // Ej: "Semi Cama - N°5"
   seatNumber: number;
   price: number;
+  fare_type: string;      // Ej: "Normal", "Estudiante", etc.
+  passengerName?: string;
+  passengerRut?: string;
 }
 ```
 
 **API del contexto:**
 
 ```typescript
-addToCart(item: CartItem): void
+cart: CartTicket[]
+addToCart(ticket: CartTicket): void
 removeFromCart(id: string): void
 clearCart(): void
 total: number
@@ -259,7 +292,7 @@ total: number
 
 ---
 
-##  Simulador de Pago
+## 💳 Simulador de Pago
 
 El componente `PaymentSimulator` reproduce el flujo de Webpay Plus en tres etapas:
 
@@ -268,6 +301,17 @@ El componente `PaymentSimulator` reproduce el flujo de Webpay Plus en tres etapa
 | Redirecting | 2 s | Simulación de redirección a Transbank |
 | Processing | 3 s | Procesamiento del pago |
 | Success | — | Confirmación, creación de reserva en Supabase y limpieza del carrito |
+
+Al completarse el pago se crea un registro en `bookings` con estado `paid` y uno o más registros en `tickets`, cada uno con su `ticket_code` único.
+
+---
+
+## 🪝 Custom Hooks
+
+| Hook | Descripción |
+|------|-------------|
+| `useScrollReveal` | Usa `IntersectionObserver` para revelar elementos al hacer scroll. Acepta `threshold`, `rootMargin` y `triggerOnce`. |
+| `useToast` | Gestiona el estado de notificaciones toast con `showToast(config)` y `hideToast()`. Soporta tipos `success`, `error` e `info`. |
 
 ---
 
@@ -309,6 +353,7 @@ npm run start
 - [Tailwind CSS](https://tailwindcss.com/docs)
 - [Supabase Docs](https://supabase.com/docs)
 - [Lucide Icons](https://lucide.dev/icons/)
+- [react-number-format](https://s-yadav.github.io/react-number-format/)
 
 ---
 
