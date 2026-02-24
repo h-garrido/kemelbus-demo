@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X, Phone, Users, ShoppingCart } from "lucide-react";
+import { Menu, X, Phone, Users, ShoppingCart, Facebook, Instagram } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import logo from "@/app/assets/img/LOGO-OFICIAL.png";
 
@@ -29,6 +29,28 @@ const Navbar = () => {
           <span className="flex items-center gap-2">
             <Users size={14} className="topbar-icon" /> Puerto Montt · Hornopirén · Chaitén
           </span>
+        </div>
+        <div className="flex items-center gap-3">
+          <a
+            href="https://www.facebook.com/kemelbusinformacion"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Facebook"
+            className="topbar-icon hover:opacity-70 transition-opacity flex items-center gap-1"
+          >
+            <Facebook size={18} />
+            <span>kemelbusinformacion</span>
+          </a>
+          <a
+            href="https://www.instagram.com/kemelbus_carreteraaustral/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram"
+            className="topbar-icon hover:opacity-70 transition-opacity flex items-center gap-1"
+          >
+            <Instagram size={18} />
+            <span>kemelbus_carreteraaustral</span>
+          </a>
         </div>
       </div>
 

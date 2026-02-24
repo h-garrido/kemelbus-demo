@@ -66,8 +66,24 @@ const Footer = () => {
         <div className="footer-bottom mt-16 pt-8 flex flex-col md:flex-row justify-between items-center gap-6">
           <p>© {new Date().getFullYear()} BGS Projects SpA.</p>
           <div className="flex gap-8">
-            <Facebook size={20} className="hover:text-white hover:scale-125 transition-all duration-300 cursor-pointer" />
-            <Instagram size={20} className="hover:text-white hover:scale-125 transition-all duration-300 cursor-pointer" />
+            <a
+              href="https://www.facebook.com/kemelbusinformacion"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+              className="hover:text-white hover:scale-125 transition-all duration-300"
+            >
+              <Facebook size={20} />
+            </a>
+            <a
+              href="https://www.instagram.com/kemelbus_carreteraaustral/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              className="hover:text-white hover:scale-125 transition-all duration-300"
+            >
+              <Instagram size={20} />
+            </a>
           </div>
         </div>
       </div>

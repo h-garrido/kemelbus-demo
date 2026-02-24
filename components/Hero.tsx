@@ -69,7 +69,7 @@ const Hero = () => {
         <div className="text-center md:text-left mb-12">
           <h1 className="hero-title text-4xl md:text-7xl font-black leading-tight mb-6 animate-[fadeInUp_0.6s_ease-out]">
             Viaja por la Patagonia con <br />
-            <span className="hero-accent underline">Seguridad y Confort</span>
+            <span className="hero-accent underline">Seguridad y Comodidad</span>
           </h1>
           <p className="hero-subtitle text-lg md:text-xl max-w-2xl animate-[fadeInUp_0.8s_ease-out]">
             Reserva tus pasajes en línea para viajar entre Puerto Montt, Hornopirén y Chaitén.

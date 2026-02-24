@@ -1,6 +1,12 @@
+import type { Metadata } from 'next';
 import { ShieldCheck, Wind, Gauge, Zap, Cog, Eye } from 'lucide-react';
 import Link from 'next/link';
 import FleetCarousel from '@/components/FleetCarousel';
+
+export const metadata: Metadata = {
+  title: 'Kemel Bus | Nuestra Flota',
+  description: 'Descubre la flota más moderna del sur de Chile. Buses de última generación para un viaje seguro y confortable.',
+};
 
 export default function FlotaPage() {
   const specs = [

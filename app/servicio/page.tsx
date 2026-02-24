@@ -1,7 +1,13 @@
+import type { Metadata } from 'next';
 import { Armchair, MapPin, Wifi, BatteryCharging, ShieldCheck, Clock } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import img3 from '@/app/assets/img/img3.jpg';
+
+export const metadata: Metadata = {
+  title: 'Kemel Bus | Servicios',
+  description: 'Conoce nuestros servicios de bus con WiFi, cargadores USB, GPS y comodidades premium en la ruta Patagonia Norte.',
+};
 
 export default function ServiciosPage() {
   const amenities = [
