@@ -34,6 +34,8 @@ KemelBus es una aplicación web moderna y totalmente responsiva construida con *
 - **Formulario de Pasajeros**: Captura de nombre y RUT por cada ticket antes del pago
 - **Simulador de Pago Webpay**: Flujo completo con estados de redirección, procesamiento y confirmación
 - **Generación de Reserva**: Creación de `Booking` y `Tickets` en Supabase con código único
+- **SEO por Página**: Metadatos (`title` + `description`) individuales en cada ruta mediante la API `Metadata` de Next.js
+- **Redes Sociales**: Íconos de Facebook e Instagram en el Top Bar del Navbar y en el Footer, enlazando a los perfiles oficiales de Kemel Bus
 - **Diseño Responsivo**: Adaptado para móviles, tablets y escritorio
 - **UX Fluida**: Skeleton loaders, modal de carga, spinners, toasts de notificación y animaciones con Tailwind
 - **Imágenes Optimizadas**: Carga de imágenes remotas desde Unsplash a través de `next/image`
@@ -50,6 +52,8 @@ KemelBus es una aplicación web moderna y totalmente responsiva construida con *
 | `/flota` | Información sobre la flota vehicular y especificaciones técnicas |
 | `/contact` | Canales de contacto, formulario y mapa de ubicación |
 
+> Las páginas `/contact`, `/buscar`, `/seleccionar-asiento` y `/checkout` utilizan `"use client"` y no pueden exportar `Metadata` directamente. Su título SEO se define en un `layout.tsx` por ruta.
+
 ### 🧩 Componentes
 
 | Componente | Descripción |
@@ -62,9 +66,9 @@ KemelBus es una aplicación web moderna y totalmente responsiva construida con *
 | `FleetCarousel` | Carrusel de imágenes de la flota |
 | `Testimonials` | Carrusel de reseñas de clientes |
 | `FAQ` | Acordeón de preguntas frecuentes |
-| `Navbar` | Barra de navegación con contador de carrito |
+| `Navbar` | Barra de navegación con Top Bar (teléfono, cobertura e íconos de redes sociales), menú principal y contador de carrito |
 | `TopBanner` | Banner superior con información promocional |
-| `Footer` | Pie de página con enlaces e información |
+| `Footer` | Pie de página con enlaces, información de contacto e íconos de redes sociales |
 | `PaymentSimulator` | Simulador de pago Webpay con estados animados |
 | `Toast` | Sistema de notificaciones emergentes |
 | `LoadingSpinner` | Indicador de carga reutilizable |
@@ -201,25 +205,29 @@ kemelbus-demo/
 │   ├── assets/
 │   │   └── img/                  # Imágenes estáticas locales
 │   ├── buscar/
+│   │   ├── layout.tsx            # Metadata: Kemel Bus | Buscar Pasajes
 │   │   └── page.tsx              # Búsqueda de servicios disponibles
 │   ├── checkout/
+│   │   ├── layout.tsx            # Metadata: Kemel Bus | Checkout
 │   │   └── page.tsx              # Confirmación y pago
 │   ├── contact/
+│   │   ├── layout.tsx            # Metadata: Kemel Bus | Contacto
 │   │   └── page.tsx              # Contacto
 │   ├── db/
 │   │   ├── services.ts           # Funciones de consulta a Supabase
 │   │   ├── supabase.ts           # Inicialización del cliente
 │   │   └── types.ts              # Tipos TypeScript del modelo de datos
 │   ├── flota/
-│   │   └── page.tsx              # Información de flota
+│   │   └── page.tsx              # Información de flota (Metadata: Kemel Bus | Nuestra Flota)
 │   ├── seleccionar-asiento/
+│   │   ├── layout.tsx            # Metadata: Kemel Bus | Seleccionar Asiento
 │   │   └── page.tsx              # Mapa de asientos
 │   ├── servicio/
-│   │   └── page.tsx              # Detalle de servicios
+│   │   └── page.tsx              # Detalle de servicios (Metadata: Kemel Bus | Servicios)
 │   ├── custom.css                # Estilos personalizados
 │   ├── globals.css               # Estilos globales y Tailwind
-│   ├── layout.tsx                # Layout principal con providers
-│   └── page.tsx                  # Página de inicio
+│   ├── layout.tsx                # Layout raíz con providers y metadata base
+│   └── page.tsx                  # Página de inicio (Metadata: Kemel Bus | Inicio)
 │
 ├── components/                   # Componentes reutilizables
 │   ├── FAQ.tsx
@@ -360,6 +368,15 @@ npm run start
 <div align="center">
 
 Desarrollado con Next.js, Tailwind CSS y Supabase
+
+---
+
+## 🌐 Redes Sociales Oficiales
+
+| Red | URL |
+|-----|-----|
+| Facebook | [facebook.com/kemelbusinformacion](https://www.facebook.com/kemelbusinformacion) |
+| Instagram | [instagram.com/kemelbus_carreteraaustral](https://www.instagram.com/kemelbus_carreteraaustral/) |
 
 </div>
 
