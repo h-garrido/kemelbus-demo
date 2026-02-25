@@ -203,13 +203,6 @@ export default function CheckoutPage() {
           >
             <ArrowLeft size={18} /> Volver
           </button>
-          <span className="text-gray-300 select-none">|</span>
-          <Link
-            href="/buscar"
-            className="back-link-light"
-          >
-            <ArrowLeft size={18} /> Cambiar búsqueda
-          </Link>
         </div>
 
         {cart.length === 0 ? (
