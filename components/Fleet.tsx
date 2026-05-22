@@ -3,8 +3,8 @@
 import Image from 'next/image';
 import { Monitor, Check } from 'lucide-react';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
-import img4 from '@/app/assets/img/img4.jpg';
-import img5 from '@/app/assets/img/img5.jpg';
+import img4 from '@/app/assets/img/img4.webp';
+import img5 from '@/app/assets/img/img5.webp';
 
 const fleetDetails = [
   {

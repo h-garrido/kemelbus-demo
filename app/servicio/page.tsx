@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Armchair, MapPin, Wifi, BatteryCharging, ShieldCheck, Clock } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import img3 from '@/app/assets/img/img3.jpg';
+import img3 from '@/app/assets/img/img3.webp';
 
 export const metadata: Metadata = {
   title: 'Kemel Bus | Servicios',

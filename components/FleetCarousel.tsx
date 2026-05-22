@@ -3,11 +3,11 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Image, { StaticImageData } from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import img1 from '@/app/assets/img/img1.jpg';
-import img2 from '@/app/assets/img/img2.jpg';
-import img3 from '@/app/assets/img/img3.jpg';
-import img4 from '@/app/assets/img/img4.jpg';
-import img5 from '@/app/assets/img/img5.jpg';
+import img1 from '@/app/assets/img/img1.webp';
+import img2 from '@/app/assets/img/img2.webp';
+import img3 from '@/app/assets/img/img3.webp';
+import img4 from '@/app/assets/img/img4.webp';
+import img5 from '@/app/assets/img/img5.webp';
 
 interface Slide {
   src: StaticImageData;

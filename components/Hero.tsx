@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import img1 from '@/app/assets/img/img1.jpg';
+import img1 from '@/app/assets/img/img1.webp';
 import { Search, MapPin, Calendar } from 'lucide-react';
 import { getOriginCities, getDestinationCities } from '@/app/db/services';
 import type { City } from '@/app/db/types';

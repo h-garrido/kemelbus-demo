@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Menu, X, Phone, Users, ShoppingCart, Facebook, Instagram } from "lucide-react";
 import { useCart } from "@/context/CartContext";
-import logo from "@/app/assets/img/LOGO-OFICIAL.png";
+import logo from "@/app/assets/img/LOGO-OFICIAL.webp";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
