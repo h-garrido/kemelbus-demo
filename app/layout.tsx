@@ -7,8 +7,10 @@ import { CartProvider } from "@/context/CartContext";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Kemel Bus",
-  description: "Conectamos Puerto Montt, Hornopirén y Chaitén con servicios de bus seguros y confiables en el corazón de la Patagonia Norte.",
+  title: "KemelBus | Venta de Pasajes de Bus en Chile",
+  description: "Compra tus pasajes de bus en KemelBus de forma rápida y segura. Viaja a las principales ciudades de Chile con la mayor comodidad, seguridad y el mejor servicio a bordo.",
+  keywords: ["KemelBus", "pasajes de bus", "buses Chile", "viajar en bus", "compra de pasajes", "viajes chile", "buses del sur"],
+  authors: [{ name: "KemelBus" }],
 };
 
 export default function RootLayout({

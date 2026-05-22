@@ -324,117 +324,41 @@ export async function isSeatAvailable(seatId: string): Promise<boolean> {
  */
 export async function createBooking(request: BookingRequest): Promise<CreateBookingResponse> {
   try {
-    // 1. Verificar disponibilidad de asientos
-    for (const seatInfo of request.seats) {
-      const available = await isSeatAvailable(seatInfo.seat_id);
-      if (!available) {
+    const formattedSeats = request.seats.map(s => ({
+      seat_id: s.seat_id,
+      passenger_name: s.passenger.name,
+      passenger_rut: s.passenger.document_number,
+      fare_type: s.fare_type,
+      fare_price: s.fare_price
+    }));
+
+    const { data, error } = await supabase.rpc('process_booking_transaction', {
+      p_seats: formattedSeats,
+      p_user_email: request.user_email || null,
+      p_user_phone: request.user_phone || null,
+      p_payment_method: request.payment_method
+    });
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    if (data && typeof data === 'object') {
+      const res = data as { success: boolean; booking_code?: string; booking_id?: string; error?: string };
+      if (!res.success) {
         return {
           success: false,
-          error: `El asiento ya no está disponible`
+          error: res.error || 'Error al procesar la reserva'
         };
       }
+      return {
+        success: true,
+        booking_code: res.booking_code,
+        booking_id: res.booking_id
+      };
     }
 
-    // 2. Generar código de reserva
-    const { data: codeData, error: codeError } = await supabase
-      .rpc('generate_booking_code');
-
-    if (codeError || !codeData) {
-      throw new Error('Error generando código de reserva');
-    }
-
-    const bookingCode = codeData;
-
-    // 3. Calcular total usando las tarifas seleccionadas por el usuario
-    const totalAmount = request.seats.reduce((sum, s) => sum + s.fare_price, 0);
-
-    // 4. Crear booking
-    const { data: booking, error: bookingError } = await supabase
-      .from('bookings')
-      .insert({
-        booking_code: bookingCode,
-        user_email: request.user_email,
-        user_phone: request.user_phone,
-        total_amount: totalAmount,
-        payment_status: 'pending',
-        payment_method: request.payment_method
-      })
-      .select()
-      .single();
-
-    if (bookingError || !booking) {
-      throw new Error('Error creando reserva');
-    }
-
-    // 5. Crear tickets y actualizar asientos
-    const serviceIdsToUpdate = new Set<string>(); // Recolectar IDs durante este paso
-
-    for (const seatInfo of request.seats) {
-      // Obtener información del asiento
-      const { data: seatData, error: seatError } = await supabase
-        .from('seats')
-        .select('bus_service_id, price')
-        .eq('id', seatInfo.seat_id)
-        .single();
-
-      if (seatError || !seatData) {
-        continue;
-      }
-
-      // Guardar service_id para actualizar después
-      serviceIdsToUpdate.add(seatData.bus_service_id);
-
-      // Generar código de ticket
-      const { data: ticketCodeData } = await supabase
-        .rpc('generate_ticket_code');
-
-      const ticketCode = ticketCodeData || `TK-${Date.now()}`;
-
-      // Crear ticket
-      await supabase.from('tickets').insert({
-        booking_id: booking.id,
-        bus_service_id: seatData.bus_service_id,
-        seat_id: seatInfo.seat_id,
-        passenger_name: seatInfo.passenger.name,
-        passenger_rut: seatInfo.passenger.document_number,
-        price: seatInfo.fare_price,
-        fare_type: seatInfo.fare_type,
-        ticket_code: ticketCode,
-        status: 'active'
-      });
-
-      // Actualizar estado del asiento
-      await supabase
-        .from('seats')
-        .update({
-          status: 'reserved',
-          passenger_name: seatInfo.passenger.name,
-          passenger_rut: seatInfo.passenger.document_number,
-          reserved_at: new Date().toISOString()
-        })
-        .eq('id', seatInfo.seat_id);
-    }
-
-    // 6. Actualizar contador de asientos disponibles en cada servicio afectado
-    for (const serviceId of serviceIdsToUpdate) {
-      const { data: availableSeats } = await supabase
-        .from('seats')
-        .select('id')
-        .eq('bus_service_id', serviceId)
-        .eq('status', 'available');
-
-      await supabase
-        .from('bus_services')
-        .update({ available_seats: availableSeats?.length || 0 })
-        .eq('id', serviceId);
-    }
-
-    return {
-      success: true,
-      booking_code: bookingCode,
-      booking_id: booking.id
-    };
-
+    throw new Error('Respuesta inválida de la base de datos');
   } catch (error) {
     console.error('Error creating booking:', error);
     return {

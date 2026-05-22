@@ -8,6 +8,7 @@ import { Trash2, ShieldCheck, ArrowLeft, User, Bus, Calendar, Clock, Armchair, C
 import Link from 'next/link';
 import PaymentSimulator from '@/components/PaymentSimulator';
 import LoadingModal from '@/components/LoadingModal';
+import { validateRUT, formatRUT } from '@/app/utils/rut';
 
 const emptyPassenger = (): PassengerInfo => ({
   name: '',
@@ -92,6 +93,9 @@ export default function CheckoutPage() {
       }
       if (!p.document_number.trim()) {
         fieldErrors.document_number = 'El número de documento es obligatorio';
+        valid = false;
+      } else if (p.document_type === 'rut' && !validateRUT(p.document_number)) {
+        fieldErrors.document_number = 'El RUT ingresado no es válido (ej: 12.345.678-9)';
         valid = false;
       }
       if (!p.birth_date) {
@@ -341,6 +345,12 @@ export default function CheckoutPage() {
                               placeholder={p.document_type === 'rut' ? 'Ej: 12.345.678-9' : 'Ej: A01234567'}
                               value={p.document_number}
                               onChange={(e) => updatePassengerData(item.id, 'document_number', e.target.value)}
+                              onBlur={(e) => {
+                                if (p.document_type === 'rut') {
+                                  const formatted = formatRUT(e.target.value);
+                                  updatePassengerData(item.id, 'document_number', formatted);
+                                }
+                              }}
                               className={`${inputBase} ${inputError(item.id, 'document_number')}`}
                             />
                             {errors[item.id]?.document_number && (
